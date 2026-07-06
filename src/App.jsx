@@ -7,6 +7,7 @@ import RoutePage from "./pages/RoutePage.jsx";
 import AuthModal from "./components/ui/AuthModal.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx"; // This should be the correct path
 import ChatBot from "./components/AIChat/ChatBot.jsx"; // This is the correct path
+import LoginVideo from "./components/ui/LoginVideo.jsx";
 import { products } from "./data/storeData.js";
 
 const INTRO_TIME = 3200;
@@ -22,6 +23,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [authModal, setAuthModal] = useState({ open: false, mode: "login" });
   const [authError, setAuthError] = useState("");
+  const [showLoginVideo, setShowLoginVideo] = useState(false);
 
   const navigate = (nextPage) => {
     let params = {};
@@ -140,6 +142,7 @@ export default function App() {
       localStorage.setItem("og_auth_token", data.token);
       setUser(data.user);
       closeAuthModal();
+      setShowLoginVideo(true);
       setToast(`Welcome back, ${data.user.name || data.user.email}`);
     } catch (error) {
       setAuthError(error?.message || "Login failed. Please try again.");
@@ -189,6 +192,10 @@ export default function App() {
     <ChatProvider>
       <main className={`app ${theme}`}>
         {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
+
+        {showLoginVideo && (
+          <LoginVideo onFinish={() => setShowLoginVideo(false)} />
+        )}
 
         {!showSplash && (
           <>

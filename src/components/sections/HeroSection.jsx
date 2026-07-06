@@ -3,7 +3,7 @@ export default function HeroSection({ onNavigate }) {
     <section className="hero-section">
       <div className="hero-video-wrap" aria-hidden="true">
         <video autoPlay muted loop playsInline preload="auto">
-          <source src="og2.MP4" type="video/mp4" />
+          <source src="/og2.mp4" type="video/mp4" />
         </video>
         <div className="hero-overlay" />
       </div>
