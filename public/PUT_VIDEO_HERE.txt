@@ -1,0 +1,13 @@
+Place your hero video in this folder when it is ready.
+
+Recommended name:
+og-vid.mp4
+
+Then open:
+src/components/sections/HeroSection.jsx
+
+Replace this empty source:
+<source src="" type="video/mp4" />
+
+with:
+<source src="/og-vid.mp4" type="video/mp4" />
