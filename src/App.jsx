@@ -192,10 +192,8 @@ export default function App() {
     <ChatProvider>
       <main className={`app ${theme}`}>
         {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
-
-        {showLoginVideo && (
-          <LoginVideo onFinish={() => setShowLoginVideo(false)} />
-        )}
+        
+        {showLoginVideo && <LoginVideo onFinish={() => setShowLoginVideo(false)} />}
 
         {!showSplash && (
           <>
@@ -208,7 +206,7 @@ export default function App() {
               onAuthOpen={openAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")}
+              onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")} // This was missing onNavigate
             />
 
             {page === "home" ? (
