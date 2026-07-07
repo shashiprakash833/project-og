@@ -52,8 +52,14 @@ export default function App() {
   const toggleWishlist = (product) => {
     setWishlist((current) => {
       const exists = current.some((item) => item.id === product.id);
-      setToast(exists ? `${product.name} removed from wishlist.` : `${product.name} saved to wishlist.`);
-      return exists ? current.filter((item) => item.id !== product.id) : [...current, product];
+      setToast(
+        exists
+          ? `${product.name} removed from wishlist.`
+          : `${product.name} saved to wishlist.`,
+      );
+      return exists
+        ? current.filter((item) => item.id !== product.id)
+        : [...current, product];
     });
   };
 
@@ -61,9 +67,19 @@ export default function App() {
 
   const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
-  const submitOrder = async ({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }) => {
+  const submitOrder = async ({
+    items,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+    shippingPhone,
+  }) => {
     if (!user) {
-      return { success: false, requiresAuth: true, error: "Please sign in to place the order." };
+      return {
+        success: false,
+        requiresAuth: true,
+        error: "Please sign in to place the order.",
+      };
     }
 
     try {
@@ -74,11 +90,20 @@ export default function App() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }),
+        body: JSON.stringify({
+          items,
+          totalAmount,
+          shippingAddress,
+          paymentMethod,
+          shippingPhone,
+        }),
       });
 
       if (!response.ok) {
-        const errorMessage = await parseApiError(response, "Order failed to submit");
+        const errorMessage = await parseApiError(
+          response,
+          "Order failed to submit",
+        );
         return { success: false, error: errorMessage };
       }
 
@@ -86,7 +111,10 @@ export default function App() {
       clearCart();
       return { success: true, orderId: data.orderId };
     } catch (error) {
-      return { success: false, error: error?.message || "Order failed to submit." };
+      return {
+        success: false,
+        error: error?.message || "Order failed to submit.",
+      };
     }
   };
 
@@ -188,7 +216,12 @@ export default function App() {
   return (
     <ChatProvider>
       <main className={`app ${theme}`}>
-        {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
+        {showSplash && (
+          <SplashScreen
+            duration={INTRO_TIME}
+            onFinish={() => setShowSplash(false)}
+          />
+        )}
 
         {!showSplash && (
           <>
@@ -201,7 +234,9 @@ export default function App() {
               onAuthOpen={openAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")}
+              onThemeToggle={() =>
+                setTheme(theme === "light" ? "dark" : "light")
+              }
             />
 
             {page === "home" ? (
@@ -216,6 +251,7 @@ export default function App() {
             ) : (
               <RoutePage
                 page={page}
+                routeParams={routeParams}
                 products={products}
                 cart={cart}
                 wishlist={wishlist}
@@ -239,7 +275,9 @@ export default function App() {
           onClose={closeAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() => openAuthModal(authModal.mode === "login" ? "signup" : "login")}
+          onSwitchMode={() =>
+            openAuthModal(authModal.mode === "login" ? "signup" : "login")
+          }
           error={authError}
         />
 
@@ -249,7 +287,7 @@ export default function App() {
             <button onClick={() => setToast("")}>Close</button>
           </div>
         )}
-        
+
         {!showSplash && <ChatBot />}
       </main>
     </ChatProvider>

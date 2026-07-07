@@ -16,23 +16,44 @@ export default function GenderCollections({ onNavigate, onToast }) {
     },
   ];
 
+  const handleNavigate = (tile) => {
+    if (onToast) {
+      onToast(`${tile.title} collection opened.`);
+    }
+
+    if (onNavigate) {
+      onNavigate(`collections-${tile.key}`);
+    }
+  };
+
   return (
     <section className="gender-collections">
-      {tiles.map((t) => (
+      {tiles.map((tile) => (
         <button
-          key={t.key}
+          key={tile.key}
+          type="button"
           className="gender-card highlight-cloth"
-          onClick={() => {
-            onToast(`${t.title} collection opened.`);
-            onNavigate(`collections-${t.key}`);
-          }}
+          onClick={() => handleNavigate(tile)}
         >
-          <div className="gender-card-bg" style={{ backgroundImage: `url(${t.image})` }} aria-hidden="true" />
-          <img className="gender-card-focus" src={t.image} alt={`${t.title} collection`} loading="lazy" />
+          <div
+            className="gender-card-bg"
+            style={{
+              backgroundImage: `url(${tile.image})`,
+            }}
+            aria-hidden="true"
+          />
+
+          <img
+            className="gender-card-focus"
+            src={tile.image}
+            alt={`${tile.title} Collection`}
+            loading="lazy"
+          />
+
           <div className="gender-copy">
-            <h3>{t.title}</h3>
-            <p>{t.copy}</p>
-            <span className="btn outline">Explore</span>
+            <h3>{tile.title}</h3>
+            <p>{tile.copy}</p>
+            <button className="btn outline">Explore</button>
           </div>
         </button>
       ))}

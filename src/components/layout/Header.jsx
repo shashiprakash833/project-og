@@ -109,17 +109,31 @@ export default function Header({
       </nav>
 
       <div className="header-actions">
+
+        <button
+  className="nav-action theme-toggle-btn"
+  onClick={onThemeToggle}
+  aria-label="Toggle Theme"
+>
+  {theme === "light" ? "🌙" : "☀️"}
+</button>
         <button className="nav-action" onClick={handleSearchToggle}>
-          Search
+          🔎 Search
         </button>
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
           aria-label={`View wishlist (${wishlistCount} items)`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-1.383-.598 19.466 19.466 0 01-3.42-1.98 23.445 23.445 0 01-4.13-3.289c-1.121-1.282-2.15-2.884-2.798-4.682A7.5 7.5 0 015.25 6.135a7.5 7.5 0 0111.37-1.415.5.5 0 00.33.123.5.5 0 00.33-.123A7.5 7.5 0 0121 8.635a7.5 7.5 0 01-2.25 5.482c-.648 1.798-1.677 3.4-2.798 4.682a23.445 23.445 0 01-4.13 3.289 19.466 19.466 0 01-3.42 1.98 15.247 15.247 0 01-1.383.598l-.022.012-.007.004-.004.002z" />
-          </svg>
+          <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+>
+    <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 4a5.5 5.5 0 019.5 8C19 16.5 12 21 12 21z"/>
+</svg>
           {wishlistCount > 0 && <span className="icon-count">{wishlistCount}</span>}
         </button>
         <button
@@ -127,20 +141,41 @@ export default function Header({
           onClick={() => handleNavigate("cart")}
           aria-label={`View cart (${cartCount} items)`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path fillRule="evenodd" d="M7.5 6v.75H5.513c-.814 0-1.538.4-1.965 1.115l-2.25 3.375c-.22.33-.335.72-.335 1.11v4.5c0 .828.672 1.5 1.5 1.5h15c.828 0 1.5-.672 1.5-1.5v-4.5c0-.39-.115-.78-.335-1.11l-2.25-3.375A2.25 2.25 0 0018.487 6.75H16.5V6a4.5 4.5 0 10-9 0zM12 4.5a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 9a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm1.5-1.5a.75.75 0 00-.75.75A.75.75 0 0012 13.5a.75.75 0 00.75-.75A.75.75 0 0012 12h-1.5z" clipRule="evenodd" />
-          </svg>
+          <svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+strokeWidth="2">
+
+<path d="M6 8h12l-1 12H7L6 8z"/>
+<path d="M9 8V6a3 3 0 016 0v2"/>
+
+</svg>
+          
           {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
         </button>
         <div className="profile-container" ref={profileRef}>
           <button className="profile-icon-btn" onClick={() => setProfileOpen(p => !p)} aria-label="Toggle profile menu">
-            <svg className="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                fillRule="evenodd"
-                d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <svg
+  className="profile-icon"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  strokeWidth="1.8"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+  />
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M4.5 19.125a8.25 8.25 0 0115 0"
+  />
+</svg>
           </button>
           <div className={`profile-dropdown ${profileOpen ? "open" : ""}`}>
             {user ? (
@@ -149,11 +184,7 @@ export default function Header({
                   <strong title={user.email}>{displayName}</strong>
                   <small>{user.email}</small>
                 </div>
-                <div className="profile-actions-group">
-                  <button className="auth-button" type="button" onClick={onThemeToggle}>
-                    {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-                  </button>
-                </div>
+                
                 <button className="auth-button" type="button" onClick={onLogout}>
                   Logout
                 </button>

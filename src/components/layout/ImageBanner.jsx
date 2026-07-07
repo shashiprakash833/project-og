@@ -7,6 +7,13 @@ export default function ImageBanner({ onNavigate }) {
         <img src="/images/brand/og-banner.png" alt="OG Street Wear Banner" />
         <div className="image-banner-overlay">
           <button className="btn primary" onClick={() => onNavigate('collections')}>Explore Collections</button>
+
+         <button
+  className="explore-collection-btn"
+  onClick={() => onNavigate("collections")}
+>
+  Explore Collections
+</button>
         </div>
       </div>
     </section>

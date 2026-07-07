@@ -1543,10 +1543,13 @@ button {
   padding: 1.25rem;
   color: #fff;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5));
+  
 }
 
 .gender-copy h3 { font-size: clamp(1.6rem, 2.6vw, 2.4rem); margin: 0; text-transform: uppercase; }
 .gender-copy p { margin: 0.4rem 0 0; color: rgba(255,255,255,0.9); }
+
+
 
 .filters {
   display: flex;
@@ -3309,3 +3312,360 @@ button {
   }
 }
 
+
+
+
+
+
+
+
+
+
+/* ===== Modal Overlay ===== */
+.product-modal .modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+}
+
+/* ===== Modal Content ===== */
+.product-modal .modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transform: translate(-50%, -50%) scale(0.95);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  z-index: 1000;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close Button */
+.product-modal .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* ===== Modal Body Layout ===== */
+.product-modal .modal-body {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 24px;
+}
+
+.product-modal .modal-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-modal .modal-left img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.product-modal .modal-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== Text Styling ===== */
+.product-modal h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.product-modal .price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #e63946;
+}
+
+.product-modal .description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* ===== Sizes ===== */
+.product-modal .sizes p {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.product-modal .size-options {
+  display: flex;
+  gap: 10px;
+}
+
+.product-modal .size-options button {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.product-modal .size-options button:hover {
+  background: #eee;
+}
+
+.product-modal .size-options button.active {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+/* ===== Actions ===== */
+.product-modal .modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.product-modal .wishlist-btn,
+.product-modal .cart-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.product-modal .wishlist-btn {
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+}
+
+.product-modal .wishlist-btn:hover {
+  background: #ddd;
+}
+
+.product-modal .cart-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.product-modal .cart-btn:hover {
+  background: #333;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .product-modal .modal-body {
+    flex-direction: column;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.products-section {
+  padding: 60px 40px;
+  background: #f9f9f9;
+}
+
+/* TITLE */
+.section-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-title h2 {
+  font-size: 36px;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filters button {
+  padding: 10px 16px;
+  border: none;
+  background: #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.filters .active {
+  background: black;
+  color: white;
+}
+
+/* GRID */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* CARD */
+.product-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* INFO */
+.product-info {
+  padding: 15px;
+}
+
+.product-info h3 {
+  margin-bottom: 5px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* VIEW BUTTON */
+.view-btn {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 20px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+}
+
+/* MODAL */
+.product-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.product-modal {
+  background: white;
+  width: 90%;
+  max-width: 900px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  position: relative;
+}
+
+/* IMAGE */
+.modal-image-wrap img {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* CONTENT */
+.modal-content h3 {
+  font-size: 26px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ACTIONS */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+}
+
+/* CLOSE */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-modal {
+    grid-template-columns: 1fr;
+  }
+}

@@ -470,16 +470,20 @@ export default function RoutePage({
 
           <section className="route-section">
             {(() => {
-              const categoryProducts = products.filter(
-                (product) =>
-                  product.gender === routeParams.gender &&
-                  product.type === routeParams.key,
-              );
+              console.log(products);
+              console.log(routeParams);
+              const categoryProducts = products.filter((product) => {
+                return (
+                  product.gender.toLowerCase() ===
+                    routeParams.gender.toLowerCase() &&
+                  product.type.toLowerCase() === routeParams.key.toLowerCase()
+                );
+              });
 
               if (!categoryProducts.length) {
                 return (
                   <div className="empty-state">
-                    <h3>No products in {routeParams.title} yet.</h3>
+                    <h3>No {routeParams.title} products found.</h3>
                     <p>New pieces for this category are dropping soon.</p>
                     <button
                       onClick={() =>
