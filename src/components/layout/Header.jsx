@@ -142,16 +142,19 @@ export default function Header({
           aria-label={`View cart (${cartCount} items)`}
         >
           <svg
-xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-strokeWidth="2">
-
-<path d="M6 8h12l-1 12H7L6 8z"/>
-<path d="M9 8V6a3 3 0 016 0v2"/>
-
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <path d="M3 3h2l2.2 10h10.8l2-7H8" />
+  <circle cx="10" cy="20" r="1.5" />
+  <circle cx="18" cy="20" r="1.5" />
 </svg>
+
           
           {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
         </button>
