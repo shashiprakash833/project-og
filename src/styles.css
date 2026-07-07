@@ -1543,10 +1543,13 @@ button {
   padding: 1.25rem;
   color: #fff;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5));
+  
 }
 
 .gender-copy h3 { font-size: clamp(1.6rem, 2.6vw, 2.4rem); margin: 0; text-transform: uppercase; }
 .gender-copy p { margin: 0.4rem 0 0; color: rgba(255,255,255,0.9); }
+
+
 
 .filters {
   display: flex;

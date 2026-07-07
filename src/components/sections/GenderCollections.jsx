@@ -53,7 +53,7 @@ export default function GenderCollections({ onNavigate, onToast }) {
           <div className="gender-copy">
             <h3>{tile.title}</h3>
             <p>{tile.copy}</p>
-            <span className="btn outline">Explore</span>
+            <button className="btn outline">Explore</button>
           </div>
         </button>
       ))}
