@@ -1,6 +1,7 @@
 import { useChat } from "../../hooks/useChat.js";
 import FloatingButton from "./FloatingButton.jsx";
 import ChatWindow from "./ChatWindow.jsx";
+import "./ChatBot.css";
 
 export default function ChatBot() {
   const {

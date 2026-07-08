@@ -1,3 +1,5 @@
+import "./PageHero.css";
+
 export default function PageHero({ eyebrow, title, copy, image, actionLabel, onAction }) {
   return (
     <section className={`page-hero${image ? " has-image" : ""}`}>

@@ -1,3 +1,5 @@
+import "./HeroSection.css";
+
 export default function HeroSection({ onNavigate }) {
   return (
     <section className="hero-section">

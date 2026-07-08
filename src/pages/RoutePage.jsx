@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./RoutePage.css";
 import {
   archiveCards,
   collections,

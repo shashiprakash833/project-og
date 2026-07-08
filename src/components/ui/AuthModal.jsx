@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./AuthModal.css";
 
 export default function AuthModal({ open, mode, onClose, onLogin, onRegister, onSwitchMode, error }) {
   const [email, setEmail] = useState("");

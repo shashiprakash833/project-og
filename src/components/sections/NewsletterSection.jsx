@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./NewsletterSection.css";
 
 export default function NewsletterSection({ onToast }) {
   const [email, setEmail] = useState("");

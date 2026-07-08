@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import "./SplashScreen.css";
 
 export default function SplashScreen({ duration = 3200, onFinish }) {
   useEffect(() => {

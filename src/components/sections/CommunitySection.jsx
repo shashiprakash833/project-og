@@ -1,4 +1,5 @@
 import React from "react";
+import "./CommunitySection.css";
 
 const galleryData = [
   { title: "Backprint", image: "/images/1st.jpg" },

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { navItems } from "../../data/storeData.js";
+import "./Header.css";
 
 export default function Header({
   page,
@@ -41,6 +42,17 @@ export default function Header({
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [profileOpen]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [menuOpen]);
 
   // Effect for animations
   useLayoutEffect(() => {
@@ -89,12 +101,18 @@ export default function Header({
       </button>
 
       <button
-        className="mobile-menu-btn"
+        className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen((current) => !current)}
         aria-label="Toggle navigation menu"
       >
-        {menuOpen ? "Close" : "Menu"}
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
       </button>
+
+      {menuOpen && (
+        <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
+      )}
 
       <nav className={menuOpen ? "nav open" : "nav"}>
         {navItems.map((item) => (
@@ -142,16 +160,19 @@ export default function Header({
           aria-label={`View cart (${cartCount} items)`}
         >
           <svg
-xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-strokeWidth="2">
-
-<path d="M6 8h12l-1 12H7L6 8z"/>
-<path d="M9 8V6a3 3 0 016 0v2"/>
-
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <path d="M3 3h2l2.2 10h10.8l2-7H8" />
+  <circle cx="10" cy="20" r="1.5" />
+  <circle cx="18" cy="20" r="1.5" />
 </svg>
+
           
           {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
         </button>

@@ -1,3 +1,5 @@
+import "./ProductCard.css";
+
 export default function ProductCard({ product, isWishlisted, onAddToCart, onWishlist }) {
   return (
     <article className="product-card">

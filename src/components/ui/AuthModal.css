@@ -1,0 +1,100 @@
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.auth-modal {
+  width: min(34rem, 100%);
+  background: #111;
+  border-radius: 1.4rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.32);
+  padding: 2rem;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.6rem;
+  color: var(--bone);
+}
+
+.auth-header h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.8rem, 2.7vw, 2.6rem);
+  color: var(--bone);
+}
+
+.auth-header p {
+  margin: 0 0 1.5rem;
+  color: rgba(244, 239, 230, 0.72);
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--bone);
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.9rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--bone);
+}
+
+.auth-form input::placeholder {
+  color: rgba(244, 239, 230, 0.55);
+}
+
+.auth-error {
+  color: #ff6b6b;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.auth-submit {
+  justify-self: stretch;
+  background: var(--red);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  font-weight: 900;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-submit:hover {
+  background: #e11e1e;
+}
+
+.auth-switch {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-switch button {
+  border: 0;
+  background: none;
+  color: var(--bone);
+  text-decoration: underline;
+  cursor: pointer;
+}

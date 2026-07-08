@@ -1,0 +1,139 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(165, 31, 28, 0.35), transparent 20rem),
+    var(--charcoal);
+  color: var(--bone);
+  overflow: hidden;
+}
+
+.splash-tear {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.splash-panel {
+  position: relative;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+
+.splash-panel::before,
+.splash-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 12rem);
+}
+
+.splash-panel.top {
+  animation: tearTop 1.2s ease forwards;
+}
+
+.splash-panel.bottom {
+  animation: tearBottom 1.2s ease forwards;
+}
+
+.splash-mark {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: showLogo 0.8s ease 0.8s forwards;
+}
+
+.splash-logo {
+  width: clamp(16rem, 32vw, 28rem);
+  max-width: 34rem;
+  filter: drop-shadow(0 1rem 2rem rgba(0, 0, 0, 0.35));
+  transform: scale(0.9);
+}
+
+@keyframes tearTop {
+  0% {
+    transform: translateY(0) skewX(0deg);
+  }
+  100% {
+    transform: translateY(-120%) skewX(-8deg);
+  }
+}
+
+@keyframes tearBottom {
+  0% {
+    transform: translateY(0) skewX(0deg);
+  }
+  100% {
+    transform: translateY(120%) skewX(8deg);
+  }
+}
+
+@keyframes showLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splashPop {
+  from {
+    opacity: 0;
+    transform: scale(0.86) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(-4deg);
+  }
+}
+
+@keyframes lineGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes splashExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 600px) {
+  .splash {
+    padding: 0 0.75rem;
+  }
+
+  .splash-mark {
+    padding: 0 0.75rem;
+  }
+
+  .splash-logo {
+    width: clamp(8rem, 55vw, 14rem);
+  }
+
+  .splash-panel::before,
+  .splash-panel::after {
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 8rem);
+  }
+}

@@ -1,0 +1,23 @@
+:root {
+  font-family: Inter, Arial, sans-serif;
+  --bone: #f4efe6;
+  --paper: #fffaf0;
+  --ink: #101010;
+  --charcoal: #1a1714;
+  --muted: #6d6258;
+  --red: #a51f1c;
+  --line: rgba(16, 16, 16, 0.16);
+  --panel: #ebe2d4;
+  --shadow: rgba(16, 16, 16, 0.18);
+}
+
+.app.dark {
+  --bone: #151412;
+  --paper: #1e1b18;
+  --ink: #f4efe6;
+  --charcoal: #101010;
+  --muted: #c7bdb2;
+  --line: rgba(244, 239, 230, 0.17);
+  --panel: #25211d;
+  --shadow: rgba(0, 0, 0, 0.5);
+}

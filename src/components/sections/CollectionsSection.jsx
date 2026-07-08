@@ -1,4 +1,5 @@
 import { collections } from "../../data/storeData.js";
+import "./CollectionsSection.css";
 
 export default function CollectionsSection({ onNavigate, onToast }) {
   return (

@@ -1,4 +1,5 @@
 import React from "react";
+import "./GenderCollections.css";
 
 export default function GenderCollections({ onNavigate, onToast }) {
   const tiles = [
@@ -53,7 +54,7 @@ export default function GenderCollections({ onNavigate, onToast }) {
           <div className="gender-copy">
             <h3>{tile.title}</h3>
             <p>{tile.copy}</p>
-            <button className="btn outline">Explore</button>
+            <span className="btn outline">Explore</span>
           </div>
         </button>
       ))}

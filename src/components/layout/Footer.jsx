@@ -1,6 +1,7 @@
 import { navItems } from "../../data/storeData.js";
 import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa";
 import footer_logo from "../../images/footer_logo.png";
+import "./Footer.css";
 
 export default function Footer({ onNavigate, onToast }) {
   return (

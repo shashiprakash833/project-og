@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import ProductCard from "../ui/ProductCard.jsx";
+import "./ProductsSection.css";
 
 const filters = ["all", "hoodies", "tees", "caps", "bottoms", "jackets"];
 

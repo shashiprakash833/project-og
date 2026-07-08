@@ -1,3 +1,5 @@
+import "./PromiseStrip.css";
+
 const promises = ["Premium Quality", "Limited Drops", "Worldwide Shipping", "100% Authentic"];
 
 export default function PromiseStrip() {

@@ -1,0 +1,150 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.modal-box {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  width: min(50rem, 90vw);
+  max-height: 90vh;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ink);
+  transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+  transform: rotate(90deg);
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+}
+
+.modal-image {
+  background: #151412;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modal-image img {
+  max-width: 100%;
+  max-height: 40vh;
+  object-fit: contain;
+}
+
+.modal-details {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-details h2 {
+  font-family: Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  margin: 0 0 1rem;
+}
+
+.modal-details p {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--red);
+  margin: 0 0 1.5rem;
+}
+
+.modal-details h4 {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.75rem;
+}
+
+.sizes {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sizes button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.sizes button.active, .sizes button:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.add-btn {
+  background: var(--red);
+  color: #fff;
+  padding: 1rem;
+  font-weight: 900;
+  border: none;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: background 0.2s ease;
+}
+
+.add-btn:hover {
+  background: #c21e1e;
+}
+
+@media (max-width: 768px) {
+  .modal-details {
+    padding: 1.5rem 1.2rem;
+  }
+}

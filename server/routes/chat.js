@@ -1,4 +1,5 @@
 import express from "express";
+import { GoogleGenAI } from "@google/genai";
 
 const router = express.Router();
 
@@ -57,6 +58,54 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Message is required." });
   }
 
+  // 1. Prefer Gemini API if GEMINI_API_KEY is available
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      const ai = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          }
+        }
+      });
+
+      const contents = [];
+      if (Array.isArray(history)) {
+        for (const item of history) {
+          if (item.role === "user" && typeof item.content === "string") {
+            contents.push({ role: "user", parts: [{ text: item.content }] });
+          } else if (item.role === "assistant" && typeof item.content === "string") {
+            contents.push({ role: "model", parts: [{ text: item.content }] });
+          }
+        }
+      }
+      contents.push({ role: "user", parts: [{ text: message }] });
+
+      const response = await ai.models.generateContent({
+        model: "gemini-3.5-flash",
+        contents: contents,
+        config: {
+          systemInstruction: systemPrompt,
+          temperature: 0.75,
+        }
+      });
+
+      const reply = response.text;
+
+      if (reply) {
+        return res.json({
+          reply: reply.trim(),
+          conversation_id: conversationId || `style-${Date.now()}`
+        });
+      }
+    } catch (geminiError) {
+      console.error("[AI Studio] Gemini Assistant error:", geminiError);
+      // Fall through to OpenAI or fallbackReply if Gemini fails
+    }
+  }
+
+  // 2. Fallback to OpenAI API if OPENAI_API_KEY is available
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {

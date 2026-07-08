@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ProductModal.css";
 
 export default function ProductModal({ product, onClose }) {
   const [size, setSize] = useState("");
