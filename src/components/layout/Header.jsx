@@ -95,7 +95,7 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
-    <header className={`header ${scrolled ? "scrolled" : ""}`}>
+    <header className={`header ${scrolled ? "scrolled" : ""} page-${page} ${theme === "light" ? "theme-light" : "theme-dark"}`}>
       <button className="brand" onClick={() => handleNavigate("home")} aria-label="Go home">
         <img className="brand-logo" src="/images/brand/og-logo.png" alt="The OG" />
       </button>
@@ -222,7 +222,7 @@ export default function Header({
                   Login
                 </button>
                 <button className="auth-button" type="button" onClick={() => onAuthOpen("signup")}>
-                  Sign Up
+                  Register
                 </button>
               </>
             )}

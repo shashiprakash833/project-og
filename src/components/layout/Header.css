@@ -34,11 +34,15 @@
     z-index: 110;
   }
 
+  .mobile-menu-btn.open {
+    color: var(--ink) !important;
+  }
+
   .hamburger-line {
     display: block;
     width: 100%;
     height: 2px;
-    background-color: #f4efe6;
+    background-color: currentColor;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -60,8 +64,8 @@
     right: 0;
     bottom: 0;
     width: min(20rem, 80vw);
-    background: #111;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--paper);
+    border-left: 1px solid var(--line);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -71,7 +75,7 @@
     z-index: 100;
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: -10px 0 30px var(--shadow);
   }
 
   .nav.open {
@@ -84,7 +88,7 @@
     letter-spacing: 0.1em;
     width: 100%;
     padding: 0.5rem 0;
-    color: #fff;
+    color: var(--ink) !important;
   }
 }
 
@@ -103,38 +107,67 @@
   border-bottom: 0;
   background: transparent;
   color: #f4efe6;
-  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, color 0.35s ease;
   backdrop-filter: none;
 }
 
+/* If the current page is wishlist (plain hero) and theme is light, when not scrolled, use dark ink text */
+.header.page-wishlist.theme-light:not(.scrolled) {
+  color: var(--ink);
+}
+
 .header.scrolled {
-  background: rgba(12, 12, 12, 0.92);
-  color: #f4efe6;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+  background: var(--paper);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 10px 30px var(--shadow);
   backdrop-filter: blur(10px);
 }
 
+/* Invert brand logo in light theme on plain heroes or when scrolled */
+.app:not(.dark) .header.scrolled .brand-logo,
+.app:not(.dark) .header.page-wishlist:not(.scrolled) .brand-logo {
+  filter: invert(1) drop-shadow(0 0.1rem 0.3rem rgba(0, 0, 0, 0.15));
+}
+
 .header:not(.scrolled) .nav button {
-  color: var(--red);
-  color: var(--ink);
+  color: inherit;
   font-weight: 900;
 }
 
 .header.scrolled .nav button {
-  color: inherit;
-  font-weight: 700;
-  color: var(--bone);
+  color: var(--ink);
   font-weight: 900;
 }
 
-.auth-button,
+.auth-button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bone);
+  color: var(--ink) !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.auth-button:hover {
+  background: var(--paper);
+  border-color: var(--muted);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
 .user-badge {
   padding: 0.7rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: inherit;
+  background: var(--bone);
+  color: var(--ink);
   font-weight: 700;
 }
 
@@ -147,7 +180,7 @@
 .profile-icon {
   width: 1.4rem;
   height: 1.4rem;
-  color: #f4efe6;
+  color: currentColor;
   transition: color 200ms ease;
 }
 
@@ -156,6 +189,16 @@
   height: 2.5rem;
   display: grid;
   place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.profile-icon-btn:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+  border-color: var(--muted);
 }
 
 .user-badge {
@@ -170,19 +213,6 @@
   position: relative;
 }
 
-.profile-icon-btn {
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  transition: background-color 200ms ease, border-color 200ms ease;
-}
-
-.profile-icon-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
 .profile-dropdown {
   position: absolute;
   top: calc(100% + 0.75rem);
@@ -191,16 +221,17 @@
   display: grid;
   gap: 0.5rem;
   padding: 0.75rem;
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--paper);
+  border: 1px solid var(--line);
   border-radius: 1rem;
-  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1rem 2.5rem var(--shadow);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-0.5rem) scale(0.98);
   transform-origin: top right;
   transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
   z-index: 10;
+  color: var(--ink);
 }
 
 .profile-dropdown.open {
@@ -213,13 +244,14 @@
   padding: 0.25rem;
   margin: 0;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--muted);
 }
 
 .profile-user-info {
   padding: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--line);
   margin-bottom: 0.25rem;
+  color: var(--ink);
 }
 
 .profile-user-info strong,
@@ -235,8 +267,8 @@
   gap: 0.5rem;
   padding: 0.75rem 0;
   margin: 0.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .brand {
@@ -371,9 +403,15 @@
 .header-actions button {
   min-height: 2.3rem;
   padding: 0 0.7rem;
-  border: 1px solid rgba(244, 239, 230, 0.28);
-  background: rgba(16, 16, 16, 0.18);
-  color: #f4efe6;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.header-actions button:hover {
+  background: rgba(128, 128, 128, 0.1);
+  border-color: var(--muted);
 }
 
 .header-actions button.nav-action {
@@ -391,7 +429,8 @@
   opacity: 0;
   visibility: hidden;
   transition: height 0.35s ease, opacity 0.35s ease, visibility 0.35s ease;
-  background: rgba(16, 16, 16, 0.95);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
 }
 
 .search-drop.open {
@@ -407,29 +446,29 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.8rem 1rem;
-  border: 1px solid rgba(244, 239, 230, 0.18);
-  background: rgba(244, 239, 230, 0.04);
+  border: 1px solid var(--line);
+  background: var(--bone);
 }
 
 .search-bar input {
   flex: 1;
   min-width: 0;
   padding: 0.9rem 1rem;
-  border: 1px solid rgba(244, 239, 230, 0.18);
-  background: rgba(16, 16, 16, 0.88);
-  color: #f4efe6;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .search-bar input::placeholder {
-  color: rgba(244, 239, 230, 0.6);
+  color: var(--muted);
 }
 
 .search-bar button {
   min-height: 2.8rem;
   padding: 0 1rem;
-  border: 1px solid rgba(244, 239, 230, 0.18);
-  background: rgba(244, 239, 230, 0.08);
-  color: #f4efe6;
+  border: 1px solid var(--line);
+  background: var(--bone);
+  color: var(--ink);
   font-weight: 900;
 }
 
