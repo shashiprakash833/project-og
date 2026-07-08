@@ -95,34 +95,18 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
-
-<header
-  className={`header ${scrolled ? "scrolled" : ""} page-${page} ${
-    theme === "light" ? "theme-light" : "theme-dark"
-  }`}
+    <header className={`header ${scrolled ? "scrolled" : ""}`}>
+     {/* Mobile Menu - Left */}
+<button
+  className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
+  onClick={() => setMenuOpen((current) => !current)}
+  aria-label="Toggle navigation menu"
 >
-  <button
-    className="brand"
-    onClick={() => handleNavigate("home")}
-    aria-label="Go home"
-  >
-    <img
-      className="brand-logo"
-      src="/images/brand/og-logo.png"
-      alt="The OG"
-    />
-  </button>
+  <span className="hamburger-line"></span>
+  <span className="hamburger-line"></span>
+  <span className="hamburger-line"></span>
+</button>
 
-  {/* Mobile Menu - Left */}
-  <button
-    className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-    onClick={() => setMenuOpen((current) => !current)}
-    aria-label="Toggle navigation menu"
-  >
-    <span className="hamburger-line"></span>
-    <span className="hamburger-line"></span>
-    <span className="hamburger-line"></span>
-  </button>
 {/* Logo - Center */}
 <button
   className="brand"
@@ -161,10 +145,7 @@ export default function Header({
 >
   {theme === "light" ? "🌙" : "☀️"}
 </button>
-        <button className="nav-action search-btn" onClick={handleSearchToggle}>
-    <span>🔎</span>
-    <span className="search-text">Search</span>
-</button>
+        
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
@@ -249,7 +230,7 @@ export default function Header({
                   Login
                 </button>
                 <button className="auth-button" type="button" onClick={() => onAuthOpen("signup")}>
-                  Register
+                  Sign Up
                 </button>
               </>
             )}
