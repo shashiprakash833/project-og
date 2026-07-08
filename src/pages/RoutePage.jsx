@@ -275,22 +275,63 @@ export default function RoutePage({
             </p>
           </section>
 
-          <section className="route-section">
-            <div className="product-grid">
-              {products
-                .filter((product) => product.gender === "men")
-                .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    isWishlisted={wishlist.some(
-                      (item) => item.id === product.id,
-                    )}
-                    onAddToCart={onAddToCart}
-                    onWishlist={onWishlist}
+          <section className="route-section collection-grid">
+            {menCollections.map((item) => {
+              const cartProduct = {
+                id: ` men-${item.id}`,
+                name: item.title,
+                price: item.price || 1499,
+                image: item.image,
+                type: item.type || "men",
+                color: item.color || "multi",
+                gender: "men",
+                tag: "OG",
+              };
+              const isWishlisted = wishlist.some(
+                (w) => w.id === cartProduct.id,
+              );
+
+              return (
+                <div key={item.id} className="collection-card highlight-cloth ">
+                  <div
+                    className="collection-card-bg"
+                    style={{ backgroundImage: `url(${item.image})` }}
+                    aria-hidden="true"
                   />
-                ))}
-            </div>
+                  <img
+                    className="collection-card-focus"
+                    src={item.image}
+                    alt={item.title}
+                  />
+
+                  <div className="collection-card-hover">
+                    <div className="product-details">
+                      <p>
+                        <strong>Price:</strong> ₹{cartProduct.price}
+                      </p>
+                      <p>
+                        <strong>Color:</strong> {cartProduct.color}
+                      </p>
+                      <div className="product-actions">
+                        <button
+                          className="hover-wishlist"
+                          onClick={() => onWishlist(cartProduct)}
+                        >
+                          {isWishlisted ? "★ Wishlisted" : "☆ Wishlist"}
+                        </button>
+
+                        <button onClick={() => onAddToCart(cartProduct)}>
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </div>
+              );
+            })}
           </section>
         </>
       )}
@@ -340,22 +381,63 @@ export default function RoutePage({
             </p>
           </section>
 
-          <section className="route-section">
-            <div className="product-grid">
-              {products
-                .filter((product) => product.gender === "women")
-                .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    isWishlisted={wishlist.some(
-                      (item) => item.id === product.id,
-                    )}
-                    onAddToCart={onAddToCart}
-                    onWishlist={onWishlist}
+          <section className="route-section collection-grid">
+            {womenCollections.map((item) => {
+              const cartProduct = {
+                id: `women-${item.id}`,
+                name: item.title,
+                price: item.price || 1499,
+                image: item.image,
+                type: item.type || "women",
+                color: item.color || "multi",
+                gender: "women",
+                tag: "OG",
+              };
+              const isWishlisted = wishlist.some(
+                (w) => w.id === cartProduct.id,
+              );
+
+              return (
+                <div key={item.id} className="collection-card highlight-cloth ">
+                  <div
+                    className="collection-card-bg"
+                    style={{ backgroundImage: `url(${item.image})` }}
+                    aria-hidden="true"
                   />
-                ))}
-            </div>
+                  <img
+                    className="collection-card-focus"
+                    src={item.image}
+                    alt={item.title}
+                  />
+
+                  <div className="collection-card-hover">
+                    <div className="product-details">
+                      <p>
+                        <strong>Price:</strong> ₹{cartProduct.price}
+                      </p>
+                      <p>
+                        <strong>Color:</strong> {cartProduct.color}
+                      </p>
+                      <div className="product-actions">
+                        <button
+                          className="hover-wishlist"
+                          onClick={() => onWishlist(cartProduct)}
+                        >
+                          {isWishlisted ? "★ Wishlisted" : "☆ Wishlist"}
+                        </button>
+
+                        <button onClick={() => onAddToCart(cartProduct)}>
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </div>
+              );
+            })}
           </section>
         </>
       )}
