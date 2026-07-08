@@ -53,22 +53,28 @@ export default function AuthModal({ open, mode, onClose, onLogin, onRegister, on
 
           {error && <p className="auth-error">{error}</p>}
 
-          <button className="btn primary auth-submit" type="submit">
-            {mode === "login" ? "Login" : "Sign Up"}
-          </button>
+          <div className="auth-actions-row">
+            {mode === "login" ? (
+              <>
+                <button className="btn primary auth-submit" type="submit">
+                  Login
+                </button>
+                <button className="btn outline auth-switch-btn" type="button" onClick={onSwitchMode}>
+                  Register
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="btn primary auth-submit" type="submit">
+                  Register
+                </button>
+                <button className="btn outline auth-switch-btn" type="button" onClick={onSwitchMode}>
+                  Login
+                </button>
+              </>
+            )}
+          </div>
         </form>
-
-        <div className="auth-switch">
-          {mode === "login" ? (
-            <p>
-              New here? <button type="button" onClick={onSwitchMode}>Create account</button>
-            </p>
-          ) : (
-            <p>
-              Already a member? <button type="button" onClick={onSwitchMode}>Login</button>
-            </p>
-          )}
-        </div>
       </div>
     </div>
   );
