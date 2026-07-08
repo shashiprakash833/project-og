@@ -96,19 +96,29 @@ export default function Header({
 
   return (
     <header className={`header ${scrolled ? "scrolled" : ""}`}>
-      <button className="brand" onClick={() => handleNavigate("home")} aria-label="Go home">
-        <img className="brand-logo" src="/images/brand/og-logo.png" alt="The OG" />
-      </button>
+     {/* Mobile Menu - Left */}
+<button
+  className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
+  onClick={() => setMenuOpen((current) => !current)}
+  aria-label="Toggle navigation menu"
+>
+  <span className="hamburger-line"></span>
+  <span className="hamburger-line"></span>
+  <span className="hamburger-line"></span>
+</button>
 
-      <button
-        className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen((current) => !current)}
-        aria-label="Toggle navigation menu"
-      >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-      </button>
+{/* Logo - Center */}
+<button
+  className="brand"
+  onClick={() => handleNavigate("home")}
+  aria-label="Go home"
+>
+  <img
+    className="brand-logo"
+    src="/images/brand/og-logo.png"
+    alt="The OG"
+  />
+</button>
 
       {menuOpen && (
         <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
@@ -135,9 +145,10 @@ export default function Header({
 >
   {theme === "light" ? "🌙" : "☀️"}
 </button>
-        <button className="nav-action" onClick={handleSearchToggle}>
-          🔎 Search
-        </button>
+        <button className="nav-action search-btn" onClick={handleSearchToggle}>
+    <span>🔎</span>
+    <span className="search-text">Search</span>
+</button>
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
