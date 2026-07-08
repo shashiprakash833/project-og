@@ -1,49 +1,46 @@
-import { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import "./ProductCard.css";
+
 export default function ProductCard({ product, isWishlisted, onAddToCart, onWishlist }) {
-  const [quantity, setQuantity] = useState(1);
-
-  const increaseQty = () => setQuantity((q) => q + 1);
-  const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
-
   return (
-    <article className="product-card-simple">
-      <button
-        className="wishlist-btn-simple"
-        onClick={() => onWishlist(product)}
-        aria-label={`Wishlist ${product.name}`}
-      >
-        {isWishlisted ? (
-          <FaHeart size={20} color="#e11e1e" />
-        ) : (
-          <FaRegHeart size={20} color="#fff" />
-        )}
+    <article className="product-card">
+      <button className="wishlist-btn" onClick={() => onWishlist(product)} aria-label={`Wishlist ${product.name}`}>
+        {isWishlisted ? "★" : "☆"}
       </button>
 
-      <div className="product-image-wrap">
+      <div className={`product-art ${product.color}`}>
         {product.image ? (
-          <img src={product.image} alt={product.name} loading="lazy" />
+          <> 
+            <div className="product-art-bg" style={{ backgroundImage: `url(${product.image})` }} aria-hidden="true" />
+            <img className="product-art-focus" src={product.image} alt={product.name} loading="lazy" />
+          </>
         ) : (
-          <div className="no-image">{product.tag}</div>
+          <span>{product.tag}</span>
         )}
+        {!product.image && <span>{product.tag}</span>}
       </div>
 
-      <div className="product-body">
+      <div className="product-hover">
+        <p className="product-tag">{product.tag}</p>
         <h3>{product.name}</h3>
-        <p className="price-line">Rs {product.price.toLocaleString("en-IN")}</p>
-        <p className="description-line">
-          {product.description || "Premium OG streetwear crafted for everyday confidence."}
-        </p>
-
-        <div className="quantity-row">
-          <button onClick={decreaseQty} aria-label="Decrease quantity">−</button>
-          <span className="qty-value">{quantity}</span>
-          <button onClick={increaseQty} aria-label="Increase quantity">+</button>
+        <p className="product-meta">{product.type} · {product.color}</p>
+        <p className="product-price">Rs {product.price.toLocaleString("en-IN")}</p>
+        <div className="product-actions">
+          <button className="hover-wishlist" onClick={() => onWishlist(product)}>
+            {isWishlisted ? "★ Wishlist" : "☆ Wishlist"}
+          </button>
+          <button onClick={() => onAddToCart(product)}>
+            Add to Cart
+          </button>
         </div>
+      </div>
 
-        <button className="add-to-cart-simple" onClick={() => onAddToCart(product, quantity)}>
-          Add to Cart
+      <div className="product-info">
+        <div>
+          <h3>{product.name}</h3>
+          <p>Rs {product.price.toLocaleString("en-IN")}</p>
+        </div>
+        <button onClick={() => onAddToCart(product)} aria-label={`Add ${product.name} to cart`}>
+          +
         </button>
       </div>
     </article>
