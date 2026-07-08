@@ -44,10 +44,20 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const addToCart = (product) => {
-    setCart((current) => [...current, product]);
-    setToast(`${product.name} added to cart.`);
-  };
+ const addToCart = (product, quantity = 1) => {
+  setCart((current) => {
+    const existing = current.find((item) => item.id === product.id);
+    if (existing) {
+      return current.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+    }
+    return [...current, { ...product, quantity }];
+  });
+  setToast(`${product.name} added to cart.`);
+};
 
   const toggleWishlist = (product) => {
     setWishlist((current) => {
@@ -202,13 +212,13 @@ export default function App() {
     setToast("Logged out successfully.");
   };
 
-  const requireAuth = (action) => (payload) => {
-    if (!user) {
-      openAuthModal("login");
-      return;
-    }
-    action(payload);
-  };
+ const requireAuth = (action) => (...args) => {
+  if (!user) {
+    openAuthModal("login");
+    return;
+  }
+  action(...args);
+};
 
   const protectedAddToCart = requireAuth(addToCart);
   const protectedToggleWishlist = requireAuth(toggleWishlist);
@@ -227,7 +237,7 @@ export default function App() {
           <>
             <Header
               page={page}
-              cartCount={cart.length}
+              cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
               wishlistCount={wishlist.length}
               theme={theme}
               user={user}
