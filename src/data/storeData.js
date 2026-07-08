@@ -1,8 +1,8 @@
 export const navItems = [
   { label: "Shop", page: "shop" },
   { label: "Collections", page: "collections" },
-  { label: "Drops", page: "drops" },
-  { label: "Archive", page: "archive" },
+  { label: "MEN", page: "collections-men" },
+  { label: "WOMEN", page: "collections-women" },
   { label: "About OG", page: "about" }
 ];
 export const products = [
