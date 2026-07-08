@@ -470,7 +470,7 @@ export default function RoutePage({
 
           <section className="route-section">
             {(() => {
-              console.log(products);
+         console.log(products);
               console.log(routeParams);
               const categoryProducts = products.filter((product) => {
                 return (

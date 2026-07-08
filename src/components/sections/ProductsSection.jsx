@@ -26,17 +26,7 @@ export default function ProductsSection({ products, wishlist, onAddToCart, onWis
         ))}
       </div>
 
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            isWishlisted={wishlist.some((item) => item.id === product.id)}
-            onAddToCart={onAddToCart}
-            onWishlist={onWishlist}
-          />
-        ))}
-      </div>
+      
 
       <button className="text-link" onClick={() => onNavigate("shop")}>View All Products</button>
     </section>
