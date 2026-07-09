@@ -6,13 +6,13 @@ export default function GenderCollections({ onNavigate, onToast }) {
     {
       key: "men",
       title: "Men",
-      image: "/images/collections/mens/men-hero@2x.jpg",
+      image: "/images/collections/mens/men-section.png",
       copy: "Signature fits and bold outerwear.",
     },
     {
       key: "women",
       title: "Women",
-      image: "/images/collections/womens/women-hero@2x.jpg",
+      image: "/images/collections/womens/women-section.png",
       copy: "Everyday essentials with attitude.",
     },
   ];
@@ -52,12 +52,22 @@ export default function GenderCollections({ onNavigate, onToast }) {
           />
 
           <div className="gender-copy">
-            <h3>{tile.title}</h3>
-            <p>{tile.copy}</p>
             <span className="btn outline">Explore</span>
           </div>
         </button>
       ))}
+
+      <section className="collection-banner-section">
+        <div className="collection-banner-grid">
+          <div className="collection-banner-card">
+            <img src="/images/banners/banner1.jpg" alt="The OG Banner 1" />
+          </div>
+
+          <div className="collection-banner-card">
+            <img src="/images/banners/banner2.jpg" alt="The OG Banner 2" />
+          </div>
+        </div>
+      </section>
     </section>
   );
 }

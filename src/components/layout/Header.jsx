@@ -11,7 +11,9 @@ export default function Header({
   onAuthOpen,
   onLogout,
   onNavigate,
-  onThemeToggle
+  onThemeToggle,
+  searchQuery = "",
+  onSearchChange,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -95,20 +97,38 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
-    <header className={`header ${scrolled ? "scrolled" : ""} page-${page} ${theme === "light" ? "theme-light" : "theme-dark"}`}>
-      <button className="brand" onClick={() => handleNavigate("home")} aria-label="Go home">
-        <img className="brand-logo" src="/images/brand/og-logo.png" alt="The OG" />
-      </button>
+    <header
+      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${
+        theme === "light" ? "theme-light" : "theme-dark"
+      }`}
+    >
+      {/* Mobile Left */}
+      <div className="mobile-left">
+        <button
+          className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen((current) => !current)}
+          aria-label="Toggle navigation menu"
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+      </div>
 
-      <button
-        className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen((current) => !current)}
-        aria-label="Toggle navigation menu"
-      >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-      </button>
+      {/* Logo */}
+      <div className="brand-wrapper">
+        <button
+          className="brand"
+          onClick={() => handleNavigate("home")}
+          aria-label="Go home"
+        >
+          <img
+            className="brand-logo"
+            src="/images/brand/og-logo.png"
+            alt="The OG"
+          />
+        </button>
+      </div>
 
       {menuOpen && (
         <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
@@ -127,76 +147,83 @@ export default function Header({
       </nav>
 
       <div className="header-actions">
-
         <button
-  className="nav-action theme-toggle-btn"
-  onClick={onThemeToggle}
-  aria-label="Toggle Theme"
->
-  {theme === "light" ? "🌙" : "☀️"}
-</button>
+          className="nav-action theme-toggle-btn"
+          onClick={onThemeToggle}
+          aria-label="Toggle Theme"
+        >
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
+
         <button className="nav-action" onClick={handleSearchToggle}>
           🔎 Search
         </button>
+
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
           aria-label={`View wishlist (${wishlistCount} items)`}
         >
           <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
->
-    <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 4a5.5 5.5 0 019.5 8C19 16.5 12 21 12 21z"/>
-</svg>
-          {wishlistCount > 0 && <span className="icon-count">{wishlistCount}</span>}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 4a5.5 5.5 0 019.5 8C19 16.5 12 21 12 21z" />
+          </svg>
+          {wishlistCount > 0 && (
+            <span className="icon-count">{wishlistCount}</span>
+          )}
         </button>
+
         <button
           className={`nav-action icon-action ${animateCart ? "animate-cart" : ""}`}
           onClick={() => handleNavigate("cart")}
           aria-label={`View cart (${cartCount} items)`}
         >
           <svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
->
-  <path d="M3 3h2l2.2 10h10.8l2-7H8" />
-  <circle cx="10" cy="20" r="1.5" />
-  <circle cx="18" cy="20" r="1.5" />
-</svg>
-
-          
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 3h2l2.2 10h10.8l2-7H8" />
+            <circle cx="10" cy="20" r="1.5" />
+            <circle cx="18" cy="20" r="1.5" />
+          </svg>
           {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
         </button>
+
         <div className="profile-container" ref={profileRef}>
-          <button className="profile-icon-btn" onClick={() => setProfileOpen(p => !p)} aria-label="Toggle profile menu">
+          <button
+            className="profile-icon-btn"
+            onClick={() => setProfileOpen((p) => !p)}
+            aria-label="Toggle profile menu"
+          >
             <svg
-  className="profile-icon"
-  xmlns="http://www.w3.org/2000/svg"
-  fill="none"
-  viewBox="0 0 24 24"
-  stroke="currentColor"
-  strokeWidth="1.8"
->
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-  />
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    d="M4.5 19.125a8.25 8.25 0 0115 0"
-  />
-</svg>
+              className="profile-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 19.125a8.25 8.25 0 0115 0"
+              />
+            </svg>
           </button>
           <div className={`profile-dropdown ${profileOpen ? "open" : ""}`}>
             {user ? (
@@ -205,7 +232,14 @@ export default function Header({
                   <strong title={user.email}>{displayName}</strong>
                   <small>{user.email}</small>
                 </div>
-                
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => handleNavigate("orders")}
+                  style={{ marginBottom: "0.5rem" }}
+                >
+                  My Orders
+                </button>
                 <button className="auth-button" type="button" onClick={onLogout}>
                   Logout
                 </button>
@@ -214,14 +248,26 @@ export default function Header({
               <>
                 <p className="profile-dropdown-header">Welcome to OG</p>
                 <div className="profile-actions-group">
-                  <button className="auth-button" type="button" onClick={onThemeToggle}>
-                    {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                  <button
+                    className="auth-button"
+                    type="button"
+                    onClick={onThemeToggle}
+                  >
+                    {theme === "light" ? "Dark Mode" : "Light Mode"}
                   </button>
                 </div>
-                <button className="auth-button" type="button" onClick={() => onAuthOpen("login")}>
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => onAuthOpen("login")}
+                >
                   Login
                 </button>
-                <button className="auth-button" type="button" onClick={() => onAuthOpen("signup")}>
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => onAuthOpen("signup")}
+                >
                   Register
                 </button>
               </>
@@ -229,6 +275,7 @@ export default function Header({
           </div>
         </div>
       </div>
+
       <div className={searchOpen ? "search-drop open" : "search-drop"}>
         <div className="search-bar">
           <input
