@@ -193,6 +193,7 @@ export default function Header({
   {theme === "light" ? "🌙" : "☀️"}
 </button>
 
+<<<<<<< HEAD
         <button
           className="nav-action icon-action header-search-btn"
           onClick={handleSearchToggle}
@@ -211,6 +212,28 @@ export default function Header({
             <line x1="15.5" y1="15.5" x2="21" y2="21" />
           </svg>
         </button>
+=======
+       
+
+<button
+  className="nav-action icon-action desktop-search-btn"
+  onClick={handleSearchToggle}
+  aria-label="Search"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="10.5" cy="10.5" r="6.5" />
+    <line x1="15.5" y1="15.5" x2="21" y2="21" />
+  </svg>
+</button>
+>>>>>>> cae451a43de68b27eb1e5290d0a1b3222a27a0b0
         
 
         <button

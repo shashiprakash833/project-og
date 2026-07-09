@@ -165,10 +165,9 @@
   backdrop-filter: blur(10px);
 }
 
-/* Invert brand logo in light theme on plain heroes or when scrolled */
 .app:not(.dark) .header.scrolled .brand-logo,
 .app:not(.dark) .header.page-wishlist:not(.scrolled) .brand-logo {
-  filter: invert(1) drop-shadow(0 0.1rem 0.3rem rgba(0, 0, 0, 0.15));
+  filter: none;
 }
 
 .header:not(.scrolled) .nav button {

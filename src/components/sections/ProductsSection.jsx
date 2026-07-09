@@ -2,8 +2,14 @@ import { useMemo, useState } from "react";
 import ProductCard from "../ui/ProductCard.jsx";
 import "./ProductsSection.css";
 
-const filters = ["all", "hoodies", "tees", "caps", "bottoms", "jackets"];
-
+const filters = [
+  "all",
+  "oversized",
+  "tees",
+  "tanks",
+  "bottoms",
+  "accessories"
+];
 export default function ProductsSection({ products, wishlist, onAddToCart, onWishlist, onNavigate }) {
   const [filter, setFilter] = useState("all");
   const filteredProducts = useMemo(
