@@ -3,37 +3,92 @@
   grid-template-columns: repeat(4, 1fr);
   background: var(--ink);
   color: var(--paper);
+  position: relative;
 }
 
 .promise-strip div {
-  min-height: 4.8rem;
+  min-height: 5.6rem;
   display: grid;
   align-content: center;
-  gap: 0.2rem;
-  padding: 1rem 2rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.16);
+  gap: 0.35rem;
+  padding: 1.4rem 2rem;
   text-transform: uppercase;
+  position: relative;
+  transition: background 0.35s ease;
+}
+
+/* soft gradient divider instead of a flat line */
+.promise-strip div::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  right: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent
+  );
+}
+
+.promise-strip div:last-child::after {
+  display: none;
+}
+
+.promise-strip div:hover {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .promise-strip b {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
 .promise-strip span {
-  font-size: 0.62rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
   color: #cfc6ba;
+  opacity: 0.85;
 }
 
 @media (max-width: 1024px) {
   .promise-strip {
     grid-template-columns: repeat(2, 1fr);
   }
-  .promise-strip div {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+
+  .promise-strip div::after {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: 1px;
+    height: auto;
   }
-  .promise-strip div:nth-child(odd) {
-    border-right: 1px solid rgba(255, 255, 255, 0.16);
+
+  .promise-strip div:nth-child(even)::after {
+    display: none;
+  }
+
+  .promise-strip div::before {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.16) 50%,
+      transparent
+    );
+  }
+
+  .promise-strip div:nth-last-child(-n + 2)::before {
+    display: none;
   }
 }
 
@@ -41,12 +96,22 @@
   .promise-strip {
     grid-template-columns: 1fr;
   }
+
   .promise-strip div {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     text-align: center;
+    padding: 1.2rem 1.5rem;
   }
-  .promise-strip div:last-child {
-    border-bottom: none;
+
+  .promise-strip div::after {
+    display: none;
+  }
+
+  .promise-strip div::before {
+    left: 20%;
+    right: 20%;
+  }
+
+  .promise-strip div:last-child::before {
+    display: none;
   }
 }

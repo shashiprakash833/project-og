@@ -550,27 +550,6 @@
   .header-actions {
     gap: 0.4rem;
   }
-
-  .search-drop.open {
-    height: auto;
-    padding: 0.5rem 0.75rem 1rem;
-  }
-
-  .search-bar {
-    padding: 0.5rem;
-    gap: 0.5rem;
-  }
-
-  .search-bar input {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.85rem;
-  }
-
-  .search-bar button {
-    min-height: 2.2rem;
-    padding: 0 0.75rem;
-    font-size: 0.8rem;
-  }
 }
 
 
@@ -1356,10 +1335,28 @@
     box-shadow:none !important;
 }
 
-/* Search Button */
-.header-search-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Desktop */
+.desktop-search-btn{
+    display:flex;
 }
+
+/* Mobile */
+.mobile-search-btn{
+    display:none;
+}
+
+@media (max-width:768px){
+
+.desktop-search-btn{
+    display:none;
+}
+
+.mobile-search-btn{
+    display:flex;
+}
+
+}
+
+
+
 

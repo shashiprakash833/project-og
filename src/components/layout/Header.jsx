@@ -11,40 +11,16 @@ export default function Header({
   onAuthOpen,
   onLogout,
   onNavigate,
-  onThemeToggle,
-  searchQuery = "",
-  onSearchChange
+  onThemeToggle
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState(searchQuery);
+  const [searchValue, setSearchValue] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
   const [animateWishlist, setAnimateWishlist] = useState(false);
   const [animateCart, setAnimateCart] = useState(false);
-
-  useEffect(() => {
-    setSearchValue(searchQuery);
-  }, [searchQuery]);
-
-  const handleSearchChange = (value) => {
-    setSearchValue(value);
-    onSearchChange?.(value);
-    if (value.trim() !== "") {
-      if (page !== "search") {
-        onNavigate("search");
-      }
-    }
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      event.target.blur();
-      setSearchOpen(false);
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -137,6 +113,25 @@ export default function Header({
     <span className="hamburger-line"></span>
   </button>
 
+  <button
+    className="nav-action icon-action mobile-search-btn"
+    onClick={handleSearchToggle}
+    aria-label="Search"
+  >
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  strokeWidth="1.8"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <circle cx="10.5" cy="10.5" r="6.5"/>
+  <line x1="15.5" y1="15.5" x2="21" y2="21"/>
+</svg>
+  </button>
+
 </div>
 {/* Logo */}
 <div className="brand-wrapper">
@@ -193,26 +188,6 @@ export default function Header({
   {theme === "light" ? "🌙" : "☀️"}
 </button>
 
-<<<<<<< HEAD
-        <button
-          className="nav-action icon-action header-search-btn"
-          onClick={handleSearchToggle}
-          aria-label="Search"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="10.5" cy="10.5" r="6.5" />
-            <line x1="15.5" y1="15.5" x2="21" y2="21" />
-          </svg>
-        </button>
-=======
        
 
 <button
@@ -233,7 +208,6 @@ export default function Header({
     <line x1="15.5" y1="15.5" x2="21" y2="21" />
   </svg>
 </button>
->>>>>>> cae451a43de68b27eb1e5290d0a1b3222a27a0b0
         
 
         <button
@@ -303,14 +277,7 @@ export default function Header({
                   <strong title={user.email}>{displayName}</strong>
                   <small>{user.email}</small>
                 </div>
-                <button 
-                  className="auth-button" 
-                  type="button" 
-                  onClick={() => handleNavigate("orders")}
-                  style={{ marginBottom: "0.5rem" }}
-                >
-                  My Orders
-                </button>
+                
                 <button className="auth-button" type="button" onClick={onLogout}>
                   Logout
                 </button>
@@ -340,12 +307,14 @@ export default function Header({
             type="search"
             placeholder="Search OG products..."
             value={searchValue}
-            onChange={(event) => handleSearchChange(event.target.value)}
-            onKeyDown={handleKeyDown}
+            onChange={(event) => setSearchValue(event.target.value)}
           />
-          <button onClick={() => handleSearchChange("")}>Clear</button>
+          <button onClick={() => setSearchValue("")}>Clear</button>
         </div>
       </div>
     </header>
   );
 }
+
+
+
