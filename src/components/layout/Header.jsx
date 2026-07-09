@@ -11,16 +11,40 @@ export default function Header({
   onAuthOpen,
   onLogout,
   onNavigate,
-  onThemeToggle
+  onThemeToggle,
+  searchQuery = "",
+  onSearchChange
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(searchQuery);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
   const [animateWishlist, setAnimateWishlist] = useState(false);
   const [animateCart, setAnimateCart] = useState(false);
+
+  useEffect(() => {
+    setSearchValue(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearchChange = (value) => {
+    setSearchValue(value);
+    onSearchChange?.(value);
+    if (value.trim() !== "") {
+      if (page !== "search") {
+        onNavigate("search");
+      }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.target.blur();
+      setSearchOpen(false);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -95,49 +119,72 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
+
+    
+    
     <header className={`header ${scrolled ? "scrolled" : ""}`}>
      {/* Mobile Menu - Left */}
-<button
-  className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-  onClick={() => setMenuOpen((current) => !current)}
-  aria-label="Toggle navigation menu"
->
-  <span className="hamburger-line"></span>
-  <span className="hamburger-line"></span>
-  <span className="hamburger-line"></span>
-</button>
+    {/* Mobile Left */}
+   <div className="mobile-left">
 
-{/* Logo - Center */}
-<button
-  className="brand"
-  onClick={() => handleNavigate("home")}
-  aria-label="Go home"
->
-  <img
+  <button
+    className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
+    onClick={() => setMenuOpen((current) => !current)}
+    aria-label="Toggle navigation menu"
+  >
+    <span className="hamburger-line"></span>
+    <span className="hamburger-line"></span>
+    <span className="hamburger-line"></span>
+  </button>
+
+</div>
+{/* Logo */}
+<div className="brand-wrapper">
+    <button className="brand"
+    onClick={() => handleNavigate("home")}
+   aria-label="Go home"
+    >
+    <img
     className="brand-logo"
     src="/images/brand/og-logo.png"
     alt="The OG"
   />
 </button>
+</div>
+
+
 
       {menuOpen && (
         <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
       )}
 
       <nav className={menuOpen ? "nav open" : "nav"}>
-        {navItems.map((item) => (
-          <button
-            key={item.page}
-            className={`nav-link ${page === item.page ? "active" : ""}`}
-            onClick={() => handleNavigate(item.page)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
 
-      <div className="header-actions">
+  
 
+  {navItems.map((item) => (
+    <button
+      key={item.page}
+      className={`nav-link ${page === item.page ? "active" : ""}`}
+      onClick={() => handleNavigate(item.page)}
+    >
+      {item.label}
+    </button>
+  ))}
+
+</nav>
+
+{menuOpen && (
+  <button
+    className="menu-close-btn"
+    onClick={() => setMenuOpen(false)}
+    aria-label="Close Menu"
+  >
+    ✕
+  </button>
+)}
+
+     <div className="header-actions">
         <button
   className="nav-action theme-toggle-btn"
   onClick={onThemeToggle}
@@ -145,7 +192,27 @@ export default function Header({
 >
   {theme === "light" ? "🌙" : "☀️"}
 </button>
+
+        <button
+          className="nav-action icon-action header-search-btn"
+          onClick={handleSearchToggle}
+          aria-label="Search"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <line x1="15.5" y1="15.5" x2="21" y2="21" />
+          </svg>
+        </button>
         
+
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
@@ -213,7 +280,14 @@ export default function Header({
                   <strong title={user.email}>{displayName}</strong>
                   <small>{user.email}</small>
                 </div>
-                <button className="auth-button" type="button" onClick={() => handleNavigate("orders")}>My Orders</button>
+                <button 
+                  className="auth-button" 
+                  type="button" 
+                  onClick={() => handleNavigate("orders")}
+                  style={{ marginBottom: "0.5rem" }}
+                >
+                  My Orders
+                </button>
                 <button className="auth-button" type="button" onClick={onLogout}>
                   Logout
                 </button>
@@ -230,7 +304,7 @@ export default function Header({
                   Login
                 </button>
                 <button className="auth-button" type="button" onClick={() => onAuthOpen("signup")}>
-                  Sign Up
+                  Register
                 </button>
               </>
             )}
@@ -243,9 +317,10 @@ export default function Header({
             type="search"
             placeholder="Search OG products..."
             value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
+            onChange={(event) => handleSearchChange(event.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button onClick={() => setSearchValue("")}>Clear</button>
+          <button onClick={() => handleSearchChange("")}>Clear</button>
         </div>
       </div>
     </header>

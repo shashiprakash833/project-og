@@ -21,17 +21,6 @@ function authenticate(req, res, next) {
 router.post("/", authenticate, async (req, res) => {
   try {
     const { items, totalAmount, paymentMethod, shippingPhone, shippingAddress } = req.body;
-
-    if (!Array.isArray(items) || !items.length) {
-      return res.status(400).json({ error: "No order items provided." });
-    }
-    if (!shippingAddress || !shippingAddress.fullName || !shippingAddress.street || !shippingAddress.city || !shippingAddress.state || !shippingAddress.zip || !shippingPhone) {
-      return res.status(400).json({ error: "Shipping information is incomplete." });
-    }
-    if (!paymentMethod) {
-      return res.status(400).json({ error: "Payment method is required." });
-    }
-
     const db = getDb();
     const [orderResult] = await db.query(
       "INSERT INTO orders (user_id, total_amount, payment_method, shipping_phone, shipping_address, status) VALUES (?, ?, ?, ?, ?, 'pending')",
@@ -49,51 +38,52 @@ router.post("/", authenticate, async (req, res) => {
 
     res.json({ orderId, message: "Order placed" });
   } catch (error) {
-    console.error("Order creation error:", error);
-    const message = process.env.NODE_ENV === "production"
-      ? "Order creation failed"
-      : error?.message || "Order creation failed";
-    res.status(500).json({ error: message });
+    console.error(error);
+    res.status(500).json({ error: "Order creation failed" });
   }
 });
 
 router.get("/", authenticate, async (req, res) => {
   try {
     const db = getDb();
-    const [orders] = await db.query(
-      "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC",
-      [req.userId],
-    );
-
-    if (!orders.length) {
-      return res.json({ orders: [] });
-    }
-
-    const orderIds = orders.map((order) => order.id);
-    const [items] = await db.query(
-      `SELECT * FROM order_items WHERE order_id IN (${orderIds.map(() => '?').join(',')})`,
-      orderIds,
-    );
-
-    const itemsByOrder = items.reduce((acc, item) => {
-      const orderId = item.order_id;
-      if (!acc[orderId]) acc[orderId] = [];
-      acc[orderId].push(item);
-      return acc;
-    }, {});
-
-    const ordersWithItems = orders.map((order) => ({
-      ...order,
-      items: itemsByOrder[order.id] || [],
-      shipping_address: order.shipping_address
-        ? JSON.parse(order.shipping_address)
-        : null,
-    }));
-
-    res.json({ orders: ordersWithItems });
+    const [orders] = await db.query("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", [req.userId]);
+    res.json({ orders });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not fetch orders" });
+  }
+});
+
+router.post("/:id/cancel", authenticate, async (req, res) => {
+  try {
+    const db = getDb();
+    const orderId = req.params.id;
+
+    // First verify that this order belongs to the user and is in 'pending' or 'processing' status
+    const [orders] = await db.query(
+      "SELECT * FROM orders WHERE id = ? AND user_id = ?",
+      [orderId, req.userId]
+    );
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    const order = orders[0];
+    const status = (order.status || "pending").toLowerCase();
+    if (status !== "pending" && status !== "processing") {
+      return res.status(400).json({ error: "Only processing or pending orders can be cancelled." });
+    }
+
+    await db.query(
+      "UPDATE orders SET status = 'cancelled' WHERE id = ?",
+      [orderId]
+    );
+
+    res.json({ message: "Order cancelled successfully", orderId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to cancel order" });
   }
 });
 

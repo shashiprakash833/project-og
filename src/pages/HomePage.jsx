@@ -13,7 +13,6 @@ export default function HomePage({ products, wishlist, onNavigate, onAddToCart, 
     <>
       <HeroSection onNavigate={onNavigate} />
       <PromiseStrip />
-      <GenderCollections onNavigate={onNavigate} onToast={onToast} />
       <ImageBanner onNavigate={onNavigate} />
       <ProductsSection
         products={products}

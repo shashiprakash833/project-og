@@ -16,31 +16,6 @@ input {
   font: inherit;
 }
 
-/* Global input appearance to ensure readability in both themes */
-input,
-textarea,
-select {
-  background: var(--input-bg);
-  color: var(--input-color);
-  border: 1px solid var(--input-border);
-  border-radius: 0.45rem;
-  padding: 0.5rem 0.65rem;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--input-placeholder);
-  opacity: 1;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--red);
-  box-shadow: 0 6px 20px var(--input-focus-shadow);
-}
-
 button {
   cursor: pointer;
 }

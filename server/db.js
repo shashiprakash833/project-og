@@ -1,13 +1,48 @@
 import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
+import fs from "fs/promises";
+import path from "path";
+
+const DB_FILE_PATH = path.join(process.cwd(), "server", "db.json");
 
 let pool;
 let isMock = false;
 
-// In-memory tables for graceful fallback
+// Tables loaded from/saved to local file
 const usersTable = [];
 const ordersTable = [];
 const orderItemsTable = [];
+
+async function saveDbToFile() {
+  try {
+    const json = {
+      users: usersTable,
+      orders: ordersTable,
+      orderItems: orderItemsTable
+    };
+    await fs.writeFile(DB_FILE_PATH, JSON.stringify(json, null, 2), "utf8");
+  } catch (err) {
+    console.error("Failed to save persistent DB to file:", err);
+  }
+}
+
+async function loadDbFromFile() {
+  try {
+    const data = await fs.readFile(DB_FILE_PATH, "utf8");
+    const json = JSON.parse(data);
+    usersTable.length = 0;
+    usersTable.push(...(json.users || []));
+    ordersTable.length = 0;
+    ordersTable.push(...(json.orders || []));
+    orderItemsTable.length = 0;
+    orderItemsTable.push(...(json.orderItems || []));
+    console.log("[AI Studio] Persistent DB loaded from file:", DB_FILE_PATH);
+  } catch (err) {
+    console.log("[AI Studio] No existing persistent DB file found, starting fresh.");
+    await initializeMockData();
+    await saveDbToFile();
+  }
+}
 
 async function initializeMockData() {
   const hash = await bcrypt.hash("password", 10);
@@ -43,6 +78,7 @@ const mockPool = {
         created_at: new Date()
       };
       usersTable.push(newUser);
+      await saveDbToFile();
       return [{ insertId: newUser.id }];
     }
 
@@ -74,6 +110,7 @@ const mockPool = {
         created_at: new Date()
       };
       ordersTable.push(newOrder);
+      await saveDbToFile();
       return [{ insertId: newOrder.id }];
     }
 
@@ -88,6 +125,7 @@ const mockPool = {
         price: Number(price)
       };
       orderItemsTable.push(newItem);
+      await saveDbToFile();
       return [{ insertId: newItem.id }];
     }
 
@@ -96,8 +134,26 @@ const mockPool = {
       const user_id = Number(params[0]);
       const match = ordersTable
         .filter(o => o.user_id === user_id)
-        .sort((a, b) => b.created_at - a.created_at);
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       return [match];
+    }
+
+    // SELECT * FROM orders WHERE id = ? AND user_id = ?
+    if (normalizedSql.includes("SELECT * FROM orders WHERE id = ? AND user_id = ?")) {
+      const [orderId, userId] = params;
+      const match = ordersTable.filter(o => o.id === Number(orderId) && o.user_id === Number(userId));
+      return [match];
+    }
+
+    // UPDATE orders SET status = 'cancelled' WHERE id = ?
+    if (normalizedSql.includes("UPDATE orders SET status = 'cancelled' WHERE id = ?")) {
+      const orderId = Number(params[0]);
+      const match = ordersTable.find(o => o.id === orderId);
+      if (match) {
+        match.status = 'cancelled';
+        await saveDbToFile();
+      }
+      return [{ affectedRows: match ? 1 : 0 }];
     }
 
     // 8. Checking columns schema for migration
@@ -112,9 +168,13 @@ const mockPool = {
 
 export async function initDb() {
   try {
+    if (!process.env.DB_HOST || process.env.DB_HOST === "localhost") {
+      throw new Error("No remote DB configured, using local file-backed storage");
+    }
+
     // Attempt real connection pool
     pool = mysql.createPool({
-      host: process.env.DB_HOST || "localhost",
+      host: process.env.DB_HOST,
       port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
       user: process.env.DB_USER || "root",
       password: process.env.DB_PASSWORD || "",
@@ -122,7 +182,7 @@ export async function initDb() {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      connectTimeout: 2000, // Fail fast in 2s
+      connectTimeout: 2000,
     });
 
     // Test query to see if database is reachable
@@ -186,10 +246,10 @@ export async function initDb() {
 
     console.log("MySQL database initialized successfully");
   } catch (error) {
-    console.warn("[AI Studio] Real database connection failed. Switching to transparent in-memory mock storage.");
+    console.log("[AI Studio] Initializing local persistent file-backed database.");
     pool = mockPool;
     isMock = true;
-    await initializeMockData();
+    await loadDbFromFile();
   }
 }
 

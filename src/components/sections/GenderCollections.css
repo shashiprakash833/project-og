@@ -1,68 +1,31 @@
-/* Gender Collections (Men / Women) */
 .gender-collections {
   display: grid;
-  grid-template-columns: repeat(2, minmax(18rem, 1fr));
-  gap: 1.5rem;
-  align-items: stretch;
-  margin: 2.4rem 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 1.6rem;
+  padding: 0 24px;
 }
 
 .gender-card {
   position: relative;
+  height: 350px; 
+  width: 100%;   
+  border-radius: 12px;
   overflow: hidden;
-  border-radius: 1.2rem;
-  min-height: 16rem;
-  border: 1px solid var(--line);
-  display: grid;
-  align-items: end;
-  background: rgba(16,16,16,0.06);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: #111;
 }
 
-.gender-card img {
+.gender-card-bg {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.45s ease;
-}
-
-.gender-card:hover img,
-.gender-card:focus img {
-  transform: scale(1.03);
-}
-
-.gender-copy {
-  position: relative;
-  z-index: 2;
-  padding: 1.25rem;
-  color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5));
-}
-
-.gender-copy h3 {
-  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.gender-copy p {
-  margin: 0.4rem 0 0;
-  color: rgba(255,255,255,0.9);
-}
-
-.gender-card .gender-card-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   background-size: cover;
   background-position: center;
-  filter: blur(6px) saturate(0.6) brightness(0.55);
-  transform: scale(1.06);
-  z-index: 0;
-  border-radius: 1.8rem;
+  filter: blur(6px) brightness(0.6);
+  transform: scale(1.1);
 }
 
 .gender-card-focus {
@@ -71,21 +34,64 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
   z-index: 1;
-  filter: contrast(1.06) saturate(1.1) brightness(1.02);
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition: transform 0.35s ease;
 }
 
-.highlight-cloth:hover .gender-card-focus {
-  transform: scale(1.02);
-  filter: contrast(1.08) saturate(1.16) brightness(1.04);
+.gender-card:hover .gender-card-focus {
+  transform: scale(1.03);
+}
+
+.gender-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;    
+  justify-content: center;
+  text-align: center;     
+
+  padding: 0 20px;
+  color: #fff;
+}
+
+.gender-copy h3 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.gender-copy p {
+  margin: 10px 0 20px;
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  max-width: 320px;
+}
+
+.gender-copy .btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  color: #fff;
+  background: transparent;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.gender-copy .btn:hover {
+  background: #fff;
+  color: #111;
 }
 
 @media (max-width: 640px) {
   .gender-collections {
     grid-template-columns: 1fr;
-    margin: 1.5rem 0;
-    gap: 1rem;
   }
 }

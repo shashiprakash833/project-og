@@ -1,0 +1,16 @@
+.featured-products {
+  margin: 70px 0;
+  text-align: center;
+}
+
+.featured-tag {
+  color: #d62828;
+  font-weight: 700;
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+}
+
+.featured-products h2 {
+  font-size: 42px;
+  margin-bottom: 35px;
+}

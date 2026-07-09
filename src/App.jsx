@@ -17,6 +17,8 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
   const [user, setUser] = useState(null);
@@ -39,6 +41,10 @@ export default function App() {
       params = nextPage.params || {};
     }
 
+    if (pageName !== "search") {
+      setSearchQuery("");
+    }
+
     setPage(pageName);
     setRouteParams(params);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -49,14 +55,19 @@ export default function App() {
     setToast(`${product.name} added to cart.`);
   };
 
-  const decreaseCartItem = (productId) => {
+  const removeFromCart = (product) => {
     setCart((current) => {
-      const index = current.findIndex((p) => p.id === productId);
+      const index = current.findIndex((item) => item.id === product.id);
+
       if (index === -1) return current;
-      const next = [...current];
-      next.splice(index, 1);
-      return next;
+
+      const updated = [...current];
+      updated.splice(index, 1); // remove one quantity
+
+      return updated;
     });
+
+    setToast(`${product.name} removed from cart.`);
   };
 
   const toggleWishlist = (product) => {
@@ -124,38 +135,6 @@ export default function App() {
       return {
         success: false,
         error: error?.message || "Order failed to submit.",
-      };
-    }
-  };
-
-  const fetchOrders = async () => {
-    if (!user) {
-      return {
-        success: false,
-        requiresAuth: true,
-        error: "Please sign in to view your orders.",
-      };
-    }
-
-    try {
-      const token = localStorage.getItem("og_auth_token");
-      const response = await fetch(`${API_BASE}/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorMessage = await parseApiError(response, "Could not load orders");
-        return { success: false, error: errorMessage };
-      }
-
-      const data = await response.json();
-      return { success: true, orders: data.orders || [] };
-    } catch (error) {
-      return {
-        success: false,
-        error: error?.message || "Could not load orders.",
       };
     }
   };
@@ -253,6 +232,7 @@ export default function App() {
   };
 
   const protectedAddToCart = requireAuth(addToCart);
+  const protectedRemoveFromCart = requireAuth(removeFromCart);
   const protectedToggleWishlist = requireAuth(toggleWishlist);
 
   return (
@@ -279,6 +259,8 @@ export default function App() {
               onThemeToggle={() =>
                 setTheme(theme === "light" ? "dark" : "light")
               }
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
             />
 
             {page === "home" ? (
@@ -299,14 +281,14 @@ export default function App() {
                 wishlist={wishlist}
                 onNavigate={navigate}
                 onAddToCart={protectedAddToCart}
-                onIncreaseQty={protectedAddToCart}
-                onDecreaseQty={decreaseCartItem}
+                onRemoveFromCart={protectedRemoveFromCart}
                 onWishlist={protectedToggleWishlist}
                 onToast={setToast}
                 user={user}
                 onAuthOpen={openAuthModal}
                 onSubmitOrder={submitOrder}
-                onFetchOrders={fetchOrders}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
               />
             )}
 
