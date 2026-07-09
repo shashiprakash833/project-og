@@ -22,11 +22,33 @@ export default function ProductsSection({
 
   return (
     <section className="products-section" id="shop">
-      <div className="section-title compact">
-        <p>Featured</p>
-        <h2>Drops.</h2>
-        <span>Handpicked heat. Limited quantity. Infinite style.</span>
-      </div>
+       <div className="section-title premium">
+
+    <span className="eyebrow">THE   OG </span>
+
+    <h2 className="drops-title">
+      <span>S</span>
+      <span>I</span>
+      <span>G</span>
+      <span>N</span>
+      <span>A</span>
+      <span>T</span>
+      <span>U</span>
+      <span>R</span>
+      <span>E</span>
+    </h2>
+
+    <p className="subtitle">
+      Handpicked heat.
+      <span></span>
+      Limited quantity.
+      <span></span>
+      Infinite style.
+    </p>
+
+    <div className="title-line"></div>
+
+  </div>
 
       <div className="filters">
         {filters.map((item) => (
@@ -55,6 +77,7 @@ export default function ProductsSection({
         ))}
       </div>
 
+<<<<<<< HEAD
       <button
         className="text-link"
         onClick={() => onNavigate && onNavigate("shop")}
@@ -69,6 +92,27 @@ export default function ProductsSection({
           onAddToCart={onAddToCart}
         />
       )}
+=======
+      <div className="collection-header">
+  <span className="collection-label">DISCOVER</span>
+
+  <h2 className="collection-title">
+    VIEW COLLECTION
+  </h2>
+
+  <p className="collection-text">
+    Crafted for those who take risks, not shortcuts.
+  </p>
+
+  <button
+    className="collection-btn"
+    onClick={() => onNavigate("shop")}
+  >
+    Explore →
+  </button>
+</div>
+
+>>>>>>> 0d98ed8 (Update homepage layout, move collections, improve lookbook and community UI)
     </section>
   );
 }

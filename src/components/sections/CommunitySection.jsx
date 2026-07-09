@@ -12,11 +12,12 @@ const galleryData = [
 export default function CommunitySection({ onToast }) {
   return (
     <section className="og-community">
-      
       {/* LEFT SIDE */}
       <div className="og-left">
         <p className="og-tag">OG COMMUNITY</p>
+
         <h2 className="og-title">#BEOG</h2>
+
         <span className="og-text">
           Real people. Real fits. Real OGs.
         </span>
@@ -40,6 +41,7 @@ export default function CommunitySection({ onToast }) {
             }
           >
             <img src={item.image} alt={item.title} />
+
             <div className="og-overlay">
               <small>{item.title}</small>
             </div>

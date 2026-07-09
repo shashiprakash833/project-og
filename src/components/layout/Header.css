@@ -139,18 +139,19 @@
   left: 0;
   right: 0;
   z-index: 50;
+
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1rem;
-  min-height: 5rem;
-  padding: 0.8rem clamp(1rem, 4vw, 2.5rem);
-  border-bottom: 0;
+
+  height: 76px;
+  min-height: 56px;
+  padding: 0 20px;
+
   background: transparent;
   color: #f4efe6;
-  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, color 0.35s ease;
-  backdrop-filter: none;
 }
+
 
 /* If the current page is wishlist (plain hero) and theme is light, when not scrolled, use dark ink text */
 .header.page-wishlist.theme-light:not(.scrolled) {
