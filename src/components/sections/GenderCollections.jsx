@@ -6,13 +6,13 @@ export default function GenderCollections({ onNavigate, onToast }) {
     {
       key: "men",
       title: "Men",
-      image: "/images/collections/mens/men-hero@2x.jpg",
+      image: "/images/menhero1.png",
       copy: "Signature fits and bold outerwear.",
     },
     {
       key: "women",
       title: "Women",
-      image: "/images/collections/womens/women-hero@2x.jpg",
+      image: "/images/women-hero1.png",
       copy: "Everyday essentials with attitude.",
     },
   ];
@@ -54,6 +54,7 @@ export default function GenderCollections({ onNavigate, onToast }) {
           <div className="gender-copy">
             <h3>{tile.title}</h3>
             <p>{tile.copy}</p>
+
             <span className="btn outline">Explore</span>
           </div>
         </button>

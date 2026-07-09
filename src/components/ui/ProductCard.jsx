@@ -3,20 +3,29 @@ import { Heart } from "lucide-react";
 
 export default function ProductCard({
   product,
-  quantity,
+  quantity = 0,
   onAddToCart,
   onRemoveFromCart,
   onWishlist,
   isWishlisted,
+  onClick,
 }) {
   return (
     <article className="product-card">
-      <div className="product-art">
-        {/* Wishlist Button */}
+      
+      {/* IMAGE CLICK → OPEN MODAL */}
+      <div
+        className="product-art"
+        onClick={() => onClick && onClick(product)}
+      >
+        
+        {/* ❤️ WISHLIST */}
         <button
           className="wishlist-btn"
-          onClick={() => onWishlist(product)}
-          aria-label={`Wishlist ${product.name}`}
+          onClick={(e) => {
+            e.stopPropagation(); // 🚀 VERY IMPORTANT
+            onWishlist && onWishlist(product);
+          }}
         >
           <Heart
             size={22}
@@ -26,12 +35,12 @@ export default function ProductCard({
           />
         </button>
 
+        {/* IMAGE */}
         {product.image ? (
           <>
             <div
               className="product-art-bg"
               style={{ backgroundImage: `url(${product.image})` }}
-              aria-hidden="true"
             />
 
             <img
@@ -46,20 +55,34 @@ export default function ProductCard({
         )}
       </div>
 
+      {/* INFO */}
       <div className="product-info">
         <div>
           <h3>{product.name}</h3>
-          <p>Rs {product.price.toLocaleString("en-IN")}</p>
+          <p>₹{product.price?.toLocaleString("en-IN")}</p>
         </div>
 
+        {/* QUANTITY CONTROLS */}
         <div className="qty-control">
-          <button className="qty-btn" onClick={() => onRemoveFromCart(product)}>
+          <button
+            className="qty-btn"
+            onClick={(e) => {
+              e.stopPropagation(); // 🚀 prevent modal open
+              onRemoveFromCart && onRemoveFromCart(product);
+            }}
+          >
             −
           </button>
 
           <span className="qty">{quantity}</span>
 
-          <button className="qty-btn" onClick={() => onAddToCart(product)}>
+          <button
+            className="qty-btn"
+            onClick={(e) => {
+              e.stopPropagation(); // 🚀 prevent modal open
+              onAddToCart && onAddToCart(product);
+            }}
+          >
             +
           </button>
         </div>

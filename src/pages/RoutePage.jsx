@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./RoutePage.css";
 import { archiveCards, collections, pageCopy } from "../data/storeData.js";
 import PageHero from "../components/ui/PageHero.jsx";
@@ -21,96 +21,9 @@ export default function RoutePage({
   onSubmitOrder,
   user,
   routeParams = {},
-  searchQuery = "",
-  onSearchChange,
 }) {
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("credit");
-  const [userOrders, setUserOrders] = useState([]);
-  const [loadingOrders, setLoadingOrders] = useState(false);
-  const [ordersError, setOrdersError] = useState("");
-  const [cancellingOrderId, setCancellingOrderId] = useState(null);
-  const [confirmCancelId, setConfirmCancelId] = useState(null);
-
-  const API_BASE = import.meta.env.VITE_API_BASE || "";
-
-  useEffect(() => {
-    if (page !== "orders") return;
-    if (!user) {
-      setUserOrders([]);
-      return;
-    }
-
-    const fetchOrders = async () => {
-      setLoadingOrders(true);
-      setOrdersError("");
-      try {
-        const token = localStorage.getItem("og_auth_token");
-        const response = await fetch(`${API_BASE}/api/orders`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to load orders");
-        }
-        const data = await response.json();
-        setUserOrders(data.orders || []);
-      } catch (err) {
-        setOrdersError(err.message || "Failed to load orders. Please try again.");
-      } finally {
-        setLoadingOrders(false);
-      }
-    };
-
-    fetchOrders();
-  }, [page, user]);
-
-  const handleConfirmCancel = async (orderId) => {
-    setCancellingOrderId(orderId);
-    try {
-      const token = localStorage.getItem("og_auth_token");
-      const response = await fetch(`${API_BASE}/api/orders/${orderId}/cancel`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to cancel order");
-      }
-
-      // Success! Update local state
-      setUserOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "cancelled" } : order
-        )
-      );
-
-      onToast?.("Order cancelled successfully");
-      setConfirmCancelId(null);
-    } catch (err) {
-      onToast?.(err.message || "Could not cancel order. Please try again.");
-    } finally {
-      setCancellingOrderId(null);
-    }
-  };
-
-  const aggregatedCart = cart.reduce((acc, item) => {
-    const existing = acc.find((entry) => entry.id === item.id);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      acc.push({
-        ...item,
-        quantity: 1,
-      });
-    }
-    return acc;
-  }, []);
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponMessage, setCouponMessage] = useState("");
@@ -148,15 +61,6 @@ export default function RoutePage({
               ? "/images/collections/womens/women-section-banner.png"
               : "/images/collections/mens/men-section-banner.png",
         }
-      : page === "search"
-        ? {
-            eyebrow: "Search Results",
-            title: searchQuery ? `"${searchQuery}".` : "Search OG.",
-            copy: searchQuery
-              ? `Showing high-heat products matching "${searchQuery}".`
-              : "Explore the complete catalog of premium street wear grails.",
-            image: "/images/collections/gender-section-banner.png",
-          }
       : page === "collections-men" || page === "collections-women"
         ? {
             eyebrow: page === "collections-women" ? "Women's" : "Men's",
@@ -252,16 +156,10 @@ export default function RoutePage({
   }, []);
 
   const handleConfirmOrder = async () => {
-    if (cart.length === 0) {
-      setCheckoutError("Your cart is empty.");
-      return;
-    }
-    if (!isShippingComplete) {
-      setCheckoutError("Please complete your Shipping Address before confirming.");
-      return;
-    }
-    if (!isPaymentComplete) {
-      setCheckoutError("Please complete your Payment details before confirming.");
+    if (!confirmEnabled) {
+      setCheckoutError(
+        "Complete shipping and payment details before confirming.",
+      );
       return;
     }
 
@@ -347,55 +245,6 @@ export default function RoutePage({
                 />
               ))}
           </div>
-        </section>
-      )}
-
-      {page === "search" && (
-        <section className="route-section">
-          {(() => {
-            const filtered = products.filter((product) => {
-              if (!searchQuery) return true;
-              const query = searchQuery.toLowerCase().trim();
-              return (
-                product.name.toLowerCase().includes(query) ||
-                product.type.toLowerCase().includes(query) ||
-                product.color?.toLowerCase().includes(query) ||
-                product.gender?.toLowerCase().includes(query)
-              );
-            });
-
-            if (filtered.length === 0) {
-              return (
-                <div className="empty-state">
-                  <h3>No products found for "{searchQuery}"</h3>
-                  <p>Try searching for categories like "hoodies", "tees", "caps", or check your spelling.</p>
-                  <button className="btn outline" onClick={() => onSearchChange?.("")}>
-                    View All Products
-                  </button>
-                </div>
-              );
-            }
-
-            return (
-              <div className="product-grid">
-                {filtered.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    quantity={
-                      cart.filter((item) => item.id === product.id).length
-                    }
-                    isWishlisted={wishlist.some(
-                      (item) => item.id === product.id,
-                    )}
-                    onAddToCart={onAddToCart}
-                    onRemoveFromCart={onRemoveFromCart}
-                    onWishlist={onWishlist}
-                  />
-                ))}
-              </div>
-            );
-          })()}
         </section>
       )}
 
@@ -638,10 +487,10 @@ export default function RoutePage({
               </div>
               <div className="cart-layout">
                 <div className="cart-items-panel">
-                  {aggregatedCart.map((product) => (
+                  {cart.map((product, index) => (
                     <div
                       className="cart-item-card"
-                      key={product.id}
+                      key={`${product.id}-${index}`}
                     >
                       <img src={product.image} alt={product.name} />
                       <div className="cart-item-details">
@@ -656,34 +505,14 @@ export default function RoutePage({
                           </p>
                         </div>
                         <div className="item-price">
-                          ₹{(product.price * product.quantity).toLocaleString("en-IN")}
-                          {product.quantity > 1 && (
-                            <span className="item-unit-price" style={{ fontSize: "0.8rem", opacity: 0.7, marginLeft: "0.5rem" }}>
-                              (₹{product.price.toLocaleString("en-IN")} each)
-                            </span>
-                          )}
+                          ₹{product.price.toLocaleString("en-IN")}
                         </div>
                       </div>
-                      <div className="cart-item-actions quantity-selector">
-                        <button 
-                          className="quantity-btn btn-minus" 
-                          onClick={() => onRemoveFromCart(product)}
-                          aria-label="Decrease quantity"
-                        >
-                          -
+                      <div className="cart-item-actions">
+                        <button onClick={() => onAddToCart(product)}>
+                          Add again
                         </button>
-                        <span className="quantity-value">{product.quantity}</span>
-                        <button 
-                          className="quantity-btn btn-plus" 
-                          onClick={() => onAddToCart(product)}
-                          aria-label="Increase quantity"
-                        >
-                          +
-                        </button>
-                        <button 
-                          className="wishlist-btn"
-                          onClick={() => onWishlist(product)}
-                        >
+                        <button onClick={() => onWishlist(product)}>
                           {wishlist.some((item) => item.id === product.id)
                             ? "Wishlisted"
                             : "Save"}
@@ -693,62 +522,58 @@ export default function RoutePage({
                   ))}
                 </div>
 
-                <div className="checkout-container-horizontal">
-                  <aside className="cart-checkout-panel checkout-horizontal-grid">
-                    {/* COLUMN 1: Order Summary */}
-                    <div className="checkout-box flex-column-col">
-                      <h3>Order Summary</h3>
-                      <div className="summary-row">
-                        <span>Items ({cart.length})</span>
-                        <span>₹{subtotal.toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="summary-row highlight">
-                        <span>Discount</span>
-                        <span>-₹{discountValue.toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="summary-row">
-                        <span>Delivery</span>
-                        <span>Free</span>
-                      </div>
-                      <div className="summary-row total-row">
-                        <strong>Total</strong>
-                        <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
-                      </div>
-
-                      <div className="coupon-panel" style={{ marginTop: "1.5rem" }}>
-                        <label>Coupon Code</label>
-                        <div className="coupon-row">
-                          <input
-                            className="coupon-input"
-                            type="text"
-                            placeholder="OGSAVE or OG20"
-                            value={couponCode}
-                            onChange={(event) =>
-                              setCouponCode(event.target.value)
-                            }
-                            disabled={couponApplied}
-                          />
-                          <button
-                            className="coupon-btn"
-                            type="button"
-                            onClick={applyCoupon}
-                            disabled={couponApplied}
-                          >
-                            {couponApplied ? "Applied" : "Apply"}
-                          </button>
-                        </div>
-                        {couponMessage && (
-                          <p
-                            className={`coupon-message ${couponApplied ? "success" : ""}`}
-                          >
-                            {couponMessage}
-                          </p>
-                        )}
-                      </div>
+                <aside className="cart-checkout-panel">
+                  <div className="checkout-box">
+                    <h3>Order Summary</h3>
+                    <div className="summary-row">
+                      <span>Items ({cart.length})</span>
+                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
+                    </div>
+                    <div className="summary-row highlight">
+                      <span>Discount</span>
+                      <span>-₹{discountValue.toLocaleString("en-IN")}</span>
+                    </div>
+                    <div className="summary-row">
+                      <span>Delivery</span>
+                      <span>Free</span>
+                    </div>
+                    <div className="summary-row total-row">
+                      <strong>Total</strong>
+                      <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
                     </div>
 
-                    {/* COLUMN 2: Shipping Address Details */}
-                    <div className="checkout-box flex-column-col">
+                    <div className="coupon-panel">
+                      <label>Coupon Code</label>
+                      <div className="coupon-row">
+                        <input
+                          className="coupon-input"
+                          type="text"
+                          placeholder="OGSAVE or OG20"
+                          value={couponCode}
+                          onChange={(event) =>
+                            setCouponCode(event.target.value)
+                          }
+                          disabled={couponApplied}
+                        />
+                        <button
+                          className="coupon-btn"
+                          type="button"
+                          onClick={applyCoupon}
+                          disabled={couponApplied}
+                        >
+                          {couponApplied ? "Applied" : "Apply"}
+                        </button>
+                      </div>
+                      {couponMessage && (
+                        <p
+                          className={`coupon-message ${couponApplied ? "success" : ""}`}
+                        >
+                          {couponMessage}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="checkout-section">
                       <h3>Shipping Address</h3>
                       <div className="form-grid">
                         <label className="input-group">
@@ -823,156 +648,153 @@ export default function RoutePage({
                       </div>
                     </div>
 
-                    {/* COLUMN 3: Payment Options & Place Order */}
-                    <div className="checkout-box flex-column-col">
-                      <h3>Payment Options</h3>
-                      <div className="payment-options">
-                        <label>
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="credit"
-                            checked={paymentMethod === "credit"}
-                            onChange={() => setPaymentMethod("credit")}
-                          />
-                          Credit / Debit Card
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="upi"
-                            checked={paymentMethod === "upi"}
-                            onChange={() => setPaymentMethod("upi")}
-                          />
-                          UPI
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="cod"
-                            checked={paymentMethod === "cod"}
-                            onChange={() => setPaymentMethod("cod")}
-                          />
-                          Cash on Delivery
-                        </label>
-                      </div>
+                    <div className="payment-options">
+                      <p>Payment Options</p>
+                      <label>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="credit"
+                          checked={paymentMethod === "credit"}
+                          onChange={() => setPaymentMethod("credit")}
+                        />
+                        Credit / Debit Card
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="upi"
+                          checked={paymentMethod === "upi"}
+                          onChange={() => setPaymentMethod("upi")}
+                        />
+                        UPI
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="cod"
+                          checked={paymentMethod === "cod"}
+                          onChange={() => setPaymentMethod("cod")}
+                        />
+                        Cash on Delivery
+                      </label>
+                    </div>
 
-                      {paymentMethod === "credit" && (
-                        <div className="payment-form">
+                    {paymentMethod === "credit" && (
+                      <div className="payment-form">
+                        <label className="input-group">
+                          Name on Card
+                          <input
+                            type="text"
+                            value={paymentDetails.nameOnCard}
+                            onChange={(event) =>
+                              handlePaymentChange(
+                                "nameOnCard",
+                                event.target.value,
+                              )
+                            }
+                            placeholder="Aria Thomas"
+                          />
+                        </label>
+                        <label className="input-group">
+                          Card Number
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={19}
+                            value={paymentDetails.cardNumber}
+                            onChange={(event) =>
+                              handlePaymentChange(
+                                "cardNumber",
+                                event.target.value,
+                              )
+                            }
+                            placeholder="1234 5678 9012 3456"
+                          />
+                        </label>
+                        <div className="form-row">
                           <label className="input-group">
-                            Name on Card
+                            Expiry
                             <input
                               type="text"
-                              value={paymentDetails.nameOnCard}
+                              maxLength={5}
+                              value={paymentDetails.expiry}
                               onChange={(event) =>
                                 handlePaymentChange(
-                                  "nameOnCard",
+                                  "expiry",
                                   event.target.value,
                                 )
                               }
-                              placeholder="Aria Thomas"
+                              placeholder="MM/YY"
                             />
                           </label>
                           <label className="input-group">
-                            Card Number
+                            CVC
                             <input
                               type="text"
                               inputMode="numeric"
-                              maxLength={19}
-                              value={paymentDetails.cardNumber}
+                              maxLength={4}
+                              value={paymentDetails.cvc}
                               onChange={(event) =>
-                                handlePaymentChange(
-                                  "cardNumber",
-                                  event.target.value,
-                                )
+                                handlePaymentChange("cvc", event.target.value)
                               }
-                              placeholder="1234 5678 9012 3456"
-                            />
-                          </label>
-                          <div className="form-row">
-                            <label className="input-group">
-                              Expiry
-                              <input
-                                type="text"
-                                maxLength={5}
-                                value={paymentDetails.expiry}
-                                onChange={(event) =>
-                                  handlePaymentChange(
-                                    "expiry",
-                                    event.target.value,
-                                  )
-                                }
-                                placeholder="MM/YY"
-                              />
-                            </label>
-                            <label className="input-group">
-                              CVC
-                              <input
-                                type="text"
-                                inputMode="numeric"
-                                maxLength={4}
-                                value={paymentDetails.cvc}
-                                onChange={(event) =>
-                                  handlePaymentChange("cvc", event.target.value)
-                                }
-                                placeholder="123"
-                              />
-                            </label>
-                          </div>
-                        </div>
-                      )}
-
-                      {paymentMethod === "upi" && (
-                        <div className="payment-form">
-                          <label className="input-group">
-                            UPI ID
-                            <input
-                              type="text"
-                              value={paymentDetails.upiId}
-                              onChange={(event) =>
-                                handlePaymentChange("upiId", event.target.value)
-                              }
-                              placeholder="aria@okaxis"
+                              placeholder="123"
                             />
                           </label>
                         </div>
-                      )}
-
-                      {paymentMethod === "cod" && (
-                        <p className="cod-note">
-                          Pay in cash when your package is delivered. Keep your
-                          PIN ready.
-                        </p>
-                      )}
-
-                      {checkoutError && (
-                        <p className="checkout-error">{checkoutError}</p>
-                      )}
-
-                      <div className="checkout-actions" style={{ marginTop: "auto", paddingTop: "1rem" }}>
-                        <button
-                          className="btn primary checkout-btn"
-                          type="button"
-                          onClick={() => setInvoiceGenerated(true)}
-                        >
-                          Generate Invoice
-                        </button>
-                        <button
-                          className="btn outline confirm-btn"
-                          type="button"
-                          onClick={handleConfirmOrder}
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? "Placing Order..." : "Confirm Order"}
-                        </button>
                       </div>
+                    )}
+
+                    {paymentMethod === "upi" && (
+                      <div className="payment-form">
+                        <label className="input-group">
+                          UPI ID
+                          <input
+                            type="text"
+                            value={paymentDetails.upiId}
+                            onChange={(event) =>
+                              handlePaymentChange("upiId", event.target.value)
+                            }
+                            placeholder="aria@okaxis"
+                          />
+                        </label>
+                      </div>
+                    )}
+
+                    {paymentMethod === "cod" && (
+                      <p className="cod-note">
+                        Pay in cash when your package is delivered. Keep your
+                        PIN ready.
+                      </p>
+                    )}
+
+                    {checkoutError && (
+                      <p className="checkout-error">{checkoutError}</p>
+                    )}
+
+                    <div className="checkout-actions">
+                      <button
+                        className="btn primary checkout-btn"
+                        type="button"
+                        onClick={() => setInvoiceGenerated(true)}
+                      >
+                        Generate Invoice
+                      </button>
+                      <button
+                        className="btn outline confirm-btn"
+                        type="button"
+                        onClick={handleConfirmOrder}
+                        disabled={!confirmEnabled || isSubmitting}
+                      >
+                        {isSubmitting ? "Placing Order..." : "Confirm Order"}
+                      </button>
                     </div>
-                  </aside>
+                  </div>
 
                   {invoiceGenerated && (
-                    <div className="invoice-card" style={{ marginTop: "2rem" }}>
+                    <div className="invoice-card">
                       <h3>Invoice</h3>
                       <p>
                         Payment:{" "}
@@ -1004,7 +826,7 @@ export default function RoutePage({
                       </p>
                     </div>
                   )}
-                </div>
+                </aside>
               </div>
             </>
           ) : (
@@ -1108,189 +930,6 @@ export default function RoutePage({
               </p>
             </div>
           </div>
-        </section>
-      )}
-
-      {page === "orders" && (
-        <section className="route-section orders-page">
-          <div className="route-header">
-            <p className="route-eyebrow">Profile</p>
-            <h2>Your Orders</h2>
-            <span>Track and view your past purchases and delivery status.</span>
-          </div>
-
-          {!user ? (
-            <div className="empty-state">
-              <h3>Please sign in to view your orders.</h3>
-              <button onClick={() => onAuthOpen("login")}>Sign In</button>
-            </div>
-          ) : loadingOrders ? (
-            <div className="orders-loading">
-              <div className="spinner"></div>
-              <p>Fetching your OG history...</p>
-            </div>
-          ) : ordersError ? (
-            <div className="checkout-error">
-              <p>{ordersError}</p>
-              <button className="btn outline" onClick={() => onNavigate("orders")}>Retry</button>
-            </div>
-          ) : userOrders.length === 0 ? (
-            <div className="empty-state">
-              <h3>You haven't placed any orders yet.</h3>
-              <p>Your future street wear grails are waiting for you.</p>
-              <button onClick={() => onNavigate("shop")}>Start Shopping</button>
-            </div>
-          ) : (
-            <div className="orders-list">
-              {userOrders.map((order) => {
-                let addr = {};
-                try {
-                  addr = typeof order.shipping_address === "string" 
-                    ? JSON.parse(order.shipping_address) 
-                    : order.shipping_address || {};
-                } catch (e) {
-                  addr = { fullName: "User Details", street: order.shipping_address };
-                }
-
-                const getStepIndex = (status) => {
-                  const s = (status || "pending").toLowerCase();
-                  if (s === "shipped") return 1;
-                  if (s === "delivered") return 2;
-                  return 0;
-                };
-
-                const getStepClass = (stepIndex, status) => {
-                  const s = (status || "pending").toLowerCase();
-                  let currentIdx = 0;
-                  if (s === "shipped") currentIdx = 1;
-                  if (s === "delivered") currentIdx = 2;
-
-                  if (stepIndex < currentIdx) return "completed";
-                  if (stepIndex === currentIdx) return "active";
-                  return "pending";
-                };
-
-                const isCancelable = (order.status || "pending").toLowerCase() === "pending" || (order.status || "").toLowerCase() === "processing";
-                const isCancelled = (order.status || "").toLowerCase() === "cancelled";
-
-                return (
-                  <div key={order.id} className="order-history-card">
-                    <div className="order-card-header">
-                      <div>
-                        <span className="order-ref">ORDER #OG{String(order.id).padStart(6, "0")}</span>
-                        <span className="order-date">
-                          {new Date(order.created_at).toLocaleDateString("en-IN", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      <span className={`order-status-badge ${order.status?.toLowerCase() || "pending"}`}>
-                        {order.status || "Pending"}
-                      </span>
-                    </div>
-
-                    {isCancelled ? (
-                      <div className="order-cancelled-banner">
-                        <div className="cancelled-banner-inner">
-                          <span className="cancelled-icon">⚠️</span>
-                          <div>
-                            <h4>This order has been cancelled</h4>
-                            <p>Refund will be processed to the original payment method within 5-7 business days.</p>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="order-tracking-bar">
-                        <div className="tracking-timeline-container">
-                          <div className="tracking-line">
-                            <div className={`tracking-progress step-${getStepIndex(order.status)}`} />
-                          </div>
-                          <div className="tracking-steps">
-                            <div className={`tracking-step ${getStepClass(0, order.status)}`}>
-                              <div className="step-dot">
-                                <span className="step-dot-inner" />
-                              </div>
-                              <span className="step-label">Processing</span>
-                            </div>
-                            <div className={`tracking-step ${getStepClass(1, order.status)}`}>
-                              <div className="step-dot">
-                                <span className="step-dot-inner" />
-                              </div>
-                              <span className="step-label">Shipped</span>
-                            </div>
-                            <div className={`tracking-step ${getStepClass(2, order.status)}`}>
-                              <div className="step-dot">
-                                <span className="step-dot-inner" />
-                              </div>
-                              <span className="step-label">Delivered</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="order-card-body">
-                      <div className="order-info-col">
-                        <h4>Delivery Address</h4>
-                        <p className="address-name">{addr.fullName || user.name}</p>
-                        <p>{addr.street}</p>
-                        <p>{addr.city}, {addr.state} - {addr.zip}</p>
-                        <p className="phone-info">📞 {order.shipping_phone || addr.phone || "No phone added"}</p>
-                      </div>
-
-                      <div className="order-info-col">
-                        <h4>Payment Details</h4>
-                        <p>Method: <strong style={{ textTransform: "uppercase" }}>{order.payment_method || "Card"}</strong></p>
-                        <p>Status: <strong>{isCancelled ? "Voided" : "Paid"}</strong></p>
-                      </div>
-
-                      <div className="order-info-col price-col">
-                        <h4>Total Amount</h4>
-                        <strong className="order-total-price">₹{Number(order.total_amount).toLocaleString("en-IN")}</strong>
-                      </div>
-                    </div>
-
-                    {isCancelable && (
-                      <div className="order-card-footer">
-                        {confirmCancelId === order.id ? (
-                          <div className="cancel-confirm-box">
-                            <div className="cancel-confirm-message">
-                              <p><strong>Are you sure you want to cancel this order?</strong> This action is permanent and cannot be undone.</p>
-                            </div>
-                            <div className="cancel-confirm-actions">
-                              <button
-                                className="btn danger"
-                                onClick={() => handleConfirmCancel(order.id)}
-                                disabled={cancellingOrderId === order.id}
-                              >
-                                {cancellingOrderId === order.id ? "Cancelling..." : "Confirm Cancellation"}
-                              </button>
-                              <button
-                                className="btn outline"
-                                onClick={() => setConfirmCancelId(null)}
-                                disabled={cancellingOrderId === order.id}
-                              >
-                                Keep Order
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            className="btn outline cancel-order-btn"
-                            onClick={() => setConfirmCancelId(order.id)}
-                          >
-                            Cancel Order
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </section>
       )}
 

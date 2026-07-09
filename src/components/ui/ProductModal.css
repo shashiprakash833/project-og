@@ -1,3 +1,4 @@
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -148,3 +149,231 @@
     padding: 1.5rem 1.2rem;
   }
 }
+
+.og-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+.og-modal{
+    width:900px;
+    max-width:95%;
+    background:#0d0d0d;
+    border-radius:18px;
+    display:flex;
+    gap:30px;
+    padding:30px;
+    position:relative;
+}
+
+.modal-left{
+    flex:1;
+}
+
+.modal-left img{
+    width:100%;
+    height:500px;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.modal-right{
+    flex:1;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+}
+
+.modal-right small{
+    color:#aaa;
+}
+
+.modal-right h2{
+    font-size:34px;
+    margin:10px 0;
+}
+
+.modal-right h3{
+    font-size:32px;
+    margin-bottom:20px;
+    color:#fff;
+}
+
+.sizes{
+    display:flex;
+    gap:12px;
+    margin:20px 0;
+}
+
+.sizes button{
+    width:55px;
+    height:55px;
+    border:1px solid #555;
+    background:transparent;
+    color:white;
+    cursor:pointer;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.sizes button:hover{
+    border-color:#ff2a2a;
+}
+
+.sizes button.active{
+    background:#ff2a2a;
+    border-color:#ff2a2a;
+}
+
+/* ===========================
+   BUTTONS ROW
+=========================== */
+
+.modal-buttons{
+    display:flex;
+    gap:15px;
+    width:100%;
+    margin-top:25px;
+}
+
+.modal-buttons button{
+    flex:1;
+    height:55px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .35s ease;
+}
+
+/* Wishlist */
+
+.wishlist-btn-modal{
+    background:transparent;
+    border:2px solid #ff2a2a;
+    color:#ff2a2a;
+}
+
+.wishlist-btn-modal:hover{
+    background:#ff2a2a;
+    color:#fff;
+    transform:translateY(-3px);
+}
+
+.wishlist-btn-modal.active{
+    background:#ff2a2a;
+    color:#fff;
+    box-shadow:0 0 20px rgba(255,42,42,.45);
+}
+
+/* Add To Cart */
+
+.cart-btn{
+    background:linear-gradient(135deg,#ff2a2a,#9b0000);
+    border:none;
+    color:#fff;
+}
+
+.cart-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(255,42,42,.35);
+}
+
+.cart-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
+}
+
+/* Description */
+
+.description{
+    margin-top:25px;
+    color:#bbb;
+    line-height:1.7;
+}
+
+/* Close Button */
+
+.og-modal-close{
+    position:absolute;
+    right:20px;
+    top:20px;
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:#222;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.og-modal-close:hover{
+    background:#e60707;
+    transform:rotate(90deg);
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .og-modal{
+        flex-direction:column;
+        padding:20px;
+    }
+
+    .modal-left img{
+        height:350px;
+    }
+
+    .modal-buttons{
+        flex-direction:column;
+    }
+
+    .modal-buttons button{
+        width:100%;
+    }
+
+}
+
+/* Error Message */
+
+.size-error{
+    color:#ff4d4d;
+    font-size:14px;
+    font-weight:600;
+    margin-top:10px;
+    margin-bottom:8px;
+    animation:fadeIn .3s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(-5px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+

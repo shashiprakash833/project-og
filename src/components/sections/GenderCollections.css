@@ -1,97 +1,124 @@
+/* ---------------- CONTAINER ---------------- */
 .gender-collections {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr); /* equal width */
+  gap: 24px;
+
+  width: 100%;
   max-width: 1200px;
-  margin: 1.6rem;
-  padding: 0 24px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  justify-content: center; /* center grid */
+  align-items: stretch;
+  box-sizing: border-box;
 }
 
+/* ---------------- CARD ---------------- */
 .gender-card {
   position: relative;
-  height: 350px; 
-  width: 100%;   
-  border-radius: 12px;
+  width: 100%;
+  height: 380px; /* fixed height for uniform look */
+
+  border-radius: 16px;
   overflow: hidden;
-  border: none;
   cursor: pointer;
-  padding: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  border: 1px solid var(--line);
   background: #111;
 }
 
+/* ---------------- BACKGROUND ---------------- */
 .gender-card-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(6px) brightness(0.6);
+
+  filter: blur(6px) brightness(0.5);
   transform: scale(1.1);
+  z-index: 0;
 }
 
+/* ---------------- IMAGE ---------------- */
 .gender-card-focus {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
   object-fit: cover;
+
   z-index: 1;
-  transition: transform 0.35s ease;
+  transition: all 0.4s ease;
 }
 
+/* Hover zoom */
 .gender-card:hover .gender-card-focus {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
+/* ---------------- TEXT ---------------- */
 .gender-copy {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 30px;
+  position: relative;
   z-index: 2;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;    
-  justify-content: center;
-  text-align: center;     
-
-  padding: 0 20px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
   color: #fff;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7),
+    transparent
+  );
 }
 
 .gender-copy h3 {
+  font-size: 26px;
   margin: 0;
-  font-size: 42px;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .gender-copy p {
-  margin: 10px 0 20px;
-  font-size: 18px;
-  color: rgba(255,255,255,0.9);
-  max-width: 320px;
+  margin: 6px 0 12px;
+  font-size: 14px;
+  opacity: 0.9;
 }
 
-.gender-copy .btn {
-  display: inline-block;
-  padding: 12px 28px;
-  border: 2px solid #fff;
+/* ---------------- BUTTON ---------------- */
+.gender-copy .btn.outline {
+  padding: 8px 18px;
+  font-size: 13px;
   border-radius: 30px;
-  color: #fff;
+
+  border: 2px solid #ff2a2a;
+  color: #ff2a2a;
   background: transparent;
-  font-weight: 600;
-  text-decoration: none;
+
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.gender-copy .btn:hover {
-  background: #fff;
-  color: #111;
+.gender-copy .btn.outline:hover {
+  background: red;
+  color: white;
+  transform: scale(1.05);
 }
 
-@media (max-width: 640px) {
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 768px) {
   .gender-collections {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* stack */
+    gap: 16px;
+  }
+
+  .gender-card {
+    height: 320px;
   }
 }
