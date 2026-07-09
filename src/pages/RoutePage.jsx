@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./RoutePage.css";
 import {
   archiveCards,
@@ -20,10 +20,13 @@ export default function RoutePage({
   wishlist,
   onNavigate,
   onAddToCart,
+  onIncreaseQty,
+  onDecreaseQty,
   onWishlist,
   onToast,
   onAuthOpen,
   onSubmitOrder,
+  onFetchOrders,
   user,
   routeParams = {},
 }) {
@@ -52,6 +55,12 @@ export default function RoutePage({
   const [orderNumber, setOrderNumber] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [showConfirmAnimation, setShowConfirmAnimation] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersError, setOrdersError] = useState("");
+  const [expandedOrders, setExpandedOrders] = useState([]);
   const copy =
     page === "category-products"
       ? {
@@ -124,6 +133,13 @@ export default function RoutePage({
     }));
   };
 
+  useEffect(() => {
+    if (page !== "cart") {
+      setOrderConfirmed(false);
+      setShowConfirmAnimation(false);
+    }
+  }, [page]);
+
   const orderItems = cart.reduce((acc, item) => {
     const existing = acc.find((entry) => entry.id === item.id);
     if (existing) {
@@ -135,6 +151,67 @@ export default function RoutePage({
         price: item.price,
         quantity: 1,
       });
+    }
+    return acc;
+  }, []);
+
+  const productLookup = Object.fromEntries(products.map((product) => [product.id, product]));
+
+  const toggleOrderDetails = (orderId) => {
+    setExpandedOrders((current) =>
+      current.includes(orderId)
+        ? current.filter((id) => id !== orderId)
+        : [...current, orderId],
+    );
+  };
+
+  const handleOrderAgain = (item) => {
+    for (let i = 0; i < item.quantity; i += 1) {
+      onAddToCart({
+        id: item.product_id,
+        name: item.name || productLookup[item.product_id]?.name || "OG Product",
+        price: Number(item.price),
+        image: productLookup[item.product_id]?.image || "/images/brand/og-logo.png",
+        color: productLookup[item.product_id]?.color || "Black",
+        size: "M",
+        tag: productLookup[item.product_id]?.tag || "OG",
+        gender: productLookup[item.product_id]?.gender || "men",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (page !== "cart") {
+      setOrderConfirmed(false);
+      setShowConfirmAnimation(false);
+    }
+
+    if (page === "orders") {
+      const loadOrders = async () => {
+        setOrdersLoading(true);
+        setOrdersError("");
+        const response = await onFetchOrders();
+        setOrdersLoading(false);
+
+        if (!response.success) {
+          setOrdersError(response.error || "Unable to load orders.");
+          setOrders([]);
+          return;
+        }
+
+        setOrders(response.orders || []);
+      };
+
+      loadOrders();
+    }
+  }, [page, onFetchOrders]);
+
+  const cartItems = cart.reduce((acc, item) => {
+    const existing = acc.find((entry) => entry.id === item.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      acc.push({ ...item, quantity: 1 });
     }
     return acc;
   }, []);
@@ -170,9 +247,15 @@ export default function RoutePage({
       return;
     }
 
-    setOrderNumber(`OG${String(result.orderId).padStart(6, "0")}`);
-    setOrderConfirmed(true);
+    const newOrderNumber = `OG${String(result.orderId).padStart(6, "0")}`;
+    setOrderNumber(newOrderNumber);
     setCheckoutError("");
+    setIsFadingOut(true);
+    setShowConfirmAnimation(true);
+    setTimeout(() => {
+      setShowConfirmAnimation(false);
+      onNavigate("home");
+    }, 1600);
   };
 
   return (
@@ -581,7 +664,20 @@ export default function RoutePage({
       )}
 
       {page === "cart" && (
-        <section className="route-section cart-page">
+        <section className={`route-section cart-page${isFadingOut ? " exiting" : ""}`}>
+          {showConfirmAnimation && (
+            <div className="order-confirm-animation" role="status">
+              <div className="anim-card">
+                <div className="check-circle">✓</div>
+                <div className="anim-copy">
+                  <strong>
+                    {user?.name ? `Thanks, ${user.name.split(" ")[0]}!` : "Thanks!"}
+                  </strong>
+                  <span>Your order has been confirmed</span>
+                </div>
+              </div>
+            </div>
+          )}
           {orderConfirmed ? (
             <div className="confirmation-panel">
               <div className="confirmation-card">
@@ -645,35 +741,27 @@ export default function RoutePage({
               </div>
               <div className="cart-layout">
                 <div className="cart-items-panel">
-                  {cart.map((product, index) => (
-                    <div
-                      className="cart-item-card"
-                      key={`${product.id}-${index}`}
-                    >
+                  {cartItems.map((product) => (
+                    <div className="cart-item-card" key={product.id}>
                       <img src={product.image} alt={product.name} />
                       <div className="cart-item-details">
                         <div>
-                          <span className="item-tag">
-                            {product.tag || "OG"}
-                          </span>
+                          <span className="item-tag">{product.tag || "OG"}</span>
                           <h3>{product.name}</h3>
                           <p className="item-meta">
-                            Size: {product.size || "M"} • Color:{" "}
-                            {product.color || "Black"}
+                            Size: {product.size || "M"} • Color: {product.color || "Black"}
                           </p>
                         </div>
-                        <div className="item-price">
-                          ₹{product.price.toLocaleString("en-IN")}
-                        </div>
+                        <div className="item-price">₹{product.price.toLocaleString("en-IN")}</div>
                       </div>
                       <div className="cart-item-actions">
-                        <button onClick={() => onAddToCart(product)}>
-                          Add again
-                        </button>
+                        <div className="qty-controls">
+                          <button type="button" onClick={() => onDecreaseQty(product.id)}>-</button>
+                          <span className="qty">{product.quantity}</span>
+                          <button type="button" onClick={() => onIncreaseQty(product)}>+</button>
+                        </div>
                         <button onClick={() => onWishlist(product)}>
-                          {wishlist.some((item) => item.id === product.id)
-                            ? "Wishlisted"
-                            : "Save"}
+                          {wishlist.some((item) => item.id === product.id) ? "Wishlisted" : "Save"}
                         </button>
                       </div>
                     </div>
@@ -683,54 +771,10 @@ export default function RoutePage({
                 <aside className="cart-checkout-panel">
                   <div className="checkout-box">
                     <h3>Order Summary</h3>
-                    <div className="summary-row">
-                      <span>Items ({cart.length})</span>
-                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
-                    </div>
-                    <div className="summary-row highlight">
-                      <span>Discount</span>
-                      <span>-₹{discountValue.toLocaleString("en-IN")}</span>
-                    </div>
-                    <div className="summary-row">
-                      <span>Delivery</span>
-                      <span>Free</span>
-                    </div>
                     <div className="summary-row total-row">
-                      <strong>Total</strong>
+                      <strong>Order Total</strong>
                       <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
                     </div>
-
-                    <div className="coupon-panel">
-                      <label>Coupon Code</label>
-                      <div className="coupon-row">
-                        <input
-                          className="coupon-input"
-                          type="text"
-                          placeholder="OGSAVE or OG20"
-                          value={couponCode}
-                          onChange={(event) =>
-                            setCouponCode(event.target.value)
-                          }
-                          disabled={couponApplied}
-                        />
-                        <button
-                          className="coupon-btn"
-                          type="button"
-                          onClick={applyCoupon}
-                          disabled={couponApplied}
-                        >
-                          {couponApplied ? "Applied" : "Apply"}
-                        </button>
-                      </div>
-                      {couponMessage && (
-                        <p
-                          className={`coupon-message ${couponApplied ? "success" : ""}`}
-                        >
-                          {couponMessage}
-                        </p>
-                      )}
-                    </div>
-
                     <div className="checkout-section">
                       <h3>Shipping Address</h3>
                       <div className="form-grid">
@@ -931,59 +975,31 @@ export default function RoutePage({
                     {checkoutError && (
                       <p className="checkout-error">{checkoutError}</p>
                     )}
-
-                    <div className="checkout-actions">
-                      <button
-                        className="btn primary checkout-btn"
-                        type="button"
-                        onClick={() => setInvoiceGenerated(true)}
-                      >
-                        Generate Invoice
-                      </button>
-                      <button
-                        className="btn outline confirm-btn"
-                        type="button"
-                        onClick={handleConfirmOrder}
-                        disabled={!confirmEnabled || isSubmitting}
-                      >
-                        {isSubmitting ? "Placing Order..." : "Confirm Order"}
-                      </button>
-                    </div>
                   </div>
 
-                  {invoiceGenerated && (
-                    <div className="invoice-card">
-                      <h3>Invoice</h3>
-                      <p>
-                        Payment:{" "}
-                        {paymentMethod === "credit"
-                          ? "Card"
-                          : paymentMethod === "upi"
-                            ? "UPI"
-                            : "COD"}
-                      </p>
-                      <div className="invoice-row">
-                        <span>Subtotal</span>
-                        <span>₹{subtotal.toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="invoice-row">
-                        <span>Discount</span>
-                        <span>-₹{discountValue.toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="invoice-row">
-                        <span>Delivery</span>
-                        <span>Free</span>
-                      </div>
-                      <div className="invoice-row invoice-total">
-                        <strong>Total Payable</strong>
-                        <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
-                      </div>
-                      <p className="invoice-note">
-                        Once your order is confirmed, you will be redirected to
-                        complete payment.
-                      </p>
+                  <div className="invoice-card">
+                    <h3>Invoice</h3>
+                    <div className="invoice-row">
+                      <span>Subtotal</span>
+                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
                     </div>
-                  )}
+                    <div className="invoice-row">
+                      <span>Discount</span>
+                      <span>-₹{discountValue.toLocaleString("en-IN")}</span>
+                    </div>
+                    <div className="invoice-row invoice-total">
+                      <strong>Total Payable</strong>
+                      <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn primary confirm-order-btn"
+                    onClick={handleConfirmOrder}
+                    disabled={!confirmEnabled || isSubmitting}
+                  >
+                    {isSubmitting ? "Confirming Order..." : "Confirm Order"}
+                  </button>
                 </aside>
               </div>
             </>
@@ -991,6 +1007,127 @@ export default function RoutePage({
             <div className="empty-state">
               <h3>Your cart is empty.</h3>
               <button onClick={() => onNavigate("shop")}>Shop Products</button>
+            </div>
+          )}
+        </section>
+      )}
+
+      {page === "order-confirmed" && (
+        <section className="route-section order-confirm-page">
+          <div className="order-confirm-card">
+            <span className="confirmation-badge">Order Confirmed</span>
+            <h2>
+              {user?.name
+                ? `Thanks, ${user.name.split(" ")[0]}!`
+                : "Thanks for your order!"}
+            </h2>
+            <p>
+              Your order <strong>{routeParams.orderNumber || orderNumber}</strong> has been placed successfully.
+              We’ll send delivery updates to {shipping.phone || "your phone"}.
+            </p>
+            <div className="order-confirm-actions">
+              <button className="btn primary" onClick={() => onNavigate("shop")}>Browse More</button>
+              <button className="btn outline" onClick={() => onNavigate("home")}>Back to Home</button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {page === "orders" && (
+        <section className="route-section orders-page">
+          <div className="route-header">
+            <p className="route-eyebrow">Orders</p>
+            <h2>My Orders</h2>
+            <span>Review your past purchases and order history.</span>
+          </div>
+
+          {ordersLoading ? (
+            <div className="empty-state">
+              <h3>Loading your orders…</h3>
+            </div>
+          ) : ordersError ? (
+            <div className="empty-state">
+              <h3>{ordersError}</h3>
+              <button onClick={() => onNavigate(user ? "home" : "shop")}>Continue</button>
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="empty-state">
+              <h3>No orders yet.</h3>
+              <p>Orders will appear here after you complete a purchase.</p>
+              <button onClick={() => onNavigate("shop")}>Browse Products</button>
+            </div>
+          ) : (
+            <div className="orders-list">
+              {orders.map((order) => {
+                const expanded = expandedOrders.includes(order.id);
+                return (
+                  <div key={order.id} className="order-card">
+                    <div className="order-card-header">
+                      <div>
+                        <span>Order #</span>
+                        <strong>{order.id}</strong>
+                      </div>
+                      <div>
+                        <span>Status</span>
+                        <strong>{order.status || "pending"}</strong>
+                      </div>
+                    </div>
+                    <div className="order-card-body">
+                      <div>
+                        <span>Date</span>
+                        <p>{new Date(order.created_at).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}</p>
+                      </div>
+                      <div>
+                        <span>Total</span>
+                        <p>₹{Number(order.total_amount).toLocaleString("en-IN")}</p>
+                      </div>
+                      <div>
+                        <span>Payment</span>
+                        <p>{order.payment_method || "N/A"}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn outline detail-toggle-btn"
+                        onClick={() => toggleOrderDetails(order.id)}
+                      >
+                        {expanded ? "Hide details" : "View details"}
+                      </button>
+                    </div>
+
+                    {expanded && (
+                      <div className="order-details">
+                        <div className="order-details-grid">
+                          {(order.items || []).map((item) => {
+                            const product = productLookup[item.product_id] || {};
+                            return (
+                              <div key={`${order.id}-${item.id}`} className="order-detail-item">
+                                <img
+                                  className="order-detail-image"
+                                  src={product.image || "/images/brand/og-logo.png"}
+                                  alt={product.name || item.name || "Ordered product"}
+                                />
+                                <div className="order-detail-meta">
+                                  <strong>{product.name || item.name || "OG Product"}</strong>
+                                  <span>Qty: {item.quantity}</span>
+                                  <span>Price: ₹{Number(item.price).toLocaleString("en-IN")}</span>
+                                  {product.color && <span>Color: {product.color}</span>}
+                                </div>
+                                <button
+                                  type="button"
+                                  className="btn order-again-btn"
+                                  onClick={() => handleOrderAgain(item)}
+                                >
+                                  Order Again
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
         </section>

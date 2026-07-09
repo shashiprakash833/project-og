@@ -9,6 +9,11 @@
   --line: rgba(16, 16, 16, 0.16);
   --panel: #ebe2d4;
   --shadow: rgba(16, 16, 16, 0.18);
+  --input-bg: rgba(255, 255, 255, 0.92);
+  --input-border: rgba(16, 16, 16, 0.12);
+  --input-color: var(--ink);
+  --input-placeholder: rgba(16, 16, 16, 0.55);
+  --input-focus-shadow: rgba(165, 31, 28, 0.14);
 }
 
 .app.dark {
@@ -20,4 +25,9 @@
   --line: rgba(244, 239, 230, 0.17);
   --panel: #25211d;
   --shadow: rgba(0, 0, 0, 0.5);
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.18);
+  --input-color: var(--ink);
+  --input-placeholder: rgba(244, 239, 230, 0.75);
+  --input-focus-shadow: rgba(165, 31, 28, 0.24);
 }

@@ -213,7 +213,7 @@ export default function Header({
                   <strong title={user.email}>{displayName}</strong>
                   <small>{user.email}</small>
                 </div>
-                
+                <button className="auth-button" type="button" onClick={() => handleNavigate("orders")}>My Orders</button>
                 <button className="auth-button" type="button" onClick={onLogout}>
                   Logout
                 </button>

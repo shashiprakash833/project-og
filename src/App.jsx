@@ -49,6 +49,16 @@ export default function App() {
     setToast(`${product.name} added to cart.`);
   };
 
+  const decreaseCartItem = (productId) => {
+    setCart((current) => {
+      const index = current.findIndex((p) => p.id === productId);
+      if (index === -1) return current;
+      const next = [...current];
+      next.splice(index, 1);
+      return next;
+    });
+  };
+
   const toggleWishlist = (product) => {
     setWishlist((current) => {
       const exists = current.some((item) => item.id === product.id);
@@ -114,6 +124,38 @@ export default function App() {
       return {
         success: false,
         error: error?.message || "Order failed to submit.",
+      };
+    }
+  };
+
+  const fetchOrders = async () => {
+    if (!user) {
+      return {
+        success: false,
+        requiresAuth: true,
+        error: "Please sign in to view your orders.",
+      };
+    }
+
+    try {
+      const token = localStorage.getItem("og_auth_token");
+      const response = await fetch(`${API_BASE}/api/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await parseApiError(response, "Could not load orders");
+        return { success: false, error: errorMessage };
+      }
+
+      const data = await response.json();
+      return { success: true, orders: data.orders || [] };
+    } catch (error) {
+      return {
+        success: false,
+        error: error?.message || "Could not load orders.",
       };
     }
   };
@@ -257,11 +299,14 @@ export default function App() {
                 wishlist={wishlist}
                 onNavigate={navigate}
                 onAddToCart={protectedAddToCart}
+                onIncreaseQty={protectedAddToCart}
+                onDecreaseQty={decreaseCartItem}
                 onWishlist={protectedToggleWishlist}
                 onToast={setToast}
                 user={user}
                 onAuthOpen={openAuthModal}
                 onSubmitOrder={submitOrder}
+                onFetchOrders={fetchOrders}
               />
             )}
 
