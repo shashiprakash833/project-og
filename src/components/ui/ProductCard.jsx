@@ -1,37 +1,49 @@
 import "./ProductCard.css";
+import { Heart } from "lucide-react";
 
-export default function ProductCard({ product, isWishlisted, onAddToCart, onWishlist }) {
+export default function ProductCard({
+  product,
+  quantity,
+  onAddToCart,
+  onRemoveFromCart,
+  onWishlist,
+  isWishlisted,
+}) {
   return (
     <article className="product-card">
-      <button className="wishlist-btn" onClick={() => onWishlist(product)} aria-label={`Wishlist ${product.name}`}>
-        {isWishlisted ? "★" : "☆"}
-      </button>
+      <div className="product-art">
+        {/* Wishlist Button */}
+        <button
+          className="wishlist-btn"
+          onClick={() => onWishlist(product)}
+          aria-label={`Wishlist ${product.name}`}
+        >
+          <Heart
+            size={22}
+            strokeWidth={2}
+            color={isWishlisted ? "red" : "white"}
+            fill={isWishlisted ? "red" : "none"}
+          />
+        </button>
 
-      <div className={`product-art ${product.color}`}>
         {product.image ? (
-          <> 
-            <div className="product-art-bg" style={{ backgroundImage: `url(${product.image})` }} aria-hidden="true" />
-            <img className="product-art-focus" src={product.image} alt={product.name} loading="lazy" />
+          <>
+            <div
+              className="product-art-bg"
+              style={{ backgroundImage: `url(${product.image})` }}
+              aria-hidden="true"
+            />
+
+            <img
+              className="product-art-focus"
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+            />
           </>
         ) : (
           <span>{product.tag}</span>
         )}
-        {!product.image && <span>{product.tag}</span>}
-      </div>
-
-      <div className="product-hover">
-        <p className="product-tag">{product.tag}</p>
-        <h3>{product.name}</h3>
-        <p className="product-meta">{product.type} · {product.color}</p>
-        <p className="product-price">Rs {product.price.toLocaleString("en-IN")}</p>
-        <div className="product-actions">
-          <button className="hover-wishlist" onClick={() => onWishlist(product)}>
-            {isWishlisted ? "★ Wishlist" : "☆ Wishlist"}
-          </button>
-          <button onClick={() => onAddToCart(product)}>
-            Add to Cart
-          </button>
-        </div>
       </div>
 
       <div className="product-info">
@@ -39,9 +51,18 @@ export default function ProductCard({ product, isWishlisted, onAddToCart, onWish
           <h3>{product.name}</h3>
           <p>Rs {product.price.toLocaleString("en-IN")}</p>
         </div>
-        <button onClick={() => onAddToCart(product)} aria-label={`Add ${product.name} to cart`}>
-          +
-        </button>
+
+        <div className="qty-control">
+          <button className="qty-btn" onClick={() => onRemoveFromCart(product)}>
+            −
+          </button>
+
+          <span className="qty">{quantity}</span>
+
+          <button className="qty-btn" onClick={() => onAddToCart(product)}>
+            +
+          </button>
+        </div>
       </div>
     </article>
   );

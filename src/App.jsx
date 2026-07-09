@@ -17,6 +17,7 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
+
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
   const [user, setUser] = useState(null);
@@ -47,6 +48,21 @@ export default function App() {
   const addToCart = (product) => {
     setCart((current) => [...current, product]);
     setToast(`${product.name} added to cart.`);
+  };
+
+  const removeFromCart = (product) => {
+    setCart((current) => {
+      const index = current.findIndex((item) => item.id === product.id);
+
+      if (index === -1) return current;
+
+      const updated = [...current];
+      updated.splice(index, 1); // remove one quantity
+
+      return updated;
+    });
+
+    setToast(`${product.name} removed from cart.`);
   };
 
   const toggleWishlist = (product) => {
@@ -211,6 +227,7 @@ export default function App() {
   };
 
   const protectedAddToCart = requireAuth(addToCart);
+  const protectedRemoveFromCart = requireAuth(removeFromCart);
   const protectedToggleWishlist = requireAuth(toggleWishlist);
 
   return (
@@ -257,6 +274,7 @@ export default function App() {
                 wishlist={wishlist}
                 onNavigate={navigate}
                 onAddToCart={protectedAddToCart}
+                onRemoveFromCart={protectedRemoveFromCart}
                 onWishlist={protectedToggleWishlist}
                 onToast={setToast}
                 user={user}

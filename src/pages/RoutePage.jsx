@@ -1,17 +1,11 @@
 import { useState } from "react";
 import "./RoutePage.css";
-import {
-  archiveCards,
-  collections,
-  menCollections,
-  womenCollections,
-  menCategories,
-  womenCategories,
-  pageCopy,
-} from "../data/storeData.js";
+import { archiveCards, collections, pageCopy } from "../data/storeData.js";
 import PageHero from "../components/ui/PageHero.jsx";
 import ProductCard from "../components/ui/ProductCard.jsx";
 import NewsletterSection from "../components/sections/NewsletterSection.jsx";
+import GenderCollections from "../components/sections/GenderCollections.jsx";
+import CollectionCategories from "../components/sections/CollectionCategories.jsx";
 
 export default function RoutePage({
   page,
@@ -20,6 +14,7 @@ export default function RoutePage({
   wishlist,
   onNavigate,
   onAddToCart,
+  onRemoveFromCart,
   onWishlist,
   onToast,
   onAuthOpen,
@@ -52,6 +47,7 @@ export default function RoutePage({
   const [orderNumber, setOrderNumber] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const copy =
     page === "category-products"
       ? {
@@ -62,10 +58,30 @@ export default function RoutePage({
           } collection.`,
           image:
             routeParams.gender === "women"
-              ? "/images/collections/womens/women-hero@2x.png"
-              : "/images/collections/mens/men-hero@2x.png",
+              ? "/images/collections/womens/women-section-banner.png"
+              : "/images/collections/mens/men-section-banner.png",
         }
-      : pageCopy[page] || pageCopy.shop;
+      : page === "collections-men" || page === "collections-women"
+        ? {
+            eyebrow: page === "collections-women" ? "Women's" : "Men's",
+            title:
+              page === "collections-women"
+                ? "Women's Collection."
+                : "Men's Collection.",
+            copy: "Explore premium fits designed for everyday confidence and street culture.",
+            image:
+              page === "collections-women"
+                ? "/images/collections/womens/women-section-banner.png"
+                : "/images/collections/mens/men-section-banner.png",
+          }
+        : page === "collections"
+          ? {
+              eyebrow: "Collections",
+              title: "Shop by Gender.",
+              copy: "Pick your lane — men's or women's streetwear.",
+              image: "/images/collections/gender-section-banner.png",
+            }
+          : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
     OGSAVE: 200,
@@ -182,8 +198,28 @@ export default function RoutePage({
         title={copy.title}
         copy={copy.copy}
         image={copy.image}
-        actionLabel={page === "about" ? "Shop OG" : "Back Home"}
-        onAction={() => onNavigate(page === "about" ? "shop" : "home")}
+        actionLabel={
+          page === "about"
+            ? "Shop OG"
+            : page === "collections-men" || page === "collections-women"
+              ? "Back "
+              : "Back Home"
+        }
+        onAction={() => {
+          switch (page) {
+            case "about":
+              onNavigate("shop");
+              break;
+
+            case "collections-men":
+            case "collections-women":
+              onNavigate("collections");
+              break;
+
+            default:
+              onNavigate("home");
+          }
+        }}
       />
 
       {page === "shop" && (
@@ -199,8 +235,12 @@ export default function RoutePage({
                 <ProductCard
                   key={product.id}
                   product={product}
+                  quantity={
+                    cart.filter((item) => item.id === product.id).length
+                  }
                   isWishlisted={wishlist.some((item) => item.id === product.id)}
                   onAddToCart={onAddToCart}
+                  onRemoveFromCart={onRemoveFromCart}
                   onWishlist={onWishlist}
                 />
               ))}
@@ -209,237 +249,31 @@ export default function RoutePage({
       )}
 
       {page === "collections" && (
-        <section className="route-section collection-grid">
-          {collections.map((item) => (
-            <button
-              key={item.id}
-              className="collection-card highlight-cloth"
-              onClick={() => onToast(`${item.title} opened.`)}
-            >
-              <div
-                className="collection-card-bg"
-                style={{ backgroundImage: `url(${item.image})` }}
-                aria-hidden="true"
-              />
-              <img
-                className="collection-card-focus"
-                src={item.image}
-                alt={item.title}
-              />
-              <span>0{item.id}</span>
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-            </button>
-          ))}
-        </section>
+        <GenderCollections onNavigate={onNavigate} onToast={onToast} />
       )}
 
       {page === "collections-men" && (
-        <>
-          <section className="route-section category-section">
-            <h2 className="category-title">Shop by Category</h2>
-
-            <div className="category-grid">
-              {menCategories.map((cat) => (
-                <button
-                  key={cat.key}
-                  className="category-card category-card-visual"
-                  onClick={() =>
-                    onNavigate({
-                      page: "category-products",
-                      params: { gender: "men", key: cat.key, title: cat.title },
-                    })
-                  }
-                >
-                  <div
-                    className="category-card-bg"
-                    style={{ backgroundImage: `url(${cat.image})` }}
-                    aria-hidden="true"
-                  />
-                  <img
-                    className="category-card-focus"
-                    src={cat.image}
-                    alt={cat.title}
-                  />
-                  <span className="category-card-label">{cat.title}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-          <section className="products-heading">
-            <p className="products-tag">OG STREETWEAR</p>
-            <h2>Men's Collection</h2>
-            <p className="products-subtitle">
-              Explore premium fits designed for everyday confidence and street
-              culture.
-            </p>
-          </section>
-
-          <section className="route-section collection-grid">
-            {menCollections.map((item) => {
-              const cartProduct = {
-                id: ` men-${item.id}`,
-                name: item.title,
-                price: item.price || 1499,
-                image: item.image,
-                type: item.type || "men",
-                color: item.color || "multi",
-                gender: "men",
-                tag: "OG",
-              };
-              const isWishlisted = wishlist.some(
-                (w) => w.id === cartProduct.id,
-              );
-
-              return (
-                <div key={item.id} className="collection-card highlight-cloth ">
-                  <div
-                    className="collection-card-bg"
-                    style={{ backgroundImage: `url(${item.image})` }}
-                    aria-hidden="true"
-                  />
-                  <img
-                    className="collection-card-focus"
-                    src={item.image}
-                    alt={item.title}
-                  />
-
-                  <div className="collection-card-hover">
-                    <div className="product-details">
-                      <p>
-                        <strong>Price:</strong> ₹{cartProduct.price}
-                      </p>
-                      <p>
-                        <strong>Color:</strong> {cartProduct.color}
-                      </p>
-                      <div className="product-actions">
-                        <button
-                          className="hover-wishlist"
-                          onClick={() => onWishlist(cartProduct)}
-                        >
-                          {isWishlisted ? "★ Wishlisted" : "☆ Wishlist"}
-                        </button>
-
-                        <button onClick={() => onAddToCart(cartProduct)}>
-                          Add to Cart
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <h3>{item.title}</h3>
-                  <p>{item.copy}</p>
-                </div>
-              );
-            })}
-          </section>
-        </>
+        <CollectionCategories
+          gender="men"
+          onNavigate={onNavigate}
+          cart={cart}
+          wishlist={wishlist}
+          onAddToCart={onAddToCart}
+          onRemoveFromCart={onRemoveFromCart}
+          onWishlist={onWishlist}
+        />
       )}
 
       {page === "collections-women" && (
-        <>
-          <section className="route-section category-section">
-            <h2 className="category-title">Shop by Category</h2>
-
-            <div className="category-grid">
-              {womenCategories.map((cat) => (
-                <button
-                  key={cat.key}
-                  className="category-card category-card-visual"
-                  onClick={() =>
-                    onNavigate({
-                      page: "category-products",
-                      params: {
-                        gender: "women",
-                        key: cat.key,
-                        title: cat.title,
-                      },
-                    })
-                  }
-                >
-                  <div
-                    className="category-card-bg"
-                    style={{ backgroundImage: `url(${cat.image})` }}
-                    aria-hidden="true"
-                  />
-                  <img
-                    className="category-card-focus"
-                    src={cat.image}
-                    alt={cat.title}
-                  />
-                  <span className="category-card-label">{cat.title}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-          <section className="products-heading">
-            <p className="products-tag">OG STREETWEAR</p>
-            <h2>Women's Collection</h2>
-            <p className="products-subtitle">
-              Explore premium fits designed for everyday confidence and street
-              culture.
-            </p>
-          </section>
-
-          <section className="route-section collection-grid">
-            {womenCollections.map((item) => {
-              const cartProduct = {
-                id: `women-${item.id}`,
-                name: item.title,
-                price: item.price || 1499,
-                image: item.image,
-                type: item.type || "women",
-                color: item.color || "multi",
-                gender: "women",
-                tag: "OG",
-              };
-              const isWishlisted = wishlist.some(
-                (w) => w.id === cartProduct.id,
-              );
-
-              return (
-                <div key={item.id} className="collection-card highlight-cloth ">
-                  <div
-                    className="collection-card-bg"
-                    style={{ backgroundImage: `url(${item.image})` }}
-                    aria-hidden="true"
-                  />
-                  <img
-                    className="collection-card-focus"
-                    src={item.image}
-                    alt={item.title}
-                  />
-
-                  <div className="collection-card-hover">
-                    <div className="product-details">
-                      <p>
-                        <strong>Price:</strong> ₹{cartProduct.price}
-                      </p>
-                      <p>
-                        <strong>Color:</strong> {cartProduct.color}
-                      </p>
-                      <div className="product-actions">
-                        <button
-                          className="hover-wishlist"
-                          onClick={() => onWishlist(cartProduct)}
-                        >
-                          {isWishlisted ? "★ Wishlisted" : "☆ Wishlist"}
-                        </button>
-
-                        <button onClick={() => onAddToCart(cartProduct)}>
-                          Add to Cart
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <h3>{item.title}</h3>
-                  <p>{item.copy}</p>
-                </div>
-              );
-            })}
-          </section>
-        </>
+        <CollectionCategories
+          gender="women"
+          onNavigate={onNavigate}
+          cart={cart}
+          wishlist={wishlist}
+          onAddToCart={onAddToCart}
+          onRemoveFromCart={onRemoveFromCart}
+          onWishlist={onWishlist}
+        />
       )}
 
       {page === "category-products" && (
@@ -471,8 +305,6 @@ export default function RoutePage({
 
           <section className="route-section">
             {(() => {
-              console.log(products);
-              console.log(routeParams);
               const categoryProducts = products.filter((product) => {
                 return (
                   product.gender.toLowerCase() ===
@@ -508,10 +340,14 @@ export default function RoutePage({
                     <ProductCard
                       key={product.id}
                       product={product}
+                      quantity={
+                        cart.filter((item) => item.id === product.id).length
+                      }
                       isWishlisted={wishlist.some(
                         (item) => item.id === product.id,
                       )}
                       onAddToCart={onAddToCart}
+                      onRemoveFromCart={onRemoveFromCart}
                       onWishlist={onWishlist}
                     />
                   ))}
@@ -537,8 +373,10 @@ export default function RoutePage({
               <ProductCard
                 key={product.id}
                 product={product}
+                quantity={cart.filter((item) => item.id === product.id).length}
                 isWishlisted={wishlist.some((item) => item.id === product.id)}
                 onAddToCart={onAddToCart}
+                onRemoveFromCart={onRemoveFromCart}
                 onWishlist={onWishlist}
               />
             ))}
@@ -560,10 +398,14 @@ export default function RoutePage({
                   <ProductCard
                     key={product.id}
                     product={product}
+                    quantity={
+                      cart.filter((item) => item.id === product.id).length
+                    }
                     isWishlisted={wishlist.some(
                       (item) => item.id === product.id,
                     )}
                     onAddToCart={onAddToCart}
+                    onRemoveFromCart={onRemoveFromCart}
                     onWishlist={onWishlist}
                   />
                 ))}

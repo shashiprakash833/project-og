@@ -15,18 +15,23 @@
   position: absolute;
   top: 0.7rem;
   right: 0.7rem;
-  z-index: 3;
+  z-index: 10;
   width: 2.2rem;
   height: 2.2rem;
-  display: grid;
+  display: flex;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(16, 16, 16, 0.62);
   color: #f4efe6;
   backdrop-filter: blur(4px);
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
 
 .wishlist-btn:hover {
@@ -214,4 +219,37 @@
   background: var(--ink);
   color: var(--paper);
   font-size: 1.2rem;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s;
+}
+
+.qty-btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+.qty {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
 }
