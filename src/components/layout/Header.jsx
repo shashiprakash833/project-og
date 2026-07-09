@@ -188,9 +188,7 @@ export default function Header({
   {theme === "light" ? "🌙" : "☀️"}
 </button>
 
-        <button className="nav-action" onClick={handleSearchToggle}>
-          🔎 Search
-        </button>
+       
 
 <button
   className="nav-action icon-action desktop-search-btn"
