@@ -95,39 +95,91 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
-    <header className={`header ${scrolled ? "scrolled" : ""} page-${page} ${theme === "light" ? "theme-light" : "theme-dark"}`}>
-      <button className="brand" onClick={() => handleNavigate("home")} aria-label="Go home">
-        <img className="brand-logo" src="/images/brand/og-logo.png" alt="The OG" />
-      </button>
 
-      <button
-        className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen((current) => !current)}
-        aria-label="Toggle navigation menu"
-      >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-      </button>
+    
+    
+    <header className={`header ${scrolled ? "scrolled" : ""}`}>
+     {/* Mobile Menu - Left */}
+    {/* Mobile Left */}
+   <div className="mobile-left">
+
+  <button
+    className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
+    onClick={() => setMenuOpen((current) => !current)}
+    aria-label="Toggle navigation menu"
+  >
+    <span className="hamburger-line"></span>
+    <span className="hamburger-line"></span>
+    <span className="hamburger-line"></span>
+  </button>
+
+  <button
+    className="nav-action icon-action mobile-search-btn"
+    onClick={handleSearchToggle}
+    aria-label="Search"
+  >
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  strokeWidth="1.8"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <circle cx="10.5" cy="10.5" r="6.5"/>
+  <line x1="15.5" y1="15.5" x2="21" y2="21"/>
+</svg>
+  </button>
+
+</div>
+{/* Logo */}
+<div className="brand-wrapper">
+    <button className="brand"
+    onClick={() => handleNavigate("home")}
+   aria-label="Go home"
+    >
+    <img
+    className="brand-logo"
+    src="/images/brand/og-logo.png"
+    alt="The OG"
+  />
+</button>
+</div>
+
+
 
       {menuOpen && (
         <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
       )}
 
       <nav className={menuOpen ? "nav open" : "nav"}>
-        {navItems.map((item) => (
-          <button
-            key={item.page}
-            className={`nav-link ${page === item.page ? "active" : ""}`}
-            onClick={() => handleNavigate(item.page)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
 
-      <div className="header-actions">
+  
 
+  {navItems.map((item) => (
+    <button
+      key={item.page}
+      className={`nav-link ${page === item.page ? "active" : ""}`}
+      onClick={() => handleNavigate(item.page)}
+    >
+      {item.label}
+    </button>
+  ))}
+
+</nav>
+
+{menuOpen && (
+  <button
+    className="menu-close-btn"
+    onClick={() => setMenuOpen(false)}
+    aria-label="Close Menu"
+  >
+    ✕
+  </button>
+)}
+
+     <div className="header-actions">
         <button
   className="nav-action theme-toggle-btn"
   onClick={onThemeToggle}
@@ -135,9 +187,31 @@ export default function Header({
 >
   {theme === "light" ? "🌙" : "☀️"}
 </button>
+
         <button className="nav-action" onClick={handleSearchToggle}>
           🔎 Search
         </button>
+
+<button
+  className="nav-action icon-action desktop-search-btn"
+  onClick={handleSearchToggle}
+  aria-label="Search"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="10.5" cy="10.5" r="6.5" />
+    <line x1="15.5" y1="15.5" x2="21" y2="21" />
+  </svg>
+</button>
+        
+
         <button
           className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
