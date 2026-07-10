@@ -1,3 +1,4 @@
+import { FaBars } from "react-icons/fa";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { navItems } from "../../data/storeData.js";
 import "./Header.css";
@@ -104,15 +105,12 @@ export default function Header({
    <div className="mobile-left">
 
   <button
-    className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-    onClick={() => setMenuOpen((current) => !current)}
-    aria-label="Toggle navigation menu"
-  >
-    <span className="hamburger-line"></span>
-    <span className="hamburger-line"></span>
-    <span className="hamburger-line"></span>
-  </button>
-
+  className="mobile-menu-btn"
+  onClick={() => setMenuOpen((current) => !current)}
+  aria-label="Toggle navigation menu"
+>
+  <FaBars size={18} />
+</button>
   <button
     className="nav-action icon-action mobile-search-btn"
     onClick={handleSearchToggle}
@@ -134,7 +132,7 @@ export default function Header({
 
 </div>
 {/* Logo */}
-<div className="brand-wrapper">
+<div className={`brand-wrapper ${menuOpen ? "hide" : ""}`}>
     <button className="brand"
     onClick={() => handleNavigate("home")}
    aria-label="Go home"
@@ -178,8 +176,7 @@ export default function Header({
     ✕
   </button>
 )}
-
-     <div className="header-actions">
+<div className={`header-actions ${menuOpen ? "hide" : ""}`}>
         <button
   className="nav-action theme-toggle-btn"
   onClick={onThemeToggle}
