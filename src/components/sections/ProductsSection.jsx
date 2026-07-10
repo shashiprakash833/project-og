@@ -1,45 +1,31 @@
-import { useMemo, useState } from "react";
-import ProductCard from "../ui/ProductCard.jsx";
+import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
 import "./ProductsSection.css";
 
-const filters = ["all", "hoodies", "tees", "caps", "bottoms", "jackets"];
+const carouselImages = [
+  { src: "/images/Carousel/trendy_accessories_banner.webp", alt: "Drop 1", caption: "New Arrivals" },
+  { src: "/images/Carousel/mega_sale_banner.webp", alt: "Drop 2", caption: "Limited Run" },
+  { src: "/images/Carousel/mens_streetwear_banner.webp", alt: "Drop 3", caption: "Street Essentials" },
+];
 
-export default function ProductsSection({ products, wishlist, onAddToCart, onWishlist, onNavigate }) {
-  const [filter, setFilter] = useState("all");
-  const filteredProducts = useMemo(
-    () => (filter === "all" ? products : products.filter((product) => product.type === filter)),
-    [filter, products]
-  );
-
+export default function ProductsSection({ onNavigate }) {
   return (
     <section className="products-section" id="shop">
-      <div className="section-title compact">
+      {/* <div className="section-title compact">
         <p>Featured</p>
         <h2>Drops.</h2>
         <span>Handpicked heat. Limited quantity. Infinite style.</span>
-      </div>
+      </div> */}
 
-      <div className="filters">
-        {filters.map((item) => (
-          <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>
-            {item}
-          </button>
-        ))}
-      </div>
+      <FeaturedDropsCarousel
+        images={carouselImages}
+        title=""
+        onNavigate={onNavigate}
+        shopPage="shop"
+      />
 
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            isWishlisted={wishlist.some((item) => item.id === product.id)}
-            onAddToCart={onAddToCart}
-            onWishlist={onWishlist}
-          />
-        ))}
-      </div>
-
-      <button className="text-link" onClick={() => onNavigate("shop")}>View All Products</button>
+      <button className="text-link" onClick={() => onNavigate("shop")}>
+        View All Products
+      </button>
     </section>
   );
 }

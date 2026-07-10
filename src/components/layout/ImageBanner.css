@@ -24,7 +24,7 @@
 
 .image-banner-overlay .explore-collection-btn {
   position: relative;
-  z-index: 999;
+  z-index: 0;
 
   /* Move slightly down while staying perfectly centered */
   transform: translate(30px, 55px);

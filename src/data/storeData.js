@@ -1,9 +1,9 @@
 export const navItems = [
-  { label: "Shop", page: "shop" },
-  { label: "Collections", page: "collections" },
-  { label: "Drops", page: "drops" },
-  { label: "Archive", page: "archive" },
-  { label: "About OG", page: "about" }
+  { label: "SHOP", page: "shop" },
+  { label: "COLLECTIONS", page: "collections" },
+  { label: "MEN", page: "collections-men" },
+  { label: "WOMEN", page: "collections-women" },
+  { label: "ABOUT OG", page: "about" },
 ];
 export const products = [
   // ================= MEN OVERSIZED =================

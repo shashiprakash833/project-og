@@ -1,4 +1,12 @@
+.mobile-left {
+  display: none;
+}
+
 .mobile-menu-btn {
+  display: none;
+}
+
+.mobile-search-btn {
   display: none;
 }
 
@@ -7,7 +15,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
-  z-index: 95;
+  z-index: 999;
   animation: fadeIn 0.3s ease;
 }
 
@@ -19,6 +27,12 @@
 @media (max-width: 1023px) {
   .header {
     grid-template-columns: auto 1fr auto;
+  }
+
+  .mobile-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .mobile-menu-btn {
@@ -56,6 +70,19 @@
 
   .mobile-menu-btn.open .hamburger-line:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobile-search-btn {
+    display: flex;
+    padding: 0 !important;
+    width: 2rem;
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .desktop-search-btn {
+    display: none;
   }
 
   .nav {

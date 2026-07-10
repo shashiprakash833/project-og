@@ -19,8 +19,7 @@ export default function ProductCard({
           aria-label={`Wishlist ${product.name}`}
         >
           <Heart
-            size={22}
-            strokeWidth={2}
+           
             color={isWishlisted ? "red" : "white"}
             fill={isWishlisted ? "red" : "none"}
           />
