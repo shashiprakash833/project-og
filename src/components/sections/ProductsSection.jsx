@@ -77,7 +77,7 @@ export default function ProductsSection({
         ))}
       </div>
 
-<<<<<<< HEAD
+ 
       <button
         className="text-link"
         onClick={() => onNavigate && onNavigate("shop")}
@@ -92,7 +92,7 @@ export default function ProductsSection({
           onAddToCart={onAddToCart}
         />
       )}
-=======
+
       <div className="collection-header">
   <span className="collection-label">DISCOVER</span>
 
@@ -112,7 +112,6 @@ export default function ProductsSection({
   </button>
 </div>
 
->>>>>>> 0d98ed8 (Update homepage layout, move collections, improve lookbook and community UI)
     </section>
   );
 }
