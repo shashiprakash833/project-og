@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./CommunitySection.css";
 
@@ -10,9 +11,19 @@ const galleryData = [
 ];
 
 export default function CommunitySection({ onToast }) {
+  const goToBanner = () => {
+    const bannerSection = document.getElementById("image-banner-section");
+
+    if (bannerSection) {
+      bannerSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <section className="og-community">
-      {/* LEFT SIDE */}
       <div className="og-left">
         <p className="og-tag">OG COMMUNITY</p>
 
@@ -30,15 +41,21 @@ export default function CommunitySection({ onToast }) {
         </button>
       </div>
 
-      {/* RIGHT SIDE */}
       <div className="og-gallery">
         {galleryData.map((item) => (
           <div
             key={item.title}
-            className="og-card"
-            onClick={() =>
-              onToast?.(`${item.title} saved to moodboard.`)
-            }
+            className="og-card og-card--clickable"
+            onClick={goToBanner}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                goToBanner();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={`Open banner from ${item.title}`}
           >
             <img src={item.image} alt={item.title} />
 

@@ -38,23 +38,18 @@ export default function GenderCollections({ onNavigate, onToast }) {
         >
           <div
             className="gender-card-bg"
-            style={{
-              backgroundImage: `url(${tile.image})`,
-            }}
-            aria-hidden="true"
+            style={{ backgroundImage: `url(${tile.image})` }}
           />
 
           <img
             className="gender-card-focus"
             src={tile.image}
             alt={`${tile.title} Collection`}
-            loading="lazy"
           />
 
           <div className="gender-copy">
             <h3>{tile.title}</h3>
             <p>{tile.copy}</p>
-
             <span className="btn outline">Explore</span>
           </div>
         </button>

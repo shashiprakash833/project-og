@@ -196,3 +196,24 @@
 }
 
 }
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.og-card--clickable {
+  cursor: pointer;
+}
+
+.og-card--clickable:focus-visible {
+  outline: 2px solid #e11d2e;
+  outline-offset: 3px;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .og-card--clickable:hover {
+    transform: none;
+  }
+}
