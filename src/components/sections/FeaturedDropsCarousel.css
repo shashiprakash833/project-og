@@ -1,0 +1,138 @@
+.featured-carousel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.featured-carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.featured-carousel-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+}
+
+.featured-carousel-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.featured-carousel-controls button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.featured-carousel-controls button:hover {
+  background: #111;
+  color: #fff;
+}
+
+.featured-carousel-stage {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111;
+}
+
+.featured-carousel-image {
+  display: block;
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  animation: fadeSlide 0.4s ease;
+}
+
+.featured-carousel-caption {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fixed "Shop Now" button — stays in place while images rotate behind it */
+.featured-carousel-shop-btn {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+
+  padding: 14px 40px;
+  border: none;
+  border-radius: 30px;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.featured-carousel-shop-btn:hover {
+  background: #111;
+  color: #fff;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.featured-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.dot.active {
+  background: #111;
+  transform: scale(1.3);
+}
+
+@media (max-width: 640px) {
+  .featured-carousel-image {
+    height: 260px;
+  }
+
+  .featured-carousel-shop-btn {
+    bottom: 18px;
+    padding: 10px 28px;
+    font-size: 0.85rem;
+  }
+}

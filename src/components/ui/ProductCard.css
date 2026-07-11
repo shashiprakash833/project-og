@@ -36,7 +36,6 @@
 
 .wishlist-btn:hover {
   transform: scale(1.08);
-  background: rgba(165, 31, 28, 0.88);
 }
 
 .wishlist-btn.active {
@@ -208,6 +207,9 @@
 .product-info p {
   margin-top: 0.25rem;
   color: var(--muted);
+   color: #e11d2e;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .product-info button {

@@ -6,6 +6,7 @@
 
   width: 100%;
   max-width: 1200px;
+<<<<<<< HEAD
   margin: 40px auto;
   padding: 0 20px;
 
@@ -21,6 +22,16 @@
   height: 380px;
 
   border-radius: 16px;
+=======
+  margin: 1.6rem auto;
+  padding: 0 24px;
+}
+.gender-card {
+  position: relative;
+  height: 350px;
+  width: 100%;
+  border-radius: 12px;
+>>>>>>> origin/sagarika
   overflow: hidden;
   cursor: pointer;
 
@@ -31,8 +42,11 @@
   border: 1px solid var(--line);
   background: #111;
 }
+<<<<<<< HEAD
 
 /* ---------------- BACKGROUND ---------------- */
+=======
+>>>>>>> origin/sagarika
 .gender-card-bg {
   position: absolute;
   inset: 0;
@@ -43,8 +57,11 @@
   transform: scale(1.1);
   z-index: 0;
 }
+<<<<<<< HEAD
 
 /* ---------------- IMAGE ---------------- */
+=======
+>>>>>>> origin/sagarika
 .gender-card-focus {
   position: absolute;
   inset: 0;
@@ -56,31 +73,45 @@
   z-index: 1;
   transition: all 0.4s ease;
 }
-
 .gender-card:hover .gender-card-focus {
   transform: scale(1.05);
 }
+<<<<<<< HEAD
 
 /* ---------------- TEXT ---------------- */
+=======
+>>>>>>> origin/sagarika
 .gender-copy {
   position: relative;
   z-index: 2;
+<<<<<<< HEAD
 
   width: 100%;
   padding: 20px;
   text-align: center;
+=======
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+>>>>>>> origin/sagarika
   color: #fff;
 
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
-
 .gender-copy h3 {
   font-size: 26px;
   margin: 0;
+<<<<<<< HEAD
+=======
+  font-size: 2rem;
+>>>>>>> origin/sagarika
   font-weight: 700;
 }
-
 .gender-copy p {
+<<<<<<< HEAD
   margin: 6px 0 12px;
   font-size: 14px;
   opacity: 0.9;
@@ -90,6 +121,17 @@
 .gender-copy .btn.outline {
   padding: 8px 18px;
   font-size: 13px;
+=======
+  margin: 10px 0 20px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 320px;
+}
+.gender-copy .btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 2px solid #fff;
+>>>>>>> origin/sagarika
   border-radius: 30px;
 
   border: 2px solid #ff2a2a;
@@ -99,6 +141,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
+<<<<<<< HEAD
 
 .gender-copy .btn.outline:hover {
   background: red;
@@ -115,5 +158,122 @@
 
   .gender-card {
     height: 320px;
+=======
+.gender-copy .btn:hover {
+  background: #fff;
+  color: #111;
+}
+
+.collection-banner-section {
+  max-width: 1200px;
+  margin: 1.6rem auto;
+  padding: 0 24px;
+}
+.collection-banner-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}.collection-banner-card {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #111;
+}
+.collection-banner-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.35s ease;
+}
+.collection-banner-card:hover img {
+  transform: scale(1.03);
+}
+/* ===== Responsive breakpoints ===== */
+@media (max-width: 992px) {
+  .gender-card {
+    height: 300px;
+  }
+  .collection-banner-card img {
+    height: 300px;
+  }
+  .gender-copy h3 {
+    font-size: 1.7rem;
+  }
+  .gender-copy p {
+    font-size: 16px;
+  }
+  .gender-copy .btn {
+    padding: 10px 24px;
+  }
+}
+@media (max-width: 768px) {
+  .gender-collections {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    padding: 0 16px;
+  }
+  .collection-banner-section {
+    padding: 0 16px;
+  }
+  .collection-banner-grid {
+    gap: 0.85rem;
+  }
+  .gender-card {
+    height: 280px;
+  }
+  .collection-banner-card img {
+    height: 240px;
+  }
+  .gender-copy {
+    bottom: 22px;
+  }
+  .gender-copy h3 {
+    font-size: 1.5rem;
+  }
+  .gender-copy p {
+    font-size: 15px;
+    margin: 8px 0 16px;
+  }
+  .gender-copy .btn {
+    padding: 9px 22px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .gender-collections {
+    margin: 1rem auto;
+    padding: 0 12px;
+  }
+  .collection-banner-section {
+    margin: 1rem auto;
+    padding: 0 12px;
+  }
+  .gender-card {
+    height: 220px;
+    border-radius: 10px;
+  }
+  .collection-banner-card {
+    border-radius: 10px;
+  }
+  .collection-banner-card img {
+    height: 180px;
+  }
+  .gender-copy {
+    bottom: 16px;
+    padding: 0 12px;
+  }
+  .gender-copy h3 {
+    font-size: 1.25rem;
+  }
+  .gender-copy p {
+    font-size: 13px;
+    max-width: 260px;
+    margin: 6px 0 14px;
+  }
+  .gender-copy .btn {
+    padding: 8px 18px;
+    font-size: 13px;
+>>>>>>> origin/sagarika
   }
 }
