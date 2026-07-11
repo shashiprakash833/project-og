@@ -6,6 +6,8 @@ export const navItems = [
   { label: "About OG", page: "about" }
  
 ];
+
+
 export const products = [
   // ================= MEN OVERSIZED =================
    {

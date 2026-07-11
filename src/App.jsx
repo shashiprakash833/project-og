@@ -4,9 +4,10 @@ import Header from "./components/layout/Header.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import RoutePage from "./pages/RoutePage.jsx";
+import CategoryPage from "./pages/CategoryPage.jsx";
 import AuthModal from "./components/ui/AuthModal.jsx";
-import { ChatProvider } from "./context/ChatContext.jsx"; // This should be the correct path
-import ChatBot from "./components/AIChat/ChatBot.jsx"; // This is the correct path
+import { ChatProvider } from "./context/ChatContext.jsx";
+import ChatBot from "./components/AIChat/ChatBot.jsx";
 import { products } from "./data/storeData.js";
 
 const INTRO_TIME = 3200;
@@ -18,33 +19,38 @@ export default function App() {
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
   const [user, setUser] = useState(null);
   const [authModal, setAuthModal] = useState({ open: false, mode: "login" });
   const [authError, setAuthError] = useState("");
+  const [currentGender, setCurrentGender] = useState("men");
 
   const navigate = (nextPage) => {
     let params = {};
     let pageName = nextPage;
-
     if (typeof nextPage === "string" && nextPage.includes("?")) {
       const [p, query] = nextPage.split("?");
       pageName = p;
       query.split("&").forEach((pair) => {
         const [k, v] = pair.split("=");
-        params[k] = v ? decodeURIComponent(v) : "";
+        params[k] = v? decodeURIComponent(v) : "";
       });
     } else if (typeof nextPage === "object") {
       pageName = nextPage.page || pageName;
       params = nextPage.params || {};
     }
-
-    if (pageName !== "search") {
-      setSearchQuery("");
+    
+    if (pageName === "gender-men") {
+      setCurrentGender("men");
+      pageName = "categories";
     }
-
+    if (pageName === "gender-women") {
+      setCurrentGender("women");
+      pageName = "categories";
+    }
+    
+    if (pageName!== "search") setSearchQuery("");
     setPage(pageName);
     setRouteParams(params);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -58,101 +64,53 @@ export default function App() {
   const removeFromCart = (product) => {
     setCart((current) => {
       const index = current.findIndex((item) => item.id === product.id);
-
       if (index === -1) return current;
-
       const updated = [...current];
-      updated.splice(index, 1); // remove one quantity
-
+      updated.splice(index, 1);
       return updated;
     });
-
     setToast(`${product.name} removed from cart.`);
   };
 
   const toggleWishlist = (product) => {
     setWishlist((current) => {
       const exists = current.some((item) => item.id === product.id);
-      setToast(
-        exists
-          ? `${product.name} removed from wishlist.`
-          : `${product.name} saved to wishlist.`,
-      );
-      return exists
-        ? current.filter((item) => item.id !== product.id)
-        : [...current, product];
+      setToast(exists? `${product.name} removed from wishlist.` : `${product.name} saved to wishlist.`);
+      return exists? current.filter((item) => item.id!== product.id) : [...current, product];
     });
   };
 
   const clearCart = () => setCart([]);
-
   const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-  const submitOrder = async ({
-    items,
-    totalAmount,
-    shippingAddress,
-    paymentMethod,
-    shippingPhone,
-  }) => {
-    if (!user) {
-      return {
-        success: false,
-        requiresAuth: true,
-        error: "Please sign in to place the order.",
-      };
-    }
-
+  const submitOrder = async ({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }) => {
+    if (!user) return { success: false, requiresAuth: true, error: "Please sign in to place the order." };
     try {
       const token = localStorage.getItem("og_auth_token");
       const response = await fetch(`${API_BASE}/api/orders`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          items,
-          totalAmount,
-          shippingAddress,
-          paymentMethod,
-          shippingPhone,
-        }),
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }),
       });
-
       if (!response.ok) {
-        const errorMessage = await parseApiError(
-          response,
-          "Order failed to submit",
-        );
+        const errorMessage = await parseApiError(response, "Order failed to submit");
         return { success: false, error: errorMessage };
       }
-
       const data = await response.json();
       clearCart();
       return { success: true, orderId: data.orderId };
     } catch (error) {
-      return {
-        success: false,
-        error: error?.message || "Order failed to submit.",
-      };
+      return { success: false, error: error?.message || "Order failed to submit." };
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("og_auth_token");
     if (!token) return;
-
-    fetch(`${API_BASE}/api/auth/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data?.user) setUser(data.user);
-      })
-      .catch(() => {
-        localStorage.removeItem("og_auth_token");
-      });
+    fetch(`${API_BASE}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+  .then((response) => response.json())
+  .then((data) => { if (data?.user) setUser(data.user); })
+  .catch(() => { localStorage.removeItem("og_auth_token"); });
   }, []);
 
   const openAuthModal = (mode = "login") => {
@@ -160,9 +118,7 @@ export default function App() {
     setAuthModal({ open: true, mode });
   };
 
-  const closeAuthModal = () => {
-    setAuthModal((current) => ({ ...current, open: false }));
-  };
+  const closeAuthModal = () => setAuthModal((current) => ({...current, open: false }));
 
   const parseApiError = async (response, fallback) => {
     try {
@@ -176,9 +132,7 @@ export default function App() {
   const login = async ({ email, password }) => {
     try {
       const response = await fetch(`${API_BASE}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }),
       });
       if (!response.ok) {
         const errorMessage = await parseApiError(response, "Login failed");
@@ -198,9 +152,7 @@ export default function App() {
   const register = async ({ name, email, password }) => {
     try {
       const response = await fetch(`${API_BASE}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email, password }),
       });
       if (!response.ok) {
         const errorMessage = await parseApiError(response, "Signup failed");
@@ -235,15 +187,60 @@ export default function App() {
   const protectedRemoveFromCart = requireAuth(removeFromCart);
   const protectedToggleWishlist = requireAuth(toggleWishlist);
 
+  const renderPage = () => {
+    if (page === "home") {
+      return (
+        <HomePage
+          products={products}
+          wishlist={wishlist}
+          onNavigate={navigate}
+          onAddToCart={protectedAddToCart}
+          onWishlist={protectedToggleWishlist}
+          onToast={setToast}
+        />
+      );
+    }
+    
+    // Handle all category types: oversized, bottoms, tees, tank tops, accessories
+    if (["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(page)) {
+      return (
+        <CategoryPage
+          products={products}
+          onAddToCart={protectedAddToCart}
+          onWishlist={protectedToggleWishlist}
+          wishlist={wishlist}
+          onNavigate={navigate}
+          category={page}
+          gender={currentGender}
+        />
+      );
+    }
+    
+    return (
+      <RoutePage
+        page={page}
+        routeParams={routeParams}
+        products={products}
+        cart={cart}
+        wishlist={wishlist}
+        onNavigate={navigate}
+        onAddToCart={protectedAddToCart}
+        onRemoveFromCart={protectedRemoveFromCart}
+        onWishlist={protectedToggleWishlist}
+        onToast={setToast}
+        user={user}
+        onAuthOpen={openAuthModal}
+        onSubmitOrder={submitOrder}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
+    );
+  };
+
   return (
     <ChatProvider>
       <main className={`app ${theme}`}>
-        {showSplash && (
-          <SplashScreen
-            duration={INTRO_TIME}
-            onFinish={() => setShowSplash(false)}
-          />
-        )}
+        {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
 
         {!showSplash && (
           <>
@@ -256,41 +253,12 @@ export default function App() {
               onAuthOpen={openAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() =>
-                setTheme(theme === "light" ? "dark" : "light")
-              }
+              onThemeToggle={() => setTheme(theme === "light"? "dark" : "light")}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
             />
 
-            {page === "home" ? (
-              <HomePage
-                products={products}
-                wishlist={wishlist}
-                onNavigate={navigate}
-                onAddToCart={protectedAddToCart}
-                onWishlist={protectedToggleWishlist}
-                onToast={setToast}
-              />
-            ) : (
-              <RoutePage
-                page={page}
-                routeParams={routeParams}
-                products={products}
-                cart={cart}
-                wishlist={wishlist}
-                onNavigate={navigate}
-                onAddToCart={protectedAddToCart}
-                onRemoveFromCart={protectedRemoveFromCart}
-                onWishlist={protectedToggleWishlist}
-                onToast={setToast}
-                user={user}
-                onAuthOpen={openAuthModal}
-                onSubmitOrder={submitOrder}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-              />
-            )}
+            {renderPage()}
 
             <Footer onNavigate={navigate} onToast={setToast} />
           </>
@@ -302,9 +270,7 @@ export default function App() {
           onClose={closeAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() =>
-            openAuthModal(authModal.mode === "login" ? "signup" : "login")
-          }
+          onSwitchMode={() => openAuthModal(authModal.mode === "login"? "signup" : "login")}
           error={authError}
         />
 
