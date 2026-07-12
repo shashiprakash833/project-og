@@ -47,40 +47,42 @@ export default function RoutePage({
   const [orderNumber, setOrderNumber] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const text = "Original. Authentic. OG.";
+  const aboutHeading = "Built for those who lead, not follow.";
+
 
   const copy =
     page === "category-products"
       ? {
-          eyebrow: routeParams.gender === "women" ? "Women's" : "Men's",
-          title: `${routeParams.title || "Category"}.`,
-          copy: `Handpicked ${routeParams.title?.toLowerCase() || "pieces"} for the ${
-            routeParams.gender === "women" ? "women's" : "men's"
+        eyebrow: routeParams.gender === "women" ? "Women's" : "Men's",
+        title: `${routeParams.title || "Category"}.`,
+        copy: `Handpicked ${routeParams.title?.toLowerCase() || "pieces"} for the ${routeParams.gender === "women" ? "women's" : "men's"
           } collection.`,
+        image:
+          routeParams.gender === "women"
+            ? "/images/collections/womens/women-section-banner.png"
+            : "/images/collections/mens/men-section-banner.png",
+      }
+      : page === "collections-men" || page === "collections-women"
+        ? {
+          eyebrow: page === "collections-women" ? "Women's" : "Men's",
+          title:
+            page === "collections-women"
+              ? "Women's Collection."
+              : "Men's Collection.",
+          copy: "Explore premium fits designed for everyday confidence and street culture.",
           image:
-            routeParams.gender === "women"
+            page === "collections-women"
               ? "/images/collections/womens/women-section-banner.png"
               : "/images/collections/mens/men-section-banner.png",
         }
-      : page === "collections-men" || page === "collections-women"
-        ? {
-            eyebrow: page === "collections-women" ? "Women's" : "Men's",
-            title:
-              page === "collections-women"
-                ? "Women's Collection."
-                : "Men's Collection.",
-            copy: "Explore premium fits designed for everyday confidence and street culture.",
-            image:
-              page === "collections-women"
-                ? "/images/collections/womens/women-section-banner.png"
-                : "/images/collections/mens/men-section-banner.png",
-          }
         : page === "collections"
           ? {
-              eyebrow: "Collections",
-              title: "Shop by Gender.",
-              copy: "Pick your lane — men's or women's streetwear.",
-              image: "/images/collections/gender-section-banner.png",
-            }
+            eyebrow: "Collections",
+            title: "Shop by Gender.",
+            copy: "Pick your lane — men's or women's streetwear.",
+            image: "/images/collections/gender-section-banner.png",
+          }
           : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
@@ -96,9 +98,9 @@ export default function RoutePage({
   const isPaymentComplete =
     paymentMethod === "credit"
       ? paymentDetails.cardNumber.trim() &&
-        paymentDetails.expiry.trim() &&
-        paymentDetails.cvc.trim() &&
-        paymentDetails.nameOnCard.trim()
+      paymentDetails.expiry.trim() &&
+      paymentDetails.cvc.trim() &&
+      paymentDetails.nameOnCard.trim()
       : paymentMethod === "upi"
         ? paymentDetails.upiId.trim()
         : true;
@@ -308,7 +310,7 @@ export default function RoutePage({
               const categoryProducts = products.filter((product) => {
                 return (
                   product.gender.toLowerCase() ===
-                    routeParams.gender.toLowerCase() &&
+                  routeParams.gender.toLowerCase() &&
                   product.type.toLowerCase() === routeParams.key.toLowerCase()
                 );
               });
@@ -847,7 +849,7 @@ export default function RoutePage({
               onMouseEnter={(event) => {
                 const video = event.currentTarget.querySelector("video");
                 if (video) {
-                  video.play().catch(() => {});
+                  video.play().catch(() => { });
                 }
               }}
               onMouseLeave={(event) => {
@@ -882,8 +884,35 @@ export default function RoutePage({
             </div>
 
             <div className="about-copy">
-              <p className="about-eyebrow">Original. Authentic. OG.</p>
-              <h2>Built for those who lead, not follow.</h2>
+              <p className="about-eyebrow">
+                {text.split("").map((char, index) => (
+                  <span
+                    key={index}
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </span>
+                ))}
+              </p>
+
+              <h2 className="about-heading">
+                {aboutHeading.split(" ").map((word, wordIndex) => (
+                  <span className="word" key={wordIndex}>
+                    {word.split("").map((char, charIndex) => (
+                      <span
+                        key={charIndex}
+                        className="letter"
+                        style={{
+                          animationDelay: `${(wordIndex * 10 + charIndex) * 0.05}s`,
+                        }}
+                      >
+                        {char}
+                      </span>
+                    ))}
+                    <span>&nbsp;</span>
+                  </span>
+                ))}
+              </h2>
               <p>
                 OG Street Wear brings premium street style to your rotation with
                 bold graphics, signature fits, and limited-run drops. Discover
