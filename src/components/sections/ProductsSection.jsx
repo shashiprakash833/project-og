@@ -1,9 +1,15 @@
-<<<<<<< HEAD
 import { useMemo, useRef, useState } from "react";
 import ProductCard from "../ui/ProductCard.jsx";
+import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
 import "./ProductsSection.css";
 
 const filters = ["all", "oversized", "tees", "bottoms", "accessories"];
+
+const carouselImages = [
+  { src: "/images/Carousel/trendy_accessories_banner.webp", alt: "Drop 1", caption: "New Arrivals" },
+  { src: "/images/Carousel/mega_sale_banner.webp", alt: "Drop 2", caption: "Limited Run" },
+  { src: "/images/Carousel/mens_streetwear_banner.webp", alt: "Drop 3", caption: "Street Essentials" },
+];
 
 // Top row - IMAGE ONLY
 function ImageOnlyCard({ product }) {
@@ -59,24 +65,24 @@ export default function ProductsSection({
   const uniqueProducts = useMemo(() => {
     const seen = new Map();
     for (const p of products) {
-      if (p && p.id!= null &&!seen.has(p.id)) {
+      if (p && p.id != null && !seen.has(p.id)) {
         seen.set(p.id, p);
       }
     }
     return Array.from(seen.values());
   }, [products]);
 
-  const normalize = (val) => (val?? "").toString().trim().toLowerCase();
+  const normalize = (val) => (val ?? "").toString().trim().toLowerCase();
 
   const filteredProducts = useMemo(() => {
     if (filter === "all") {
       const men = uniqueProducts
-      .filter((p) => normalize(p.gender) === "men")
-      .slice(0, 5);
+        .filter((p) => normalize(p.gender) === "men")
+        .slice(0, 5);
       const women = uniqueProducts
-      .filter((p) => normalize(p.gender) === "women")
-      .slice(0, 5);
-      return [...men,...women];
+        .filter((p) => normalize(p.gender) === "women")
+        .slice(0, 5);
+      return [...men, ...women];
     }
     return uniqueProducts.filter(
       (p) => normalize(p.type) === normalize(filter)
@@ -87,7 +93,7 @@ export default function ProductsSection({
     if (!selectedProduct) return [];
     return uniqueProducts.filter(
       (p) =>
-        p.id!== selectedProduct.id &&
+        p.id !== selectedProduct.id &&
         normalize(p.type) === normalize(selectedProduct.type)
     );
   }, [selectedProduct, uniqueProducts]);
@@ -115,21 +121,9 @@ export default function ProductsSection({
   const scrollByAmount = (ref, amount) => {
     ref.current?.scrollBy({ left: amount, behavior: "smooth" });
   };
-=======
-import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
-import "./ProductsSection.css";
 
-const carouselImages = [
-  { src: "/images/Carousel/trendy_accessories_banner.webp", alt: "Drop 1", caption: "New Arrivals" },
-  { src: "/images/Carousel/mega_sale_banner.webp", alt: "Drop 2", caption: "Limited Run" },
-  { src: "/images/Carousel/mens_streetwear_banner.webp", alt: "Drop 3", caption: "Street Essentials" },
-];
->>>>>>> origin/sagarika
-
-export default function ProductsSection({ onNavigate }) {
   return (
     <section className="products-section" id="shop">
-<<<<<<< HEAD
       <div className="section-title premium">
         <span className="eyebrow">THE OG</span>
         <h2 className="drops-title">
@@ -148,7 +142,7 @@ export default function ProductsSection({ onNavigate }) {
           <button
             key={item}
             type="button"
-            className={filter === item? "active" : ""}
+            className={filter === item ? "active" : ""}
             onClick={() => {
               setFilter(item);
               setSelectedProduct(null);
@@ -159,7 +153,7 @@ export default function ProductsSection({ onNavigate }) {
         ))}
       </div>
 
-      {filteredProducts.length > 0? (
+      {filteredProducts.length > 0 ? (
         <div className="carousel-wrap" key={filter}>
           <button
             type="button"
@@ -174,7 +168,7 @@ export default function ProductsSection({ onNavigate }) {
             {filteredProducts.map((product) => (
               <div
                 className={`product-cell ${
-                  selectedProduct?.id === product.id? "is-selected" : ""
+                  selectedProduct?.id === product.id ? "is-selected" : ""
                 }`}
                 key={product.id}
                 onClick={() => handleCardClick(product)}
@@ -220,7 +214,7 @@ export default function ProductsSection({ onNavigate }) {
           </div>
 
           <div className="related-grid">
-            {relatedProducts.length > 0? (
+            {relatedProducts.length > 0 ? (
               relatedProducts.map((product) => (
                 <div
                   className="related-grid-item"
@@ -264,7 +258,6 @@ export default function ProductsSection({ onNavigate }) {
           Explore Collection
         </button>
       </div>
-=======
       {/* <div className="section-title compact">
         <p>Featured</p>
         <h2>Drops.</h2>
@@ -281,7 +274,6 @@ export default function ProductsSection({ onNavigate }) {
       <button className="text-link" onClick={() => onNavigate("shop")}>
         View All Products
       </button>
->>>>>>> origin/sagarika
     </section>
   );
 }
