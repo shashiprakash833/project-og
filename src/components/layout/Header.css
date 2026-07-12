@@ -2,6 +2,126 @@
    HEADER — BASE (mobile-first is easier to reason about,
    but this file is desktop-first to match your JSX/data)
 ===================================================== */
+.mobile-left {
+  display: none;
+}
+
+.mobile-menu-btn {
+  display: none;
+}
+
+.mobile-search-btn {
+  display: none;
+}
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 1023px) {
+  .header {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .mobile-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2.2rem;
+    height: 1.5rem;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 110;
+  }
+
+  .mobile-menu-btn.open {
+    color: var(--ink) !important;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobile-search-btn {
+    display: flex;
+    padding: 0 !important;
+    width: 2rem;
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .desktop-search-btn {
+    display: none;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(20rem, 80vw);
+    background: var(--paper);
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.8rem;
+    padding: 5rem 2rem;
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -10px 0 30px var(--shadow);
+  }
+
+  .nav.open {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  .nav button {
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    width: 100%;
+    padding: 0.5rem 0;
+    color: var(--ink) !important;
+  }
+}
 
 .header {
   position: fixed;
@@ -44,17 +164,11 @@
   filter: none;
 }
 
-/* =====================================================
-   MOBILE-LEFT — hidden on desktop
-===================================================== */
 
 .mobile-left {
   display: none;
-}
 
-/* =====================================================
-   BRAND / LOGO — always perfectly centered
-===================================================== */
+
 
 .brand-wrapper {
   grid-column: 1;
@@ -91,9 +205,6 @@
   transition: width 0.3s ease;
 }
 
-/* =====================================================
-   NAV — desktop inline
-===================================================== */
 
 .nav {
   grid-column: 2;
@@ -101,11 +212,6 @@
   display: none; /* logo occupies col 2 on desktop; nav rendered separately below */
 }
 
-/* On desktop we actually want nav visible alongside the logo, so give it
-   its own row using the same column trick: place it in a flex line under
-   the brand OR, simplest + safest given your single-row grid: overlay nav
-   centered under/with the logo using absolute layering only on mobile,
-   and on desktop treat nav as a flex sibling that shares col 2. */
 @media (min-width: 769px) {
   .header {
     grid-template-columns: 160px 1fr 220px;
@@ -195,10 +301,6 @@
   width: 100%;
 }
 
-/* =====================================================
-   HEADER ACTIONS (theme toggle, desktop search, wishlist,
-   cart, profile) — desktop
-===================================================== */
 
 .header-actions {
   height: 100%;
@@ -293,9 +395,6 @@
   color: var(--red);
 }
 
-/* =====================================================
-   PROFILE
-===================================================== */
 
 .profile-container {
   position: relative;
@@ -837,4 +936,5 @@ body.dark .hamburger-line,
     gap:0;
 }
 
+}
 }

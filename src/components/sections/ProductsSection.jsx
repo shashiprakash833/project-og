@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMemo, useRef, useState } from "react";
 import ProductCard from "../ui/ProductCard.jsx";
 import "./ProductsSection.css";
@@ -114,9 +115,21 @@ export default function ProductsSection({
   const scrollByAmount = (ref, amount) => {
     ref.current?.scrollBy({ left: amount, behavior: "smooth" });
   };
+=======
+import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
+import "./ProductsSection.css";
 
+const carouselImages = [
+  { src: "/images/Carousel/trendy_accessories_banner.webp", alt: "Drop 1", caption: "New Arrivals" },
+  { src: "/images/Carousel/mega_sale_banner.webp", alt: "Drop 2", caption: "Limited Run" },
+  { src: "/images/Carousel/mens_streetwear_banner.webp", alt: "Drop 3", caption: "Street Essentials" },
+];
+>>>>>>> origin/sagarika
+
+export default function ProductsSection({ onNavigate }) {
   return (
     <section className="products-section" id="shop">
+<<<<<<< HEAD
       <div className="section-title premium">
         <span className="eyebrow">THE OG</span>
         <h2 className="drops-title">
@@ -251,6 +264,24 @@ export default function ProductsSection({
           Explore Collection
         </button>
       </div>
+=======
+      {/* <div className="section-title compact">
+        <p>Featured</p>
+        <h2>Drops.</h2>
+        <span>Handpicked heat. Limited quantity. Infinite style.</span>
+      </div> */}
+
+      <FeaturedDropsCarousel
+        images={carouselImages}
+        title=""
+        onNavigate={onNavigate}
+        shopPage="shop"
+      />
+
+      <button className="text-link" onClick={() => onNavigate("shop")}>
+        View All Products
+      </button>
+>>>>>>> origin/sagarika
     </section>
   );
 }
