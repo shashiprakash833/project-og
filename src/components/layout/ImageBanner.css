@@ -26,25 +26,6 @@
 
 .image-banner-overlay .explore-collection-btn {
   position: relative;
-<<<<<<< HEAD
-  z-index: 3;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-  z-index: 0;
-.explore-collection-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 220px;
-  min-height: 52px;
-  padding: 16px 34px;
-  border: none;
-=======
   z-index: 10;
 
   transform: translate(30px, 55px);
@@ -55,7 +36,6 @@
   color: #131212;
 
   border: 1px solid rgba(255, 255, 255, 0.4);
->>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
   border-radius: 999px;
 
   font-size: 15px;

@@ -6,8 +6,10 @@ import ProductCard from "../components/ui/ProductCard.jsx";
 import NewsletterSection from "../components/sections/NewsletterSection.jsx";
 import GenderCollections from "../components/sections/GenderCollections.jsx";
 import CollectionCategories from "../components/sections/CollectionCategories.jsx";
+import BrandLogo from "../components/ui/BrandLogo.jsx";
 
 export default function RoutePage({
+  theme = "dark",
   page,
   products,
   cart,
@@ -878,11 +880,7 @@ export default function RoutePage({
           <div className="about-hero">
             <div className="about-logo-wrap">
               <div className="about-logo-glow" aria-hidden="true" />
-              <img
-                className="about-logo"
-                src="/images/brand/og-logo.png"
-                alt="The OG"
-              />
+              <BrandLogo theme={theme} className="about-logo" />
             </div>
 
             <div className="about-copy">

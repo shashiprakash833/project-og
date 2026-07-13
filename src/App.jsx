@@ -222,6 +222,7 @@ export default function App() {
     
     return (
       <RoutePage
+        theme={theme}
         page={page}
         routeParams={routeParams}
         products={products}

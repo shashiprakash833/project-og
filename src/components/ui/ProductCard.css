@@ -317,14 +317,10 @@
   position: relative;
 }
 
-<<<<<<< HEAD
 .product-image img {
-  width: 500%;
+  width: 100%;
   object-fit: cover;
-
 }
-=======
->>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
 
 /* WISHLIST */
 .wishlist-btn {

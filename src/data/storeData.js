@@ -1,21 +1,13 @@
 export const navItems = [
-
-
-  { label: "Shop", page: "shop" },
-  { label: "Collections", page: "collections" },
-  { label: "Drops", page: "drops" },
-  { label: "Archive", page: "archive" },
-  { label: "About OG", page: "about" },
   { label: "SHOP", page: "shop" },
   { label: "COLLECTIONS", page: "collections" },
   { label: "MEN", page: "collections-men" },
   { label: "WOMEN", page: "collections-women" },
   { label: "ABOUT OG", page: "about" },
-
 ];
 
 
-export const products = [
+const rawProducts = [
   // ================= MEN OVERSIZED =================
    {
     id: "men-over-005",
@@ -1930,6 +1922,14 @@ export const products = [
   { id: "women-over-005", name: "OG Women's Urban Oversized Tee", price: 1899, type: "oversized", color: "Lavender", gender: "women", tag: "LIMITED", image: "/images/collections/womens/women-5.png" },
 
 ];
+
+export const products = Array.from(
+  new Map(
+    rawProducts
+      .filter((p) => p && p.id)
+      .map((p) => [p.id, p])
+  ).values()
+);
 
 
 export const collections = [

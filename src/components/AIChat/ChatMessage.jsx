@@ -36,7 +36,7 @@ export default function ChatMessage({ message }) {
   return (
     <article className={`kai-message ${isAssistant ? "kai-assistant" : "kai-user"}`}>
       <div className="kai-avatar" aria-hidden="true">
-        {isAssistant ? <img src="/images/brand/og-logo.png" alt="" /> : "YOU"}
+        {isAssistant ? <img src="/images/brand/og-logo-original.jpg" alt="" /> : "YOU"}
       </div>
       <div>
         <div className="kai-bubble">{renderMarkdown(message.content)}</div>
