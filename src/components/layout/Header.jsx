@@ -32,7 +32,7 @@ export default function Header({
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
+      if (!event.target.closest(".profile-container")) {
         setProfileOpen(false);
       }
     };
@@ -294,6 +294,14 @@ export default function Header({
             </div>
 
             <button
+              className="auth-button my-orders-btn"
+              onClick={() => handleNavigate("orders")}
+              style={{ backgroundColor: "#d81b2a", color: "#fff", marginBottom: "8px" }}
+            >
+              My Orders
+            </button>
+
+            <button
               className="auth-button"
               onClick={onLogout}
             >
@@ -305,6 +313,14 @@ export default function Header({
             <p className="profile-dropdown-header">
               Welcome to OG
             </p>
+
+            <button
+              className="auth-button my-orders-btn"
+              onClick={() => handleNavigate("orders")}
+              style={{ backgroundColor: "#d81b2a", color: "#fff", marginBottom: "8px" }}
+            >
+              My Orders
+            </button>
 
             <button
               className="auth-button"
@@ -444,37 +460,89 @@ export default function Header({
         <circle cx="18" cy="20" r="1.5"/>
       </svg>
     </button>
-<button
-  className="profile-icon-btn"
-  onClick={() => {
-    if (user) {
+<div className="profile-container" style={{ position: "relative" }}>
+  <button
+    className="profile-icon-btn"
+    onClick={() => {
       setProfileOpen((prev) => !prev);
-    } else {
-      onAuthOpen("login");
       setMenuOpen(false);
-    }
-  }}
->
-        <svg
-          className="profile-icon"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="1.8"
+    }}
+  >
+    <svg
+      className="profile-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.5 19.125a8.25 8.25 0 0115 0"
+      />
+    </svg>
+  </button>
+
+  <div className={`profile-dropdown ${profileOpen ? "open" : ""}`} style={{ right: 0, top: "50px" }}>
+    {user ? (
+      <>
+        <div className="profile-user-info">
+          <strong>{displayName}</strong>
+          <small style={{ color: "#111" }}>{user.email}</small>
+        </div>
+
+        <button
+          className="auth-button my-orders-btn"
+          onClick={() => handleNavigate("orders")}
+          style={{ backgroundColor: "#d81b2a", color: "#fff", marginBottom: "8px" }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4.5 19.125a8.25 8.25 0 0115 0"
-          />
-        </svg>
-      </button>
+          My Orders
+        </button>
+
+        <button
+          className="auth-button"
+          onClick={onLogout}
+        >
+          Logout
+        </button>
+      </>
+    ) : (
+      <>
+        <p className="profile-dropdown-header" style={{ color: "#111" }}>
+          Welcome to OG
+        </p>
+
+        <button
+          className="auth-button my-orders-btn"
+          onClick={() => handleNavigate("orders")}
+          style={{ backgroundColor: "#d81b2a", color: "#fff", marginBottom: "8px" }}
+        >
+          My Orders
+        </button>
+
+        <button
+          className="auth-button"
+          onClick={() => onAuthOpen("login")}
+        >
+          Login
+        </button>
+
+        <button
+          className="auth-button"
+          onClick={() => onAuthOpen("signup")}
+        >
+          Register
+        </button>
+      </>
+    )}
+  </div>
+</div>
 
 
   </div>

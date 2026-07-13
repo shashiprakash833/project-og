@@ -21,6 +21,7 @@ export default function RoutePage({
   onSubmitOrder,
   user,
   routeParams = {},
+  orders = [],
 }) {
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("credit");
@@ -83,7 +84,14 @@ export default function RoutePage({
             copy: "Pick your lane — men's or women's streetwear.",
             image: "/images/collections/gender-section-banner.png",
           }
-          : pageCopy[page] || pageCopy.shop;
+          : page === "orders"
+            ? {
+              eyebrow: "History",
+              title: "Your Orders.",
+              copy: "Track your legacy of premium streetwear selections.",
+              image: "/images/story.jpeg",
+            }
+            : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
     OGSAVE: 200,
@@ -162,12 +170,6 @@ export default function RoutePage({
       setCheckoutError(
         "Complete shipping and payment details before confirming.",
       );
-      return;
-    }
-
-    if (!user) {
-      onAuthOpen("login");
-      setCheckoutError("Please sign in to finish your order.");
       return;
     }
 
@@ -959,6 +961,67 @@ export default function RoutePage({
               </p>
             </div>
           </div>
+        </section>
+      )}
+
+      {page === "orders" && (
+        <section className="route-section orders-page">
+          <div className="route-header" style={{ marginBottom: "2rem" }}>
+            <p className="route-eyebrow">Tracking</p>
+            <h2>My Orders</h2>
+            <span>Here are the purchases you have made with OG Streetwear.</span>
+          </div>
+
+          {orders.length === 0 ? (
+            <div className="empty-state">
+              <h3>You haven't placed any orders yet.</h3>
+              <p>Style waits for no one. Start building your wardrobe now.</p>
+              <button className="btn primary animate-cart" onClick={() => onNavigate("shop")} style={{ marginTop: "1rem" }}>
+                Explore Products
+              </button>
+            </div>
+          ) : (
+            <div className="orders-list">
+              {orders.map((order) => (
+                <div key={order.orderId} className="order-history-card">
+                  <div className="order-card-header">
+                    <div>
+                      <span className="order-ref">Order #OG{String(order.orderId).padStart(6, "0")}</span>
+                      <span className="order-date">{order.date}</span>
+                    </div>
+                    <span className="order-status-badge pending">{order.status || "Processing"}</span>
+                  </div>
+
+                  <div className="order-card-body">
+                    <div className="order-info-col">
+                      <h4>Items ({order.items?.length || 0})</h4>
+                      {order.items?.map((item, idx) => (
+                        <p key={idx}>
+                          <strong>{item.name}</strong> x{item.quantity} — ₹{item.price.toLocaleString("en-IN")}
+                        </p>
+                      ))}
+                    </div>
+
+                    <div className="order-info-col">
+                      <h4>Delivery Address</h4>
+                      <p className="address-name">{order.shippingAddress?.fullName}</p>
+                      <p>{order.shippingAddress?.street}</p>
+                      <p>{order.shippingAddress?.city}, {order.shippingAddress?.state} - {order.shippingAddress?.zip}</p>
+                      <p className="phone-info">Phone: {order.shippingPhone}</p>
+                    </div>
+
+                    <div className="order-info-col price-col">
+                      <h4>Payment Method / Total</h4>
+                      <p style={{ textTransform: "uppercase", fontSize: "0.8rem", color: "var(--muted)" }}>
+                        {order.paymentMethod === "credit" ? "Credit Card" : order.paymentMethod === "upi" ? "UPI" : "COD"}
+                      </p>
+                      <span className="order-total-price">₹{order.totalAmount.toLocaleString("en-IN")}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
