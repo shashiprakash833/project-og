@@ -317,11 +317,6 @@
   position: relative;
 }
 
-.product-image img {
-  width: 500%
-  object-fit: cover;
-
-}
 
 /* WISHLIST */
 .wishlist-btn {

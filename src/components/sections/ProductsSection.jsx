@@ -51,6 +51,7 @@ function RelatedProductCard({ product, onAddToCart }) {
 }
 
 export default function ProductsSection({
+  theme,
   products = [],
   wishlist = [],
   onAddToCart,
@@ -123,7 +124,10 @@ export default function ProductsSection({
   };
 
   return (
-    <section className="products-section" id="shop">
+      <section
+  className={`products-section ${theme === "dark" ? "dark" : ""}`}
+  id="shop"
+>
       <div className="section-title premium">
         <span className="eyebrow">THE OG</span>
         <h2 className="drops-title">
@@ -131,8 +135,8 @@ export default function ProductsSection({
           <span>T</span><span>U</span><span>R</span><span>E</span>
         </h2>
         <p className="subtitle">
-          Handpicked heat.<span> • </span>Limited quantity.<span> • </span>
-          Infinite style.
+           Handpicked heat<span> | </span>Limited quantity<span> | </span>
+          MANY    style
         </p>
         <div className="title-line"></div>
       </div>
@@ -240,7 +244,7 @@ export default function ProductsSection({
           className="text-link big-action-btn"
           onClick={() => onNavigate && onNavigate("shop")}
         >
-          -View All Products
+          View All Products ➜
         </button>
       </div>
 
@@ -253,10 +257,10 @@ export default function ProductsSection({
         <button
           type="button"
           className="collection-btn image-bg-btn"
-          onClick={() => onNavigate && onNavigate("collections")}
+          onClick={() => onNavigate("collections")}
         >
-          Explore Collection
-        </button>
+          <span>Explore Collection</span>
+        </button> 
       </div>
       {/* <div className="section-title compact">
         <p>Featured</p>
@@ -272,7 +276,7 @@ export default function ProductsSection({
       />
 
       <button className="text-link" onClick={() => onNavigate("shop")}>
-        View All Products
+        View All Products ➜
       </button>
     </section>
   );

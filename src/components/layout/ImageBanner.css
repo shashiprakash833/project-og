@@ -2,7 +2,7 @@
   position: relative;
   width: 96%;
   max-width: 1400px;
-  margin: 40px auto;
+  margin: 1px auto;
   overflow: hidden;
   background: var(--charcoal);
   border-radius: 24px;
@@ -75,25 +75,48 @@
     0 0 18px rgba(165, 31, 28, 0.25);
 }
 
+
+
 @media (max-width: 640px) {
+
   .image-banner-overlay .explore-collection-btn {
     transform: translateY(20px);
-
     padding: 12px 24px;
     font-size: 13px;
     letter-spacing: 2px;
+    transition: all .35s ease;
   }
 
-  .image-banner-overlay .explore-collection-btn:hover {
-    transform: translateY(20px) scale(1.02);
+  /* Tap effect for mobile */
+  .image-banner-overlay .explore-collection-btn:active{
+    transform: translateY(20px) scale(.96);
+    background: linear-gradient(
+      135deg,
+      #0f0f0f 0%,
+      #1b1b1b 60%,
+      #6b0d12 100%
+    );
+    color:#fff;
+    border-color:rgba(255,255,255,.8);
+    box-shadow:
+      0 18px 45px rgba(0,0,0,.55),
+      0 0 18px rgba(165,31,28,.25);
+  }
+
+  /* Keep hover for devices that actually support hover */
+  @media (hover:hover){
+    .image-banner-overlay .explore-collection-btn:hover{
+      transform: translateY(20px) scale(1.02);
+      background: linear-gradient(
+        135deg,
+        #0f0f0f 0%,
+        #1b1b1b 60%,
+        #6b0d12 100%
+      );
+      color:#fff;
+    }
   }
 }
-
-
-
-
-
-
 
 
 

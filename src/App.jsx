@@ -191,6 +191,7 @@ export default function App() {
     if (page === "home") {
       return (
         <HomePage
+          theme={theme}
           products={products}
           wishlist={wishlist}
           onNavigate={navigate}

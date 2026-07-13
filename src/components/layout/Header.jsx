@@ -444,12 +444,18 @@ export default function Header({
         <circle cx="18" cy="20" r="1.5"/>
       </svg>
     </button>
-
-    <button
-      className="profile-icon-btn"
-      onClick={() => setProfileOpen(!profileOpen)}
-    >
-       <svg
+<button
+  className="profile-icon-btn"
+  onClick={() => {
+    if (user) {
+      setProfileOpen((prev) => !prev);
+    } else {
+      onAuthOpen("login");
+      setMenuOpen(false);
+    }
+  }}
+>
+        <svg
           className="profile-icon"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -468,7 +474,8 @@ export default function Header({
             d="M4.5 19.125a8.25 8.25 0 0115 0"
           />
         </svg>
-    </button>
+      </button>
+
 
   </div>
 

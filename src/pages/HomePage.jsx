@@ -6,13 +6,14 @@ import CommunitySection from "../components/sections/CommunitySection.jsx";
 import NewsletterSection from "../components/sections/NewsletterSection.jsx";
 import ImageBanner from "../components/layout/ImageBanner.jsx";
 
-export default function HomePage({ products, wishlist, onNavigate, onAddToCart, onWishlist, onToast }) {
+export default function HomePage({theme, products, wishlist, onNavigate, onAddToCart, onWishlist, onToast }) {
   return (
     <>
       <HeroSection onNavigate={onNavigate} />
       <PromiseStrip />
       <ImageBanner onNavigate={onNavigate} />
       <ProductsSection
+        theme={theme}
         products={products}
         wishlist={wishlist}
         onAddToCart={onAddToCart}
