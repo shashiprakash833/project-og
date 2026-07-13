@@ -99,7 +99,10 @@
   background: rgba(16, 16, 16, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.14);
   overflow: hidden;
+  border-top-right-radius: 50%;
+  border-bottom-left-radius: 50%;
 }
+
 
 .about-logo-glow {
   position: absolute;
@@ -107,6 +110,7 @@
   background: radial-gradient(circle at 50% 40%, rgba(165, 31, 28, 0.3), transparent 40%);
   opacity: 0;
   animation: logoGlow 2.2s ease-in-out infinite alternate;
+  margin-top:10px;
 }
 
 .about-logo {
@@ -115,6 +119,8 @@
   z-index: 1;
   transform: scale(0.95);
   transition: transform 0.35s ease;
+  
+  margin-top:1px;
 }
 
 .about-logo-wrap:hover .about-logo {
