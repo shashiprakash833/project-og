@@ -1,33 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./LookbookSection.css";
+import ProductModal from "./ProductModal.jsx";
 
 const slides = [
   {
-    src: "/images/collections/mens/men-1.jpeg",
+    src: "/images/collections/mens/over1.jpeg",
     label: "OG Signature",
     alt: "Bold streetwear for men",
     price: 1999,
   },
   {
-    src: "/images/collections/womens/women-1.png",
+    src: "/images/collections/womens/Female_model_in_sweatshirt_2K_202607021331.jpeg",
     label: "OG Femme",
     alt: "Bold streetwear for women",
     price: 1799,
   },
   {
-    src: "/images/collections/mens/men-3.jpeg",
+    src: "/images/collections/womens/Model_in_oversized_streetwear_tee_202607021331.jpeg",
     label: "Urban Motion",
     alt: "High-impact urban outfit",
     price: 1899,
   },
   {
-    src: "/images/collections/mens/men-4.jpg",
+    src: "/public/images/products/hoo1.jpg",
     label: "Street Command",
-    alt: "Masked streetwear icon",
+    alt: "Streetwear icon",
     price: 2099,
   },
   {
-    src: "/images/collections/womens/women-2.png",
+    src: "/images/collections/mens/bottoms.jpeg",
     label: "Red Rebel",
     alt: "Red statement street style",
     price: 1699,
@@ -45,47 +46,37 @@ export default function LookbookSection({ onNavigate }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const slide = slides[index];
-  const sectionRef = useRef(null);
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    const section = sectionRef.current;
-    if (!video || !section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.45 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <>
-      <section ref={sectionRef} className="lookbook-section">
+      <section className="lookbook-section">
 
-        {/* VIDEO */}
-        <div className="lookbook-video">
-          <video ref={videoRef} muted loop playsInline preload="auto">
-            <source src="/videos/lookbook-duo.mp4" type="video/mp4" />
-          </video>
-          <div className="video-label">Bold Walk</div>
+        {/* UPCOMING OG EVENT REVEALS */}
+        <div className="og-event-card">
+          <div className="event-badge">COMING SOON</div>
+          <div className="event-image-overlay">
+            <img src="/images/story.jpeg" alt="Upcoming Surprise Collection Drop" />
+            <div className="event-gradient"></div>
+          </div>
+          <div className="event-content">
+            <span className="event-eyebrow">OG REVEALS &amp; EVENTS</span>
+            <h3 className="event-title">SURPRISE<br/>COLLECTION</h3>
+            <p className="event-desc">
+              A top-secret, high-concept capsule collection is dropping soon. Enter the realm of raw expression.
+            </p>
+            <div className="reveal-status">
+              <span className="status-dot"></span>
+              <span className="status-text">PREPARING LAUNCH · PHASE 1</span>
+            </div>
+          </div>
         </div>
 
         {/* TEXT */}
         <div className="lookbook-copy">
-          <p>Lookbook 24</p>
-          <h2>Made To Break <span>Rules.</span></h2>
-          <span>This is not just fashion. It is rebellion, identity, and OG.</span>
-          <button onClick={() => onNavigate("archive")}>
+          <span className="lookbook-eyebrow">Lookbook 24</span>
+          <h2 className="lookbook-heading">Made To Break <span>Rules.</span></h2>
+          <p className="lookbook-description">This is not just fashion. It is rebellion, identity, and OG.</p>
+          <button className="lookbook-btn" onClick={() => onNavigate("archive")}>
             Explore Lookbook
           </button>
         </div>
@@ -95,11 +86,15 @@ export default function LookbookSection({ onNavigate }) {
           <div
             className="slider-image"
             onClick={() => setSelectedProduct(slide)}
+            style={{ cursor: "pointer" }}
           >
             <img src={slide.src} alt={slide.alt} />
           </div>
 
-          <h3>{slide.label}</h3>
+          <div className="slider-meta">
+            <h3>{slide.label}</h3>
+            <span>₹{slide.price.toLocaleString("en-IN")}</span>
+          </div>
 
           <button
             className="slider-prev"

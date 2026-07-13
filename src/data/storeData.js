@@ -1,23 +1,17 @@
 export const navItems = [
 
-<<<<<<< HEAD
+
   { label: "Shop", page: "shop" },
   { label: "Collections", page: "collections" },
   { label: "Drops", page: "drops" },
   { label: "Archive", page: "archive" },
-  { label: "About OG", page: "about" }
- 
-
-
-=======
-  
- 
+  { label: "About OG", page: "about" },
   { label: "SHOP", page: "shop" },
   { label: "COLLECTIONS", page: "collections" },
   { label: "MEN", page: "collections-men" },
   { label: "WOMEN", page: "collections-women" },
   { label: "ABOUT OG", page: "about" },
->>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
+
 ];
 
 
