@@ -80,37 +80,54 @@ export default function App() {
     });
   };
 
+  const [orders, setOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem("og_orders");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("og_orders", JSON.stringify(orders));
+  }, [orders]);
+
   const clearCart = () => setCart([]);
   const API_BASE = import.meta.env.VITE_API_BASE || "";
 
   const submitOrder = async ({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }) => {
-    if (!user) return { success: false, requiresAuth: true, error: "Please sign in to place the order." };
-    try {
-      const token = localStorage.getItem("og_auth_token");
-      const response = await fetch(`${API_BASE}/api/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }),
-      });
-      if (!response.ok) {
-        const errorMessage = await parseApiError(response, "Order failed to submit");
-        return { success: false, error: errorMessage };
-      }
-      const data = await response.json();
-      clearCart();
-      return { success: true, orderId: data.orderId };
-    } catch (error) {
-      return { success: false, error: error?.message || "Order failed to submit." };
-    }
+    const orderId = Math.floor(100000 + Math.random() * 900000);
+    const newOrder = {
+      orderId,
+      items,
+      totalAmount,
+      shippingAddress,
+      paymentMethod,
+      shippingPhone,
+      status: "Processing",
+      date: new Date().toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }),
+      userEmail: user ? user.email : "guest"
+    };
+
+    setOrders((current) => [newOrder, ...current]);
+    clearCart();
+    return { success: true, orderId };
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("og_auth_token");
-    if (!token) return;
-    fetch(`${API_BASE}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-  .then((response) => response.json())
-  .then((data) => { if (data?.user) setUser(data.user); })
-  .catch(() => { localStorage.removeItem("og_auth_token"); });
+    const savedUser = localStorage.getItem("og_user");
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("og_user");
+      }
+    }
   }, []);
 
   const openAuthModal = (mode = "login") => {
@@ -130,67 +147,52 @@ export default function App() {
   };
 
   const login = async ({ email, password }) => {
-    try {
-      const response = await fetch(`${API_BASE}/api/auth/login`, {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }),
-      });
-      if (!response.ok) {
-        const errorMessage = await parseApiError(response, "Login failed");
-        setAuthError(errorMessage);
-        return;
-      }
-      const data = await response.json();
-      localStorage.setItem("og_auth_token", data.token);
-      setUser(data.user);
-      closeAuthModal();
-      setToast(`Welcome back, ${data.user.name || data.user.email}`);
-    } catch (error) {
-      setAuthError(error?.message || "Login failed. Please try again.");
+    if (!email) {
+      setAuthError("Please enter an email address.");
+      return;
     }
+    const mockUser = {
+      id: Date.now(),
+      email: email,
+      name: email.split("@")[0] || "User"
+    };
+    setUser(mockUser);
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+    closeAuthModal();
+    setToast(`Welcome back, ${mockUser.name}`);
   };
 
   const register = async ({ name, email, password }) => {
-    try {
-      const response = await fetch(`${API_BASE}/api/auth/register`, {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email, password }),
-      });
-      if (!response.ok) {
-        const errorMessage = await parseApiError(response, "Signup failed");
-        setAuthError(errorMessage);
-        return;
-      }
-      const data = await response.json();
-      localStorage.setItem("og_auth_token", data.token);
-      setUser(data.user);
-      closeAuthModal();
-      setToast(`Welcome, ${data.user.name || data.user.email}`);
-    } catch (error) {
-      setAuthError(error?.message || "Signup failed. Please try again.");
+    if (!email) {
+      setAuthError("Please enter an email address.");
+      return;
     }
+    const mockUser = {
+      id: Date.now(),
+      email: email,
+      name: name || email.split("@")[0] || "User"
+    };
+    setUser(mockUser);
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+    closeAuthModal();
+    setToast(`Welcome, ${mockUser.name}`);
   };
 
   const logout = () => {
-    localStorage.removeItem("og_auth_token");
+    localStorage.removeItem("og_user");
     setUser(null);
     setToast("Logged out successfully.");
   };
 
-  const requireAuth = (action) => (payload) => {
-    if (!user) {
-      openAuthModal("login");
-      return;
-    }
-    action(payload);
-  };
-
-  const protectedAddToCart = requireAuth(addToCart);
-  const protectedRemoveFromCart = requireAuth(removeFromCart);
-  const protectedToggleWishlist = requireAuth(toggleWishlist);
+  const protectedAddToCart = addToCart;
+  const protectedRemoveFromCart = removeFromCart;
+  const protectedToggleWishlist = toggleWishlist;
 
   const renderPage = () => {
     if (page === "home") {
       return (
         <HomePage
+          theme={theme}
           products={products}
           wishlist={wishlist}
           onNavigate={navigate}
@@ -207,11 +209,13 @@ export default function App() {
         <CategoryPage
           products={products}
           onAddToCart={protectedAddToCart}
+          onRemoveFromCart={protectedRemoveFromCart}
           onWishlist={protectedToggleWishlist}
           wishlist={wishlist}
           onNavigate={navigate}
           category={page}
           gender={currentGender}
+          cart={cart}
         />
       );
     }
@@ -231,6 +235,7 @@ export default function App() {
         user={user}
         onAuthOpen={openAuthModal}
         onSubmitOrder={submitOrder}
+        orders={orders}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />

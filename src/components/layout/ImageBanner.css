@@ -1,43 +1,32 @@
-.route-section {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .image-banner-container {
   position: relative;
   width: 96%;
   max-width: 1400px;
-  margin: 80px auto;
-  border-radius: 24px;
+  margin: 1px auto;
   overflow: hidden;
-  background: #111;
-  isolation: isolate;
+  background: var(--charcoal);
+  border-radius: 24px;
 }
 
-.image-banner {
-  display: block;
+.image-banner-container img {
   width: 100%;
-  height: clamp(260px, 42vw, 560px);
+  height: auto;
+  display: block;
   object-fit: cover;
-  object-position: center;
-  opacity: 0.72;
+  opacity: 0.7;
+  border-radius: inherit;
 }
 
-/* dark overlay above image */
 .image-banner-overlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.18);
+  display: grid;
+  place-items: center;
 }
 
-/* keeps button above overlay */
-.image-banner-content {
+.image-banner-overlay .explore-collection-btn {
   position: relative;
+<<<<<<< HEAD
   z-index: 3;
   width: 100%;
   display: flex;
@@ -55,95 +44,99 @@
   min-height: 52px;
   padding: 16px 34px;
   border: none;
+=======
+  z-index: 10;
+
+  transform: translate(30px, 55px);
+
+  padding: 18px 48px;
+
+  background: #5b564b;
+  color: #131212;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+>>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
   border-radius: 999px;
-  background: rgba(248, 245, 239, 0.96);
-  color: #111;
-  font-size: 14px;
+
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  white-space: nowrap;
+
   cursor: pointer;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+
+  box-shadow:
+    0 12px 30px rgba(48, 43, 43, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.explore-collection-btn:hover {
-  transform: translateY(-2px);
-  background: #111;
-  color: #fff;
-}
+.image-banner-overlay .explore-collection-btn:hover {
+  transform: translate(30px, 55px) scale(1.03);
 
-.explore-collection-btn:active {
-  transform: scale(0.98);
-}
+  background: linear-gradient(
+    135deg,
+    #0f0f0f 0%,
+    #1b1b1b 60%,
+    #6b0d12 100%
+  );
 
-.explore-collection-btn:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 4px;
-}
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.8);
 
-/* tablet */
-@media (max-width: 768px) {
-  .image-banner-container {
-    width: calc(100% - 24px);
-    margin: 56px auto;
-    border-radius: 18px;
-  }
-
-  .image-banner {
-    height: 320px;
-  }
-
-  .explore-collection-btn {
-    min-width: 190px;
-    min-height: 46px;
-    padding: 14px 24px;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-  }
-}
-
-/* mobile */
-@media (max-width: 480px) {
-  .image-banner-container {
-    width: calc(100% - 16px);
-    margin: 40px auto;
-    border-radius: 14px;
-  }
-
-  .image-banner {
-    height: 220px;
-  }
-
-  .image-banner-content {
-    padding: 14px;
-  }
-
-  .explore-collection-btn {
-    width: 100%;
-    max-width: 220px;
-    min-width: unset;
-    min-height: 44px;
-    padding: 12px 18px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .explore-collection-btn:hover {
-    transform: none;
-    background: rgba(248, 245, 239, 0.96);
-    color: #111;
-  }
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(165, 31, 28, 0.25);
 }
 
 
 
+@media (max-width: 640px) {
 
+  .image-banner-overlay .explore-collection-btn {
+    transform: translateY(20px);
+    padding: 12px 24px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    transition: all .35s ease;
+  }
 
+  /* Tap effect for mobile */
+  .image-banner-overlay .explore-collection-btn:active{
+    transform: translateY(20px) scale(.96);
+    background: linear-gradient(
+      135deg,
+      #0f0f0f 0%,
+      #1b1b1b 60%,
+      #6b0d12 100%
+    );
+    color:#fff;
+    border-color:rgba(255,255,255,.8);
+    box-shadow:
+      0 18px 45px rgba(0,0,0,.55),
+      0 0 18px rgba(165,31,28,.25);
+  }
 
+  /* Keep hover for devices that actually support hover */
+  @media (hover:hover){
+    .image-banner-overlay .explore-collection-btn:hover{
+      transform: translateY(20px) scale(1.02);
+      background: linear-gradient(
+        135deg,
+        #0f0f0f 0%,
+        #1b1b1b 60%,
+        #6b0d12 100%
+      );
+      color:#fff;
+    }
+  }
+}
 
 
 

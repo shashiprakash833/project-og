@@ -18,16 +18,6 @@ export default function GenderCollections({ onNavigate, onToast }) {
     },
   ];
 
-  const handleNavigate = (tile) => {
-    if (onToast) {
-      onToast(`${tile.title} collection opened.`);
-    }
-
-    if (onNavigate) {
-      onNavigate(`collections-${tile.key}`);
-    }
-  };
-
   const carouselImages = [
     {
       src: "/images/Carousel/couple_combo_banner.webp",
@@ -46,6 +36,37 @@ export default function GenderCollections({ onNavigate, onToast }) {
     },
   ];
 
+  const handleNavigate = (tile) => {
+    if (onToast) {
+      onToast(`${tile.title} collection opened.`);
+    }
+
+    if (onNavigate) {
+      onNavigate(`collections-${tile.key}`);
+    }
+  };
+
+<<<<<<< HEAD
+  const carouselImages = [
+    {
+      src: "/images/Carousel/couple_combo_banner.webp",
+      alt: "Drop 1",
+      caption: "New Arrivals",
+    },
+    {
+      src: "/images/Carousel/mega_fashion_sale_banner.webp",
+      alt: "Drop 2",
+      caption: "Limited Run",
+    },
+    {
+      src: "/images/Carousel/mega_sale_banner.webp",
+      alt: "Drop 3",
+      caption: "Street Essentials",
+    },
+  ];
+
+=======
+>>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
   return (
     <>
       {/* Gender Cards */}
@@ -87,7 +108,10 @@ export default function GenderCollections({ onNavigate, onToast }) {
         shopPage="shop"
       />
 
+<<<<<<< HEAD
       {/* Banner Section */}
+=======
+>>>>>>> 79f246da11b4f8546aa2337f0ae1e57805705185
       <section className="collection-banner-section">
         <div className="collection-banner-grid">
           <div className="collection-banner-card">
