@@ -6,9 +6,9 @@
   background: transparent;
 }
 
-.brand-logo-svg {
-  width: 100%;
-  height: 100%;
+.brand-logo {
+  height: 48px;
+  width: auto;
   display: block;
 }
 
@@ -45,4 +45,34 @@
 }
 .brand-logo-container.light .brand-text-og {
   fill: #101010; /* BLACK in light theme */
+}
+
+
+/* Bigger logo only in Splash Screen */
+.brand-logo-container.splash-logo {
+  width: 420px !important;
+  height: 420px !important;
+}
+
+.brand-logo-container.splash-logo .brand-logo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo-container.splash-logo .brand-text-the {
+  font-size: 120px;
+}
+
+.brand-logo-container.splash-logo .brand-text-og {
+  font-size: 190px;
+}
+
+.brand-logo-container.splash-logo {
+    background: red !important;
+}
+
+.brand-logo.splash-logo {
+    width: 320px !important;
+    height: auto !important;
+    max-width: none !important;
 }

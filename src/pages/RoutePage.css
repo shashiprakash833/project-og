@@ -144,9 +144,18 @@
   display: grid;
   place-items: center;
   min-height: 28rem;
-  background: rgba(16, 16, 16, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(16,16,16,.9);
+  border: 1px solid rgba(255,255,255,.14);
   overflow: hidden;
+
+  border-radius: 0 90px 0 90px;
+
+  transition: all .4s ease;
+}
+
+.about-logo-wrap:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 60px rgba(0,0,0,.35);
 }
 
 .about-logo-glow {
@@ -188,6 +197,7 @@
   opacity: 0;
   transform: rotateX(90deg);
   animation: rotateLetter 0.10s ease forwards;
+
 }
 
 @keyframes rotateLetter {
@@ -1542,3 +1552,40 @@
   }
 }
 
+
+
+/* About OG - Full width card on mobile & tablet */
+@media (max-width: 768px) {
+  .about-panel,
+  .about-hero,
+  .about-logo-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .about-logo-wrap {
+    margin: 0;
+    min-height: 18rem;
+    border-radius: 0 90px 0 90px;
+  }
+
+  .route-section.about-panel {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .about-copy {
+    padding: 0 1rem;
+  }
+}
+
+.app.light .about-actions .btn.outline {
+  color: #1a1a1a !important;
+  border: 2px solid #1a1a1a !important;
+  background: transparent !important;
+}
+
+.app.light .about-actions .btn.outline:hover {
+  background: #1a1a1a !important;
+  color: #fff !important;
+}
