@@ -38,7 +38,6 @@
 /* keeps button above overlay */
 .image-banner-content {
   position: relative;
-<<<<<<< HEAD
   z-index: 3;
   width: 100%;
   display: flex;
@@ -46,10 +45,8 @@
   justify-content: center;
   padding: 20px;
 }
-=======
-  z-index: 0;
->>>>>>> origin/sagarika
 
+  z-index: 0;
 .explore-collection-btn {
   display: inline-flex;
   align-items: center;

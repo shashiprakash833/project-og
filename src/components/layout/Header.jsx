@@ -34,7 +34,7 @@ export default function Header({
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
+      if (profileRef.current &&!profileRef.current.contains(event.target)) {
         setProfileOpen(false);
       }
     };
@@ -57,7 +57,6 @@ export default function Header({
     };
   }, [menuOpen]);
 
-  // Effect for animations
   useLayoutEffect(() => {
     if (wishlistCount > 0) {
       setAnimateWishlist(true);
@@ -90,7 +89,7 @@ export default function Header({
   };
 
   const handleSearchToggle = () => {
-    setSearchOpen((current) => !current);
+    setSearchOpen((current) =>!current);
     setMenuOpen(false);
     setProfileOpen(false);
   };
@@ -98,68 +97,15 @@ export default function Header({
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
-<<<<<<< HEAD
-
-    
-    
-    <header className={`header ${scrolled ? "scrolled" : ""}`}>
-     {/* Mobile Menu - Left */}
-    {/* Mobile Left */}
-   <div className="mobile-left">
-
-  <button
-  className="mobile-menu-btn"
-  onClick={() => setMenuOpen((current) => !current)}
-  aria-label="Toggle navigation menu"
->
-  <FaBars size={18} />
-</button>
-  <button
-    className="nav-action icon-action mobile-search-btn"
-    onClick={handleSearchToggle}
-    aria-label="Search"
-  >
-    <svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="#ffffff"
-  strokeWidth="1.8"
-  strokeLinecap="round"
-  strokeLinejoin="round"
->
-  <circle cx="10.5" cy="10.5" r="6.5"/>
-  <line x1="15.5" y1="15.5" x2="21" y2="21"/>
-</svg>
-  </button>
-
-</div>
-{/* Logo */}
-<div className={`brand-wrapper ${menuOpen ? "hide" : ""}`}>
-    <button className="brand"
-    onClick={() => handleNavigate("home")}
-   aria-label="Go home"
-    >
-    <img
-    className="brand-logo"
-    src="/images/brand/og-logo.png"
-    alt="The OG"
-  />
-</button>
-</div>
-
-
-=======
     <header
-      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${
-        theme === "light" ? "theme-light" : "theme-dark"
+      className={`header ${scrolled? "scrolled" : ""} page-${page} ${
+        theme === "light"? "theme-light" : "theme-dark"
       }`}
     >
-      {/* Mobile Left: hamburger + mobile search */}
       <div className="mobile-left">
         <button
-          className={`mobile-menu-btn ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen((current) => !current)}
+          className={`mobile-menu-btn ${menuOpen? "open" : ""}`}
+          onClick={() => setMenuOpen((current) =>!current)}
           aria-label="Toggle navigation menu"
         >
           <span className="hamburger-line"></span>
@@ -187,7 +133,6 @@ export default function Header({
         </button>
       </div>
 
-      {/* Logo */}
       <div className="brand-wrapper">
         <button
           className="brand"
@@ -201,177 +146,28 @@ export default function Header({
           />
         </button>
       </div>
->>>>>>> origin/sagarika
 
       {menuOpen && (
         <div className="nav-overlay" onClick={() => setMenuOpen(false)} />
       )}
 
-  <nav className={menuOpen ? "nav open" : "nav"}>
-
-<<<<<<< HEAD
-  {navItems.map((item) => (
-    <button
-      key={item.page}
-      className={`nav-link ${page === item.page ? "active" : ""}`}
-      onClick={() => handleNavigate(item.page)}
-    >
-      {item.label}
-    </button>
-  ))}
-
-  <button
-    className="nav-action theme-toggle-btn"
-    onClick={onThemeToggle}
-    aria-label="Toggle Theme"
-  >
-    {theme === "light" ? "🌙" : "☀️"}
-  </button>
-
-  <button
-    className="nav-action icon-action desktop-search-btn"
-    onClick={handleSearchToggle}
-    aria-label="Search"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="10.5" cy="10.5" r="6.5" />
-      <line x1="15.5" y1="15.5" x2="21" y2="21" />
-    </svg>
-  </button>
-
-  <button
-    className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
-    onClick={handleWishlistClick}
-    aria-label={`View wishlist (${wishlistCount} items)`}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 4a5.5 5.5 0 019.5 8C19 16.5 12 21 12 21z"/>
-    </svg>
-    {wishlistCount > 0 && <span className="icon-count">{wishlistCount}</span>}
-  </button>
-
-  <button
-    className={`nav-action icon-action ${animateCart ? "animate-cart" : ""}`}
-    onClick={() => handleNavigate("cart")}
-    aria-label={`View cart (${cartCount} items)`}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 3h2l2.2 10h10.8l2-7H8" />
-      <circle cx="10" cy="20" r="1.5" />
-      <circle cx="18" cy="20" r="1.5" />
-    </svg>
-
-    {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
-  </button>
-
-  <div className="profile-container" ref={profileRef}>
-    <button
-      className="profile-icon-btn"
-      onClick={() => setProfileOpen((p) => !p)}
-      aria-label="Toggle profile menu"
-    >
-      <svg
-        className="profile-icon"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M4.5 19.125a8.25 8.25 0 0115 0"
-        />
-      </svg>
-    </button>
-
-    <div className={`profile-dropdown ${profileOpen ? "open" : ""}`}>
-      {user ? (
-        <>
-          <div className="profile-user-info">
-            <strong title={user.email}>{displayName}</strong>
-            <small>{user.email}</small>
-          </div>
-
-          <button className="auth-button" onClick={onLogout}>
-            Logout
-          </button>
-        </>
-      ) : (
-        <>
-          <p className="profile-dropdown-header">Welcome to OG</p>
-
-          <div className="profile-actions-group">
-            <button className="auth-button" onClick={onThemeToggle}>
-              {theme === "light" ? "Dark Mode" : "Light Mode"}
-            </button>
-          </div>
-
+      <nav className={menuOpen? "nav open" : "nav"}>
+        {navItems.map((item) => (
           <button
-            className="auth-button"
-            onClick={() => onAuthOpen("login")}
+            key={item.page}
+            className={`nav-link ${page === item.page? "active" : ""}`}
+            onClick={() => handleNavigate(item.page)}
           >
-            Login
+            {item.label}
           </button>
+        ))}
 
-          <button
-            className="auth-button"
-            onClick={() => onAuthOpen("signup")}
-          >
-            Register
-          </button>
-        </>
-      )}
-    </div>
-  </div>
-
-</nav>
-
-{menuOpen && (
-  <button
-    className="menu-close-btn"
-    onClick={() => setMenuOpen(false)}
-    aria-label="Close Menu"
-  >
-    ✕
-  </button>
-)}
-=======
-      <div className="header-actions">
         <button
           className="nav-action theme-toggle-btn"
           onClick={onThemeToggle}
           aria-label="Toggle Theme"
         >
-          {theme === "light" ? "🌙" : "☀️"}
+          {theme === "light"? "🌙" : "☀"}
         </button>
 
         <button
@@ -394,7 +190,7 @@ export default function Header({
         </button>
 
         <button
-          className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""}`}
+          className={`nav-action icon-action ${animateWishlist? "animate-wishlist" : ""}`}
           onClick={handleWishlistClick}
           aria-label={`View wishlist (${wishlistCount} items)`}
         >
@@ -413,7 +209,7 @@ export default function Header({
         </button>
 
         <button
-          className={`nav-action icon-action ${animateCart ? "animate-cart" : ""}`}
+          className={`nav-action icon-action ${animateCart? "animate-cart" : ""}`}
           onClick={() => handleNavigate("cart")}
           aria-label={`View cart (${cartCount} items)`}
         >
@@ -436,7 +232,7 @@ export default function Header({
         <div className="profile-container" ref={profileRef}>
           <button
             className="profile-icon-btn"
-            onClick={() => setProfileOpen((p) => !p)}
+            onClick={() => setProfileOpen((p) =>!p)}
             aria-label="Toggle profile menu"
           >
             <svg
@@ -459,8 +255,8 @@ export default function Header({
               />
             </svg>
           </button>
-          <div className={`profile-dropdown ${profileOpen ? "open" : ""}`}>
-            {user ? (
+          <div className={`profile-dropdown ${profileOpen? "open" : ""}`}>
+            {user? (
               <>
                 <div className="profile-user-info">
                   <strong title={user.email}>{displayName}</strong>
@@ -487,7 +283,162 @@ export default function Header({
                     type="button"
                     onClick={onThemeToggle}
                   >
-                    {theme === "light" ? "Dark Mode" : "Light Mode"}
+                    {theme === "light"? "Dark Mode" : "Light Mode"}
+                  </button>
+                </div>
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => onAuthOpen("login")}
+                >
+                  Login
+                </button>
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => onAuthOpen("signup")}
+                >
+                  Register
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+
+      {menuOpen && (
+        <button
+          className="menu-close-btn"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close Menu"
+        >
+          ✕
+        </button>
+      )}
+
+      <div className="header-actions">
+        <button
+          className="nav-action theme-toggle-btn"
+          onClick={onThemeToggle}
+          aria-label="Toggle Theme"
+        >
+          {theme === "light"? "🌙" : "☀"}
+        </button>
+
+        <button
+          className="nav-action icon-action desktop-search-btn"
+          onClick={handleSearchToggle}
+          aria-label="Search"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <line x1="15.5" y1="15.5" x2="21" y2="21" />
+          </svg>
+        </button>
+
+        <button
+          className={`nav-action icon-action ${animateWishlist? "animate-wishlist" : ""}`}
+          onClick={handleWishlistClick}
+          aria-label={`View wishlist (${wishlistCount} items)`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 4a5.5 0 019.5 8C19 16.5 12 21 12 21z" />
+          </svg>
+          {wishlistCount > 0 && (
+            <span className="icon-count">{wishlistCount}</span>
+          )}
+        </button>
+
+        <button
+          className={`nav-action icon-action ${animateCart? "animate-cart" : ""}`}
+          onClick={() => handleNavigate("cart")}
+          aria-label={`View cart (${cartCount} items)`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 3h2l2.2 10h10.8l2-7H8" />
+            <circle cx="10" cy="20" r="1.5" />
+            <circle cx="18" cy="20" r="1.5" />
+          </svg>
+          {cartCount > 0 && <span className="icon-count">{cartCount}</span>}
+        </button>
+
+        <div className="profile-container" ref={profileRef}>
+          <button
+            className="profile-icon-btn"
+            onClick={() => setProfileOpen((p) =>!p)}
+            aria-label="Toggle profile menu"
+          >
+            <svg
+              className="profile-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 19.125a8.25 8.25 0 0115 0"
+              />
+            </svg>
+          </button>
+          <div className={`profile-dropdown ${profileOpen? "open" : ""}`}>
+            {user? (
+              <>
+                <div className="profile-user-info">
+                  <strong title={user.email}>{displayName}</strong>
+                  <small>{user.email}</small>
+                </div>
+                <button
+                  className="auth-button"
+                  type="button"
+                  onClick={() => handleNavigate("orders")}
+                  style={{ marginBottom: "0.5rem" }}
+                >
+                  My Orders
+                </button>
+                <button className="auth-button" type="button" onClick={onLogout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="profile-dropdown-header">Welcome to OG</p>
+                <div className="profile-actions-group">
+                  <button
+                    className="auth-button"
+                    type="button"
+                    onClick={onThemeToggle}
+                  >
+                    {theme === "light"? "Dark Mode" : "Light Mode"}
                   </button>
                 </div>
                 <button
@@ -509,9 +460,8 @@ export default function Header({
           </div>
         </div>
       </div>
->>>>>>> origin/sagarika
 
-      <div className={searchOpen ? "search-drop open" : "search-drop"}>
+      <div className={searchOpen? "search-drop open" : "search-drop"}>
         <div className="search-bar">
           <input
             type="search"
@@ -524,11 +474,4 @@ export default function Header({
       </div>
     </header>
   );
-<<<<<<< HEAD
 }
-
-
-
-=======
-}
->>>>>>> origin/sagarika
