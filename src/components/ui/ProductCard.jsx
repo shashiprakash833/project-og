@@ -2,33 +2,19 @@ import { useState } from "react";
 import ProductModal from "./ProductModal";
 import "./ProductCard.css";
 
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/cartSlice";
-
 export default function ProductCard({
   product,
   isWishlisted,
+  onAddToCart,
   onWishlist,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [wishlist, setWishlist] = useState(!!isWishlisted);
 
-  const dispatch = useDispatch(); // 👈 1. get access to Redux dispatch
-
   const handleWishlist = (e) => {
     e.stopPropagation();
     setWishlist((prev) => !prev);
     onWishlist && onWishlist(product);
-  };
-
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    dispatch(
-      addToCart({
-        ...product,
-        size: product?.sizes?.[0] || "M",
-      })
-    ); // 👈 2. dispatch the Redux action instead of calling a prop
   };
 
   return (
@@ -68,7 +54,17 @@ export default function ProductCard({
           <div className="pcard-bottom-row">
             <p className="pcard-price">₹{product?.price}</p>
 
-            <button className="pcard-cart-btn" onClick={handleAddToCart}>
+            <button
+              className="pcard-cart-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart &&
+                  onAddToCart({
+                    ...product,
+                    size: product?.sizes?.[0] || "M",
+                  });
+              }}
+            >
               ADD TO CART
             </button>
           </div>
@@ -80,6 +76,7 @@ export default function ProductCard({
         <ProductModal
           product={product}
           onClose={() => setShowModal(false)}
+          onAddToCart={onAddToCart}
         />
       )}
     </>

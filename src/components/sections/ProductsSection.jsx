@@ -1,9 +1,7 @@
 import { useMemo, useRef, useState } from "react";
+import ProductCard from "../ui/ProductCard.jsx";
 import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
 import "./ProductsSection.css";
-
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/cartSlice";
 
 const filters = ["all", "oversized", "tees", "bottoms", "accessories"];
 
@@ -23,9 +21,7 @@ function ImageOnlyCard({ product }) {
 }
 
 // RELATED PRODUCT CARD
-function RelatedProductCard({ product }) {
-  const dispatch = useDispatch(); // 👈 dispatch lives here now, no prop needed
-
+function RelatedProductCard({ product, onAddToCart }) {
   return (
     <div className="related-product-card">
       <div className="related-img-wrap">
@@ -47,7 +43,7 @@ function RelatedProductCard({ product }) {
             className="related-add-cart"
             onClick={(e) => {
               e.stopPropagation();
-              dispatch(addToCart(product)); // 👈 dispatch instead of prop call
+              onAddToCart(product);
             }}
           >
             ADD TO CART
@@ -62,6 +58,7 @@ export default function ProductsSection({
   theme,
   products = [],
   wishlist = [],
+  onAddToCart,
   onWishlist,
   onNavigate,
 }) {
@@ -216,7 +213,10 @@ export default function ProductsSection({
                   key={product.id}
                   onClick={() => handleRelatedProductClick(product)}
                 >
-                  <RelatedProductCard product={product} />
+                  <RelatedProductCard
+                    product={product}
+                    onAddToCart={onAddToCart}
+                  />
                 </div>
               ))
             ) : (

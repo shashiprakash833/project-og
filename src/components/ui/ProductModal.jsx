@@ -1,20 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/cartSlice";
 import "./ProductModal.css";
 
 const CATEGORY_COPY = {
   tee: "Crafted from soft, breathable cotton with a relaxed drop-shoulder fit. An everyday staple that pairs with anything in your rotation.",
-  oversized:
-    "Premium oversized streetwear made with heavyweight cotton fabric. Designed for everyday comfort with a relaxed oversized fit and premium quality.",
-  hoodie:
-    "Heavyweight fleece hoodie built for layering. Brushed interior for warmth, boxy fit for that off-duty street look.",
-  bottoms:
-    "Tapered fit with a heavyweight twill build. Made to move with you, from studio sessions to street corners.",
-  jacket:
-    "Structured outerwear with a durable shell and clean lines. Built to be the piece people ask about.",
-  accessories:
-    "Finish the fit with a detail that carries the whole OG identity — small piece, big statement.",
+  oversized: "Premium oversized streetwear made with heavyweight cotton fabric. Designed for everyday comfort with a relaxed oversized fit and premium quality.",
+  hoodie: "Heavyweight fleece hoodie built for layering. Brushed interior for warmth, boxy fit for that off-duty street look.",
+  bottoms: "Tapered fit with a heavyweight twill build. Made to move with you, from studio sessions to street corners.",
+  jacket: "Structured outerwear with a durable shell and clean lines. Built to be the piece people ask about.",
+  accessories: "Finish the fit with a detail that carries the whole OG identity — small piece, big statement.",
 };
 
 function getDescription(product) {
@@ -23,12 +16,14 @@ function getDescription(product) {
   return CATEGORY_COPY[key] || CATEGORY_COPY.oversized;
 }
 
-export default function ProductModal({ product, onClose }) {
+export default function ProductModal({
+  product,
+  onClose,
+  onAddToCart,
+}) {
   const [size, setSize] = useState("");
   const [wishlist, setWishlist] = useState(false);
   const [error, setError] = useState("");
-
-  const dispatch = useDispatch(); // 👈 get Redux dispatch
 
   const handleAddToCart = () => {
     if (!size) {
@@ -38,38 +33,56 @@ export default function ProductModal({ product, onClose }) {
 
     setError("");
 
-    dispatch(
-      addToCart({
+    onAddToCart &&
+      onAddToCart({
         ...product,
         size,
-      })
-    ); // 👈 dispatch instead of calling a prop
+      });
 
     onClose && onClose();
   };
 
   return (
-    <div className="og-modal-overlay" onClick={onClose}>
-      <div className="og-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="og-modal-close" onClick={onClose}>
+    <div
+      className="og-modal-overlay"
+      onClick={onClose}
+    >
+      <div
+        className="og-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* CLOSE */}
+        <button
+          className="og-modal-close"
+          onClick={onClose}
+        >
           ✕
         </button>
 
+        {/* LEFT IMAGE */}
         <div className="modal-left">
-          <img src={product?.image} alt={product?.name} />
+          <img
+            src={product?.image}
+            alt={product?.name}
+          />
         </div>
 
+        {/* RIGHT */}
         <div className="modal-right">
+
           <small className="brand">THE OG</small>
 
           <h2>{product?.name}</h2>
 
-          <h3 className="price">₹{product?.price}</h3>
+          <h3 className="price">
+            ₹{product?.price}
+          </h3>
 
           <p className="color-text">
             <strong>Color:</strong> {product?.color || "Black"}
           </p>
 
+          {/* SIZE */}
           <h4>Select Size</h4>
 
           <div className="sizes">
@@ -87,22 +100,43 @@ export default function ProductModal({ product, onClose }) {
             ))}
           </div>
 
-          {error && <p className="size-error">{error}</p>}
+          {/* ERROR */}
+          {error && (
+            <p className="size-error">{error}</p>
+          )}
 
+          {/* BUTTONS */}
           <div className="modal-buttons">
+
+            {/* WISHLIST */}
             <button
-              className={`wishlist-btn-modal ${wishlist ? "active" : ""}`}
-              onClick={() => setWishlist((prev) => !prev)}
+              className={`wishlist-btn-modal ${
+                wishlist ? "active" : ""
+              }`}
+              onClick={() =>
+                setWishlist((prev) => !prev)
+              }
             >
-              {wishlist ? "❤️ Wishlisted" : "🤍 Wishlist"}
+              {wishlist
+                ? "❤️ Wishlisted"
+                : "🤍 Wishlist"}
             </button>
 
-            <button className="cart-btn" onClick={handleAddToCart}>
+            {/* ADD TO CART */}
+            <button
+              className="cart-btn"
+              onClick={handleAddToCart}
+            >
               🛒 Add To Cart
             </button>
+
           </div>
 
-          <p className="description">{getDescription(product)}</p>
+          {/* DESCRIPTION */}
+          <p className="description">
+            {getDescription(product)}
+          </p>
+
         </div>
       </div>
     </div>
