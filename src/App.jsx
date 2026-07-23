@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import SplashScreen from "./components/ui/SplashScreen.jsx";
+import IntroVideo from "./components/ui/IntroVideo.jsx";
 import Header from "./components/layout/Header.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -15,6 +16,7 @@ const INTRO_TIME = 3200;
 export default function App() {
   const [theme, setTheme] = useState("light");
   const [showSplash, setShowSplash] = useState(true);
+  const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
@@ -157,9 +159,13 @@ export default function App() {
       name: email.split("@")[0] || "User"
     };
     setUser(mockUser);
-    localStorage.setItem("og_user", JSON.stringify(mockUser));
-    closeAuthModal();
-    setToast(`Welcome back, ${mockUser.name}`);
+localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+closeAuthModal();
+
+setShowIntroVideo(true);
+
+setToast(`Welcome back, ${mockUser.name}`);
   };
 
   const register = async ({ name, email, password }) => {
@@ -173,9 +179,13 @@ export default function App() {
       name: name || email.split("@")[0] || "User"
     };
     setUser(mockUser);
-    localStorage.setItem("og_user", JSON.stringify(mockUser));
-    closeAuthModal();
-    setToast(`Welcome, ${mockUser.name}`);
+localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+closeAuthModal();
+
+setShowIntroVideo(true);
+
+setToast(`Welcome, ${mockUser.name}`);
   };
 
   const logout = () => {
@@ -222,6 +232,7 @@ export default function App() {
     
     return (
       <RoutePage
+        theme={theme}
         page={page}
         routeParams={routeParams}
         products={products}
@@ -246,6 +257,11 @@ export default function App() {
     <ChatProvider>
       <main className={`app ${theme}`}>
         {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
+        {showIntroVideo && (
+    <IntroVideo
+        onFinish={() => setShowIntroVideo(false)}
+    />
+)}  
 
         {!showSplash && (
           <>
@@ -286,7 +302,7 @@ export default function App() {
           </div>
         )}
 
-        {!showSplash && <ChatBot />}
+        {!showSplash &&  !showIntroVideo && <ChatBot />}
       </main>
     </ChatProvider>
   );

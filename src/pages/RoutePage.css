@@ -19,7 +19,7 @@
 .archive-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
 }
 
@@ -30,35 +30,83 @@
   box-shadow: 0 1.5rem 2.5rem rgba(16, 16, 16, 0.18);
   transform: translateY(0);
   animation: archiveReveal 0.55s ease forwards;
+  background: var(--paper) !important;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding-bottom: 1.75rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.archive-grid button:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 2rem 3.5rem rgba(16, 16, 16, 0.25);
+  border-color: var(--red);
 }
 
 .archive-media {
   position: relative;
   width: 100%;
   background: #000;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
 }
 
-.archive-media img,
-.archive-media video {
+.archive-media img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.15); /* Zoom in to crop out bottom-right Meta AI watermark */
+  transform-origin: center center;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .archive-media video {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  transition: opacity 0.3s ease;
   object-fit: cover;
+  transform: scale(1.15); /* Match the image zoom to crop out Meta AI watermark */
+  transform-origin: center center;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .archive-grid button:hover .archive-media video {
   opacity: 1;
 }
 
-.archive-media img {
-  width: 100%;
+.archive-grid button:hover .archive-media img,
+.archive-grid button:hover .archive-media video {
+  transform: scale(1.22); /* Extra subtle immersive zoom on hover */
+}
+
+.archive-grid button span {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  margin-top: 1.25rem;
+  display: inline-block;
+}
+
+.archive-grid button h3 {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin: 0.4rem 0 0 0;
+  padding: 0 1.25rem;
+  line-height: 1.3;
   display: block;
 }
 
@@ -96,9 +144,18 @@
   display: grid;
   place-items: center;
   min-height: 28rem;
-  background: rgba(16, 16, 16, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(16,16,16,.9);
+  border: 1px solid rgba(255,255,255,.14);
   overflow: hidden;
+
+  border-radius: 0 90px 0 90px;
+
+  transition: all .4s ease;
+}
+
+.about-logo-wrap:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 60px rgba(0,0,0,.35);
 }
 
 .about-logo-glow {
@@ -140,6 +197,7 @@
   opacity: 0;
   transform: rotateX(90deg);
   animation: rotateLetter 0.10s ease forwards;
+
 }
 
 @keyframes rotateLetter {
@@ -1494,3 +1552,40 @@
   }
 }
 
+
+
+/* About OG - Full width card on mobile & tablet */
+@media (max-width: 768px) {
+  .about-panel,
+  .about-hero,
+  .about-logo-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .about-logo-wrap {
+    margin: 0;
+    min-height: 18rem;
+    border-radius: 0 90px 0 90px;
+  }
+
+  .route-section.about-panel {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .about-copy {
+    padding: 0 1rem;
+  }
+}
+
+.app.light .about-actions .btn.outline {
+  color: #1a1a1a !important;
+  border: 2px solid #1a1a1a !important;
+  background: transparent !important;
+}
+
+.app.light .about-actions .btn.outline:hover {
+  background: #1a1a1a !important;
+  color: #fff !important;
+}

@@ -2,83 +2,86 @@ import { useState } from "react";
 import ProductModal from "./ProductModal";
 import "./ProductCard.css";
 
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
+
 export default function ProductCard({
- product,
- isWishlisted,
- onAddToCart,
- onWishlist,
+  product,
+  isWishlisted,
+  onWishlist,
 }) {
- const [showModal, setShowModal] = useState(false);
- const [wishlist, setWishlist] = useState(!!isWishlisted);
+  const [showModal, setShowModal] = useState(false);
+  const [wishlist, setWishlist] = useState(!!isWishlisted);
 
- const handleWishlist = (e) => {
-e.stopPropagation();
- setWishlist((prev) => !prev);
-onWishlist && onWishlist(product);
- };
+  const dispatch = useDispatch(); // 👈 1. get access to Redux dispatch
 
- return (
- <>
- <div className="pcard">
- {/* IMAGE */}
- <button
- className="pcard-image-btn"
- onClick={() => setShowModal(true)}
- aria-label={`View ${product?.name}`}
- >
- <img
- className="pcard-image"
- src={product?.image}
- alt={product?.name}
- loading="lazy"
- />
- </button>
+  const handleWishlist = (e) => {
+    e.stopPropagation();
+    setWishlist((prev) => !prev);
+    onWishlist && onWishlist(product);
+  };
 
- {/* WISHLIST */}
- <button
- className={`pcard-heart ${wishlist ? "active" : ""}`}
- onClick={handleWishlist}
- aria-label={wishlist ? "Remove from wishlist" : "Add to wishlist"}
- >
- {wishlist ? "♥" : "♡"}
- </button>
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    dispatch(
+      addToCart({
+        ...product,
+        size: product?.sizes?.[0] || "M",
+      })
+    ); // 👈 2. dispatch the Redux action instead of calling a prop
+  };
 
- {/* BODY */}
- <div className="pcard-body">
- <h3 className="pcard-name">{product?.name}</h3>
+  return (
+    <>
+      <div className="pcard">
+        {/* IMAGE */}
+        <button
+          className="pcard-image-btn"
+          onClick={() => setShowModal(true)}
+          aria-label={`View ${product?.name}`}
+        >
+          <img
+            className="pcard-image"
+            src={product?.image}
+            alt={product?.name}
+            loading="lazy"
+          />
+        </button>
 
- {product?.color && (
- <p className="pcard-color">{product.color}</p>
- )}
+        {/* WISHLIST */}
+        <button
+          className={`pcard-heart ${wishlist ? "active" : ""}`}
+          onClick={handleWishlist}
+          aria-label={wishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          {wishlist ? "♥" : "♡"}
+        </button>
 
- <div className="pcard-bottom-row">
- <p className="pcard-price">₹{product?.price}</p>
+        {/* BODY */}
+        <div className="pcard-body">
+          <h3 className="pcard-name">{product?.name}</h3>
 
- <button
- className="pcard-cart-btn"
- onClick={(e) => {
-e.stopPropagation();
-onAddToCart &&
- onAddToCart({
- ...product,
- size: product?.sizes?.[0] || "M",
- });
- }}
- >
- ADD TO CART
- </button>
- </div>
- </div>
- </div>
+          {product?.color && (
+            <p className="pcard-color">{product.color}</p>
+          )}
 
- {/* MODAL */}
- {showModal && (
- <ProductModal
- product={product}
- onClose={() => setShowModal(false)}
- onAddToCart={onAddToCart}
- />
- )}
- </>
- );
+          <div className="pcard-bottom-row">
+            <p className="pcard-price">₹{product?.price}</p>
+
+            <button className="pcard-cart-btn" onClick={handleAddToCart}>
+              ADD TO CART
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* MODAL */}
+      {showModal && (
+        <ProductModal
+          product={product}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+    </>
+  );
 }

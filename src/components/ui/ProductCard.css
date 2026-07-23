@@ -317,6 +317,10 @@
   position: relative;
 }
 
+.product-image img {
+  width: 100%;
+  object-fit: cover;
+}
 
 /* WISHLIST */
 .wishlist-btn {
@@ -588,5 +592,203 @@
     width: 100%;
     padding: 10px;
     text-align: center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===============================
+   PRODUCT CARD (FINAL CLEAN)
+================================= */
+
+.pcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #efeaea;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pcard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* IMAGE */
+.pcard-image-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  background: #efefef;
+  cursor: pointer;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.pcard-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.4s ease;
+}
+
+.pcard:hover .pcard-image {
+  transform: scale(1.06);
+}
+
+/* WISHLIST BUTTON */
+.pcard-heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.pcard-heart:hover {
+  transform: scale(1.12);
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.pcard-heart.active {
+  color: #e8402c;
+  animation: heartPop 0.3s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* BODY */
+.pcard-body {
+  background: #f9f6f6;
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pcard-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  color: #090808;
+}
+
+.pcard-color {
+  font-size: 0.8rem;
+  color: #1307f6;
+  margin-bottom: 8px;
+}
+
+/* BOTTOM ROW */
+.pcard-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.pcard-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #040303;
+  margin: 0;
+}
+
+/* ADD TO CART BUTTON */
+.pcard-cart-btn {
+  border: none;
+  background: #e8402c;
+  color: #fff;
+  padding: 9px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.pcard-cart-btn:hover {
+  background: #c72f1d;
+  transform: translateY(-1px);
+}
+
+.pcard-cart-btn:active {
+  transform: scale(0.95);
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 768px) {
+  .pcard {
+    border-radius: 10px;
+  }
+
+  .pcard-body {
+    padding: 10px 12px;
+  }
+
+  .pcard-name {
+    font-size: 0.85rem;
+  }
+
+  .pcard-color {
+    font-size: 0.72rem;
+  }
+
+  .pcard-price {
+    font-size: 0.88rem;
+  }
+
+  .pcard-cart-btn {
+    padding: 8px 12px;
+    font-size: 0.68rem;
+  }
+
+  .pcard-heart {
+    width: 26px;
+    height: 26px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .pcard-bottom-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pcard-cart-btn {
+    width: 100%;
   }
 }

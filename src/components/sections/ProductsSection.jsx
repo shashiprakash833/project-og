@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState } from "react";
-import ProductCard from "../ui/ProductCard.jsx";
 import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
 import "./ProductsSection.css";
+
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
 
 const filters = ["all", "oversized", "tees", "bottoms", "accessories"];
 
@@ -20,26 +22,32 @@ function ImageOnlyCard({ product }) {
   );
 }
 
-// Bottom row - FULL DETAILS to fill black space
-function RelatedProductCard({ product, onAddToCart }) {
+// RELATED PRODUCT CARD
+function RelatedProductCard({ product }) {
+  const dispatch = useDispatch(); // 👈 dispatch lives here now, no prop needed
+
   return (
     <div className="related-product-card">
       <div className="related-img-wrap">
         <img src={product.image} alt={product.name} loading="lazy" />
       </div>
+
       <div className="related-info">
         <h4 className="related-name">{product.name}</h4>
+
         {product.description && (
           <p className="related-desc">{product.description}</p>
         )}
+
         <div className="related-bottom">
           <span className="related-price">₹{product.price}</span>
+
           <button
             type="button"
             className="related-add-cart"
             onClick={(e) => {
               e.stopPropagation();
-              onAddToCart(product);
+              dispatch(addToCart(product)); // 👈 dispatch instead of prop call
             }}
           >
             ADD TO CART
@@ -54,7 +62,6 @@ export default function ProductsSection({
   theme,
   products = [],
   wishlist = [],
-  onAddToCart,
   onWishlist,
   onNavigate,
 }) {
@@ -62,6 +69,8 @@ export default function ProductsSection({
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const scrollRef = useRef(null);
+
+  const normalize = (val) => (val ?? "").toString().trim().toLowerCase();
 
   const uniqueProducts = useMemo(() => {
     const seen = new Map();
@@ -73,18 +82,19 @@ export default function ProductsSection({
     return Array.from(seen.values());
   }, [products]);
 
-  const normalize = (val) => (val ?? "").toString().trim().toLowerCase();
-
   const filteredProducts = useMemo(() => {
     if (filter === "all") {
       const men = uniqueProducts
         .filter((p) => normalize(p.gender) === "men")
         .slice(0, 5);
+
       const women = uniqueProducts
         .filter((p) => normalize(p.gender) === "women")
         .slice(0, 5);
+
       return [...men, ...women];
     }
+
     return uniqueProducts.filter(
       (p) => normalize(p.type) === normalize(filter)
     );
@@ -92,6 +102,7 @@ export default function ProductsSection({
 
   const relatedProducts = useMemo(() => {
     if (!selectedProduct) return [];
+
     return uniqueProducts.filter(
       (p) =>
         p.id !== selectedProduct.id &&
@@ -101,20 +112,20 @@ export default function ProductsSection({
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
+
     requestAnimationFrame(() => {
       document.getElementById("related-products")?.scrollIntoView({
         behavior: "smooth",
-        block: "start",
       });
     });
   };
 
   const handleRelatedProductClick = (product) => {
     setSelectedProduct(product);
+
     requestAnimationFrame(() => {
-      document.getElementById("image-banner-section")?.scrollIntoView({
+      document.getElementById("shop")?.scrollIntoView({
         behavior: "smooth",
-        block: "start",
       });
     });
   };
@@ -124,23 +135,20 @@ export default function ProductsSection({
   };
 
   return (
-      <section
-  className={`products-section ${theme === "dark" ? "dark" : ""}`}
-  id="shop"
->
+    <section
+      className={`products-section ${theme === "dark" ? "dark" : ""}`}
+      id="shop"
+    >
       <div className="section-title premium">
         <span className="eyebrow">THE OG</span>
-        <h2 className="drops-title">
-          <span>S</span><span>I</span><span>G</span><span>N</span><span>A</span>
-          <span>T</span><span>U</span><span>R</span><span>E</span>
-        </h2>
+        <h2 className="drops-title">SIGNATURE</h2>
         <p className="subtitle">
-           Handpicked heat<span> | </span>Limited quantity<span> | </span>
-          MANY    style
+          Handpicked heat • Limited quantity • Infinite style
         </p>
         <div className="title-line"></div>
       </div>
 
+      {/* FILTERS */}
       <div className="filters">
         {filters.map((item) => (
           <button
@@ -152,11 +160,12 @@ export default function ProductsSection({
               setSelectedProduct(null);
             }}
           >
-            {item.charAt(0).toUpperCase() + item.slice(1)}
+            {item}
           </button>
         ))}
       </div>
 
+      {/* PRODUCTS */}
       {filteredProducts.length > 0 ? (
         <div className="carousel-wrap" key={filter}>
           <button
@@ -171,10 +180,10 @@ export default function ProductsSection({
           <div className="product-row-scroll" ref={scrollRef}>
             {filteredProducts.map((product) => (
               <div
+                key={product.id}
                 className={`product-cell ${
                   selectedProduct?.id === product.id ? "is-selected" : ""
                 }`}
-                key={product.id}
                 onClick={() => handleCardClick(product)}
               >
                 <ImageOnlyCard product={product} />
@@ -192,47 +201,26 @@ export default function ProductsSection({
           </button>
         </div>
       ) : (
-        <p className="no-products" key={filter}>
-          No products found in this category.
-        </p>
+        <p>No products found</p>
       )}
 
+      {/* RELATED */}
       {selectedProduct && (
-        <div className="related-section" id="related-products">
-          <div className="related-header">
-            <div>
-              <span className="related-eyebrow">You clicked</span>
-              <h3 className="related-title">{selectedProduct.name}</h3>
-              <p className="related-subtext">
-                Similar {selectedProduct.type} you may also like
-              </p>
-            </div>
-            <button
-              type="button"
-              className="related-close"
-              onClick={() => setSelectedProduct(null)}
-              aria-label="Close related products"
-            >
-              ✕
-            </button>
-          </div>
+        <div id="related-products" className="related-section">
+          <h3>{selectedProduct.name}</h3>
 
           <div className="related-grid">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((product) => (
                 <div
-                  className="related-grid-item"
                   key={product.id}
                   onClick={() => handleRelatedProductClick(product)}
                 >
-                  <RelatedProductCard
-                    product={product}
-                    onAddToCart={onAddToCart}
-                  />
+                  <RelatedProductCard product={product} />
                 </div>
               ))
             ) : (
-              <p className="no-products">No related products found.</p>
+              <p>No related products</p>
             )}
           </div>
         </div>
@@ -260,13 +248,8 @@ export default function ProductsSection({
           onClick={() => onNavigate("collections")}
         >
           <span>Explore Collection</span>
-        </button> 
+        </button>
       </div>
-      {/* <div className="section-title compact">
-        <p>Featured</p>
-        <h2>Drops.</h2>
-        <span>Handpicked heat. Limited quantity. Infinite style.</span>
-      </div> */}
 
       <FeaturedDropsCarousel
         images={carouselImages}
