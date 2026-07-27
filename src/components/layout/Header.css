@@ -1026,3 +1026,150 @@ height:42px;
 .menu-close-btn:hover {
   transform: rotate(90deg);
 }
+
+/* =========================================================
+   LIGHT / DARK THEME SPECIFIC STYLES FOR THE HEADER
+========================================================= */
+
+/* General background transitions */
+.header, .mobile-header, .mobile-nav {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- THEME DARK (DEFAULT / IMPLICIT) --- */
+.theme-dark {
+  background: transparent;
+}
+.theme-dark.header.scrolled {
+  background: rgba(21, 20, 18, 0.95);
+  border-bottom: 1px solid rgba(244, 239, 230, 0.1);
+}
+.theme-dark .brand-logo {
+  filter: none;
+}
+.theme-dark .desktop-nav .nav-link {
+  color: #f4efe6;
+}
+.theme-dark .nav-action,
+.theme-dark .theme-toggle-btn,
+.theme-dark .profile-icon-btn,
+.theme-dark .mobile-menu-btn,
+.theme-dark .mobile-search-btn {
+  color: #f4efe6;
+}
+.theme-dark .nav-action:hover,
+.theme-dark .theme-toggle-btn:hover,
+.theme-dark .profile-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.theme-dark.mobile-header {
+  background: #111;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.theme-dark.mobile-nav {
+  background: #111;
+}
+.theme-dark.mobile-nav .nav-link {
+  color: #fff;
+}
+
+/* --- THEME LIGHT --- */
+.theme-light {
+  background: transparent;
+}
+
+/* BEFORE SCROLLING (Desktop header is transparent, sits on dark background) */
+.theme-light.header:not(.scrolled) .desktop-nav .nav-link {
+  color: #ffffff;
+}
+.theme-light.header:not(.scrolled) .nav-action,
+.theme-light.header:not(.scrolled) .theme-toggle-btn,
+.theme-light.header:not(.scrolled) .profile-icon-btn {
+  color: #dddddd;
+}
+.theme-light.header:not(.scrolled) .nav-action svg,
+.theme-light.header:not(.scrolled) .profile-icon,
+.theme-light.header:not(.scrolled) .theme-toggle-btn svg {
+  color: #dddddd;
+}
+
+/* AFTER SCROLLING (Desktop header becomes light white/beige) */
+.theme-light.header.scrolled {
+  background: rgba(244, 239, 230, 0.95) !important;
+  border-bottom: 1px solid rgba(16, 16, 16, 0.1);
+}
+.theme-light.header.scrolled .desktop-nav .nav-link {
+  color: #101010 !important;
+}
+.theme-light.header.scrolled .nav-action,
+.theme-light.header.scrolled .theme-toggle-btn,
+.theme-light.header.scrolled .profile-icon-btn {
+  color: #101010 !important;
+}
+.theme-light.header.scrolled .nav-action svg,
+.theme-light.header.scrolled .profile-icon,
+.theme-light.header.scrolled .theme-toggle-btn svg {
+  color: #101010 !important;
+}
+
+/* Hover and active states for scrolled light theme */
+.theme-light.header.scrolled .desktop-nav .nav-link:hover,
+.theme-light.header.scrolled .desktop-nav .nav-link.active {
+  color: #d81b2a !important;
+}
+.theme-light.header.scrolled .nav-action:hover,
+.theme-light.header.scrolled .theme-toggle-btn:hover,
+.theme-light.header.scrolled .profile-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #101010 !important;
+}
+
+/* MOBILE HEADER (Always solid light beige background `#f4efe6` in light theme) */
+.theme-light.mobile-header {
+  background: #f4efe6 !important;
+  border-bottom: 1px solid rgba(16, 16, 16, 0.1);
+}
+.theme-light.mobile-header .mobile-menu-btn,
+.theme-light.mobile-header .mobile-search-btn {
+  color: #101010 !important;
+}
+.theme-light.mobile-header .mobile-menu-btn svg,
+.theme-light.mobile-header .mobile-search-btn svg {
+  color: #101010 !important;
+}
+.theme-light.mobile-header .mobile-right .nav-action,
+.theme-light.mobile-header .mobile-right .profile-icon-btn,
+.theme-light.mobile-header .mobile-right .theme-toggle-btn {
+  color: #101010 !important;
+}
+.theme-light.mobile-header .mobile-right .nav-action svg,
+.theme-light.mobile-header .mobile-right .profile-icon,
+.theme-light.mobile-header .mobile-right .theme-toggle-btn svg {
+  color: #101010 !important;
+}
+
+/* Hover backdrops for mobile buttons in light theme */
+.theme-light.mobile-header .mobile-menu-btn:hover,
+.theme-light.mobile-header .mobile-search-btn:hover,
+.theme-light.mobile-header .mobile-right .nav-action:hover,
+.theme-light.mobile-header .mobile-right .profile-icon-btn:hover,
+.theme-light.mobile-header .mobile-right .theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* MOBILE NAVIGATION DRAWER (Slide out menu) */
+.theme-light.mobile-nav {
+  background: #f4efe6 !important;
+  border-right: 1px solid rgba(16, 16, 16, 0.1);
+}
+.theme-light.mobile-nav .nav-link {
+  color: #101010 !important;
+}
+.theme-light.mobile-nav .menu-close-btn {
+  color: #101010 !important;
+}
+.theme-light.mobile-nav .nav-link:hover,
+.theme-light.mobile-nav .nav-link.active {
+  color: #d81b2a !important;
+}
+

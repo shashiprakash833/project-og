@@ -45,6 +45,11 @@ button {
   color: inherit;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body.no-scroll {
   overflow: hidden;
   height: 100vh;

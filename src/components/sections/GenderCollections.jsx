@@ -48,6 +48,7 @@ export default function GenderCollections({ onNavigate, onToast }) {
 
   return (
     <>
+      {/* Gender Cards */}
       <section className="gender-collections">
         {tiles.map((tile) => (
           <button
@@ -58,9 +59,7 @@ export default function GenderCollections({ onNavigate, onToast }) {
           >
             <div
               className="gender-card-bg"
-              style={{
-                backgroundImage: `url(${tile.image})`,
-              }}
+              style={{ backgroundImage: `url(${tile.image})` }}
               aria-hidden="true"
             />
 
@@ -72,12 +71,15 @@ export default function GenderCollections({ onNavigate, onToast }) {
             />
 
             <div className="gender-copy">
-              <span className="btn outline">Explore</span>
+              <h3>{tile.title}</h3>
+              <p>{tile.copy}</p>
+              <span className="btn">Explore</span>
             </div>
           </button>
         ))}
       </section>
 
+      {/* Carousel */}
       <FeaturedDropsCarousel
         images={carouselImages}
         title="Featured Drops"
@@ -85,19 +87,20 @@ export default function GenderCollections({ onNavigate, onToast }) {
         shopPage="shop"
       />
 
+      {/* Banner Section */}
       <section className="collection-banner-section">
         <div className="collection-banner-grid">
           <div className="collection-banner-card">
             <img
               src="/images/collections/mens/pageBannermen.png"
-              alt="The OG Banner 1"
+              alt="Men Banner"
             />
           </div>
 
           <div className="collection-banner-card">
             <img
               src="/images/collections/womens/pageBannerwomen.png"
-              alt="The OG Banner 2"
+              alt="Women Banner"
             />
           </div>
         </div>
