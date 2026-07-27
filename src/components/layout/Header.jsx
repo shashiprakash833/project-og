@@ -3,6 +3,9 @@ import { useEffect, useState, useRef } from "react";
 import { navItems } from "../../data/storeData.js";
 import BrandLogo from "../ui/BrandLogo";
 import "./Header.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery, clearSearchQuery, selectSearchQuery } from "../../features/search/searchSlice";
+
 
 export default function Header({
   page,
@@ -17,7 +20,8 @@ export default function Header({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const dispatch = useDispatch();
+const searchValue = useSelector(selectSearchQuery);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
@@ -531,10 +535,10 @@ export default function Header({
           <input
             type="search"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
             placeholder="Search OG products..."
           />
-          <button onClick={() => setSearchValue("")}>Clear</button>
+          <button onClick={() => dispatch(clearSearchQuery())}>Clear</button>
         </div>
       </div>
     </header>

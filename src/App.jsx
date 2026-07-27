@@ -10,17 +10,23 @@ import AuthModal from "./components/ui/AuthModal.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
 import ChatBot from "./components/AIChat/ChatBot.jsx";
 import { products } from "./data/storeData.js";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "./features/theme/themeSlice.js";
+import { selectSearchQuery, clearSearchQuery,setSearchQuery } from "./features/search/searchSlice"
+
 
 const INTRO_TIME = 3200;
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
+  const theme = useSelector((state) => state.theme.value);
+  const dispatch = useDispatch();
   const [showSplash, setShowSplash] = useState(true);
   const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = useSelector(selectSearchQuery);
+  const setSearchQueryValue = useSelector(setSearchQuery);
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
   const [user, setUser] = useState(null);
@@ -52,7 +58,7 @@ export default function App() {
       pageName = "categories";
     }
     
-    if (pageName!== "search") setSearchQuery("");
+    if (pageName!== "search") dispatch(clearSearchQuery());
     setPage(pageName);
     setRouteParams(params);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -248,7 +254,6 @@ setToast(`Welcome, ${mockUser.name}`);
         onSubmitOrder={submitOrder}
         orders={orders}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
       />
     );
   };
@@ -274,9 +279,9 @@ setToast(`Welcome, ${mockUser.name}`);
               onAuthOpen={openAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() => setTheme(theme === "light"? "dark" : "light")}
+              onThemeToggle={() => dispatch(toggleTheme())}
               searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
+              onSearchChange={(query) => dispatch(setSearchQuery(query))}
             />
 
             {renderPage()}
