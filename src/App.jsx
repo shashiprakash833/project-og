@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "./features/theme/themeSlice";
+import {
+  setUser,
+  logout as logoutAction,
+  openAuthModal,
+  closeAuthModal,
+  setAuthError,
+  clearAuthError,
+} from "./features/auth/authSlice";
 import SplashScreen from "./components/ui/SplashScreen.jsx";
 import IntroVideo from "./components/ui/IntroVideo.jsx";
 import Header from "./components/layout/Header.jsx";
@@ -17,24 +26,21 @@ import { clearCart } from "./features/cart/cartSlice.js";
 const INTRO_TIME = 3200;
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme.theme);
+  const user = useSelector((state) => state.auth.user);
+  const authModal = useSelector((state) => state.auth.authModal);
+  const authError = useSelector((state) => state.auth.authError);
+  const cart = useSelector((state) => state.cart.items);
+  const wishlist = useSelector((state) => state.wishlist.items);
+
   const [showSplash, setShowSplash] = useState(true);
   const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [toast, setToast] = useState("");
-  const [user, setUser] = useState(null);
-  const [authModal, setAuthModal] = useState({ open: false, mode: "login" });
-  const [authError, setAuthError] = useState("");
   const [currentGender, setCurrentGender] = useState("men");
-
-  //  cart & wishlist now come from Redux, not local useState
-  
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.items);
-  const wishlist = useSelector((state) => state.wishlist.items);
-  
 
   const navigate = (nextPage) => {
     let params = {};
@@ -81,7 +87,13 @@ export default function App() {
 
   const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-  const submitOrder = async ({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }) => {
+  const submitOrder = async ({
+    items,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+    shippingPhone,
+  }) => {
     const orderId = Math.floor(100000 + Math.random() * 900000);
     const newOrder = {
       orderId,
@@ -100,7 +112,7 @@ export default function App() {
     };
 
     setOrders((current) => [newOrder, ...current]);
-    dispatch(clearCart()); 
+    dispatch(clearCart());
     return { success: true, orderId };
   };
 
@@ -108,20 +120,29 @@ export default function App() {
     const savedUser = localStorage.getItem("og_user");
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        dispatch(setUser(JSON.parse(savedUser)));
       } catch {
         localStorage.removeItem("og_user");
       }
     }
   }, []);
 
+  const handleOpenAuthModal = (mode = "login") => {
+    dispatch(clearAuthError());
+    dispatch(openAuthModal(mode));
+  };
+
   const openAuthModal = (mode = "login") => {
     setAuthError("");
     setAuthModal({ open: true, mode });
   };
 
-  const closeAuthModal = () => setAuthModal((current) => ({ ...current, open: false }));
+  const closeAuthModal = () =>
+    setAuthModal((current) => ({ ...current, open: false }));
 
+  const handleCloseAuthModal = () => {
+    dispatch(closeAuthModal());
+  };
   const parseApiError = async (response, fallback) => {
     try {
       const data = await response.json();
@@ -133,7 +154,7 @@ export default function App() {
 
   const login = async ({ email, password }) => {
     if (!email) {
-      setAuthError("Please enter an email address.");
+      dispatch(setAuthError("Please enter an email address."));
       return;
     }
     const mockUser = {
@@ -147,11 +168,19 @@ export default function App() {
     closeAuthModal();
     setShowIntroVideo(true);
     setToast(`Welcome back, ${mockUser.name}`);
+    dispatch(setUser(mockUser));
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+    handleCloseAuthModal();
+
+    setShowIntroVideo(true);
+
+    setToast(`Welcome back, ${mockUser.name}`);
   };
 
   const register = async ({ name, email, password }) => {
     if (!email) {
-      setAuthError("Please enter an email address.");
+      dispatch(setAuthError("Please enter an email address."));
       return;
     }
     const mockUser = {
@@ -165,11 +194,19 @@ export default function App() {
     closeAuthModal();
     setShowIntroVideo(true);
     setToast(`Welcome, ${mockUser.name}`);
+    dispatch(setUser(mockUser));
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+    handleCloseAuthModal();
+
+    setShowIntroVideo(true);
+
+    setToast(`Welcome, ${mockUser.name}`);
   };
 
   const logout = () => {
     localStorage.removeItem("og_user");
-    setUser(null);
+    dispatch(logoutAction());
     setToast("Logged out successfully.");
   };
 
@@ -186,7 +223,11 @@ export default function App() {
     }
 
     // Handle all category types: oversized, bottoms, tees, tank tops, accessories
-    if (["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(page)) {
+    if (
+      ["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(
+        page,
+      )
+    ) {
       return (
         <CategoryPage
           products={products}
@@ -206,7 +247,7 @@ export default function App() {
         onNavigate={navigate}
         onToast={setToast}
         user={user}
-        onAuthOpen={openAuthModal}
+        onAuthOpen={handleOpenAuthModal}
         onSubmitOrder={submitOrder}
         orders={orders}
         searchQuery={searchQuery}
@@ -218,7 +259,12 @@ export default function App() {
   return (
     <ChatProvider>
       <main className={`app ${theme}`}>
-        {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
+        {showSplash && (
+          <SplashScreen
+            duration={INTRO_TIME}
+            onFinish={() => setShowSplash(false)}
+          />
+        )}
         {showIntroVideo && (
           <IntroVideo onFinish={() => setShowIntroVideo(false)} />
         )}
@@ -231,10 +277,13 @@ export default function App() {
               wishlistCount={wishlist.length}
               theme={theme}
               user={user}
-              onAuthOpen={openAuthModal}
+              onAuthOpen={handleOpenAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")}
+              onThemeToggle={() =>
+                setTheme(theme === "light" ? "dark" : "light")
+              }
+              onThemeToggle={() => dispatch(toggleTheme())}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
             />
@@ -248,10 +297,15 @@ export default function App() {
         <AuthModal
           open={authModal.open}
           mode={authModal.mode}
-          onClose={closeAuthModal}
+          onClose={handleCloseAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() => openAuthModal(authModal.mode === "login" ? "signup" : "login")}
+          onSwitchMode={() =>
+            openAuthModal(authModal.mode === "login" ? "signup" : "login")
+          }
+          onSwitchMode={() =>
+            handleOpenAuthModal(authModal.mode === "login" ? "signup" : "login")
+          }
           error={authError}
         />
 
