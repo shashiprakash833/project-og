@@ -139,3 +139,30 @@
     font-size: 0.85rem;
   }
 }
+
+/* Tablet */
+@media (max-width: 768px) {
+  
+   .featured-carousel-stage {
+    height: 260px;
+  }
+
+  .featured-carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .featured-carousel-shop-btn {
+    bottom: 12px;
+    padding: 10px 22px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .featured-carousel-stage {
+    height: 220px;
+  }
+}

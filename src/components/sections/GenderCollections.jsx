@@ -90,14 +90,17 @@ export default function GenderCollections({ onNavigate, onToast }) {
       {/* Banner Section */}
       <section className="collection-banner-section">
         <div className="collection-banner-grid">
-          <div className="collection-banner-card">
+          <div
+            className="collection-banner-card"
+            onClick={() => onNavigate("collections-men")}
+          >
             <img
               src="/images/collections/mens/pageBannermen.png"
               alt="Men Banner"
             />
           </div>
 
-          <div className="collection-banner-card">
+          <div className="collection-banner-card" onClick={()=> onNavigate("collections-women")}>
             <img
               src="/images/collections/womens/pageBannerwomen.png"
               alt="Women Banner"
