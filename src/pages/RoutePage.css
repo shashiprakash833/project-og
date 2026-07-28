@@ -158,12 +158,14 @@
   box-shadow: 0 25px 60px rgba(0,0,0,.35);
 }
 
+
 .about-logo-glow {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 50% 40%, rgba(165, 31, 28, 0.3), transparent 40%);
   opacity: 0;
   animation: logoGlow 2.2s ease-in-out infinite alternate;
+  margin-top:10px;
 }
 
 .about-logo {
@@ -172,6 +174,8 @@
   z-index: 1;
   transform: scale(0.95);
   transition: transform 0.35s ease;
+  
+  margin-top:1px;
 }
 
 .about-logo-wrap:hover .about-logo {

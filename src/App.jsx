@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleTheme } from "./features/theme/themeSlice";
 import {
-  setUser,logout as logoutAction,openAuthModal,closeAuthModal,setAuthError,clearAuthError,
+  setUser, logout as logoutAction, openAuthModal, closeAuthModal, setAuthError, clearAuthError,
 } from "./features/auth/authSlice";
 import SplashScreen from "./components/ui/SplashScreen.jsx";
 import IntroVideo from "./components/ui/IntroVideo.jsx";
@@ -15,6 +13,10 @@ import AuthModal from "./components/ui/AuthModal.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
 import ChatBot from "./components/AIChat/ChatBot.jsx";
 import { products } from "./data/storeData.js";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "./features/theme/themeSlice.js";
+import { selectSearchQuery, clearSearchQuery, setSearchQuery } from "./features/search/searchSlice"
+
 
 const INTRO_TIME = 3200;
 
@@ -23,15 +25,16 @@ export default function App() {
   const theme = useSelector((state) => state.theme.theme);
   const user = useSelector((state) => state.auth.user);
 
-const authModal = useSelector((state) => state.auth.authModal);
+  const authModal = useSelector((state) => state.auth.authModal);
 
-const authError = useSelector((state) => state.auth.authError);
+  const authError = useSelector((state) => state.auth.authError);
   const [showSplash, setShowSplash] = useState(true);
   const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
   const [cart, setCart] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = useSelector(selectSearchQuery);
+  const setSearchQueryValue = useSelector(setSearchQuery);
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
   const [currentGender, setCurrentGender] = useState("men");
@@ -44,13 +47,13 @@ const authError = useSelector((state) => state.auth.authError);
       pageName = p;
       query.split("&").forEach((pair) => {
         const [k, v] = pair.split("=");
-        params[k] = v? decodeURIComponent(v) : "";
+        params[k] = v ? decodeURIComponent(v) : "";
       });
     } else if (typeof nextPage === "object") {
       pageName = nextPage.page || pageName;
       params = nextPage.params || {};
     }
-    
+
     if (pageName === "gender-men") {
       setCurrentGender("men");
       pageName = "categories";
@@ -59,8 +62,9 @@ const authError = useSelector((state) => state.auth.authError);
       setCurrentGender("women");
       pageName = "categories";
     }
-    
-    if (pageName!== "search") setSearchQuery("");
+
+
+    if (pageName !== "search") dispatch(clearSearchQuery());
     setPage(pageName);
     setRouteParams(params);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -85,8 +89,8 @@ const authError = useSelector((state) => state.auth.authError);
   const toggleWishlist = (product) => {
     setWishlist((current) => {
       const exists = current.some((item) => item.id === product.id);
-      setToast(exists? `${product.name} removed from wishlist.` : `${product.name} saved to wishlist.`);
-      return exists? current.filter((item) => item.id!== product.id) : [...current, product];
+      setToast(exists ? `${product.name} removed from wishlist.` : `${product.name} saved to wishlist.`);
+      return exists ? current.filter((item) => item.id !== product.id) : [...current, product];
     });
   };
 
@@ -139,15 +143,15 @@ const authError = useSelector((state) => state.auth.authError);
       }
     }
   }, []);
-    
+
   const handleOpenAuthModal = (mode = "login") => {
-  dispatch(clearAuthError());
-  dispatch(openAuthModal(mode));
-};
+    dispatch(clearAuthError());
+    dispatch(openAuthModal(mode));
+  };
 
   const handleCloseAuthModal = () => {
-  dispatch(closeAuthModal());
-};
+    dispatch(closeAuthModal());
+  };
   const parseApiError = async (response, fallback) => {
     try {
       const data = await response.json();
@@ -168,14 +172,14 @@ const authError = useSelector((state) => state.auth.authError);
       name: email.split("@")[0] || "User"
     };
     dispatch(setUser(mockUser));
-localStorage.setItem("og_user", JSON.stringify(mockUser));
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
 
 
-handleCloseAuthModal();
+    handleCloseAuthModal();
 
-setShowIntroVideo(true);
+    setShowIntroVideo(true);
 
-setToast(`Welcome back, ${mockUser.name}`);
+    setToast(`Welcome back, ${mockUser.name}`);
   };
 
   const register = async ({ name, email, password }) => {
@@ -189,13 +193,13 @@ setToast(`Welcome back, ${mockUser.name}`);
       name: name || email.split("@")[0] || "User"
     };
     dispatch(setUser(mockUser));
-localStorage.setItem("og_user", JSON.stringify(mockUser));
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
 
-handleCloseAuthModal();
+    handleCloseAuthModal();
 
-setShowIntroVideo(true);
+    setShowIntroVideo(true);
 
-setToast(`Welcome, ${mockUser.name}`);
+    setToast(`Welcome, ${mockUser.name}`);
   };
 
   const logout = () => {
@@ -222,7 +226,7 @@ setToast(`Welcome, ${mockUser.name}`);
         />
       );
     }
-    
+
     // Handle all category types: oversized, bottoms, tees, tank tops, accessories
     if (["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(page)) {
       return (
@@ -239,7 +243,7 @@ setToast(`Welcome, ${mockUser.name}`);
         />
       );
     }
-    
+
     return (
       <RoutePage
         theme={theme}
@@ -258,7 +262,6 @@ setToast(`Welcome, ${mockUser.name}`);
         onSubmitOrder={submitOrder}
         orders={orders}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
       />
     );
   };
@@ -268,10 +271,10 @@ setToast(`Welcome, ${mockUser.name}`);
       <main className={`app ${theme}`}>
         {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
         {showIntroVideo && (
-    <IntroVideo
-        onFinish={() => setShowIntroVideo(false)}
-    />
-)}  
+          <IntroVideo
+            onFinish={() => setShowIntroVideo(false)}
+          />
+        )}
 
         {!showSplash && (
           <>
@@ -286,7 +289,7 @@ setToast(`Welcome, ${mockUser.name}`);
               onNavigate={navigate}
               onThemeToggle={() => dispatch(toggleTheme())}
               searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
+              onSearchChange={(query) => dispatch(setSearchQuery(query))}
             />
 
             {renderPage()}
@@ -301,7 +304,7 @@ setToast(`Welcome, ${mockUser.name}`);
           onClose={handleCloseAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() =>handleOpenAuthModal(authModal.mode === "login"? "signup": "login" )}
+          onSwitchMode={() => handleOpenAuthModal(authModal.mode === "login" ? "signup" : "login")}
           error={authError}
         />
 
@@ -312,7 +315,7 @@ setToast(`Welcome, ${mockUser.name}`);
           </div>
         )}
 
-        {!showSplash &&  !showIntroVideo && <ChatBot />}
+        {!showSplash && !showIntroVideo && <ChatBot />}
       </main>
     </ChatProvider>
   );

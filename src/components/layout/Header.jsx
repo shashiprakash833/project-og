@@ -1,8 +1,11 @@
 import { FaBars } from "react-icons/fa";
-import { useEffect, useState, useRef } from "react";
-import { navItems } from "../../data/storeData.js";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { navItems, products } from "../../data/storeData.js";
 import BrandLogo from "../ui/BrandLogo";
 import "./Header.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery, clearSearchQuery, selectSearchQuery } from "../../features/search/searchSlice";
+
 
 export default function Header({
   page,
@@ -17,10 +20,15 @@ export default function Header({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const dispatch = useDispatch();
+  const searchValue = useSelector(selectSearchQuery);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
+
+  const searchRef = useRef(null);
+  const searchInputRef = useRef(null);
+
   const [animateWishlist, setAnimateWishlist] = useState(false);
   const [animateCart, setAnimateCart] = useState(false);
 
@@ -30,6 +38,8 @@ export default function Header({
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -55,6 +65,41 @@ export default function Header({
       document.body.classList.remove("no-scroll");
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchOpen(false);
+      }
+    };
+    if (searchOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (searchOpen) {
+      searchInputRef.current?.focus();
+      const handleKeyDown = (event) => {
+        if (event.key === "Escape") setSearchOpen(false);
+      };
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [searchOpen]);
+
+
+
+  const suggestions = useMemo(() => {
+    const q = searchValue.trim().toLowerCase();
+    if (!q) return [];
+    return products
+      .filter((p) =>
+        [p.name, p.type, p.color, p.gender, p.tag]
+          .filter(Boolean)
+          .some((field) => field.toLowerCase().includes(q))
+      )
+      .slice(0, 5);
+  }, [searchValue]);
 
   const handleNavigate = (targetPage) => {
     onNavigate(targetPage);
@@ -87,13 +132,34 @@ export default function Header({
     setProfileOpen(false);
   };
 
+
+  const runSearch = (query) => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    dispatch(setSearchQuery(trimmed));
+    onNavigate("search");
+    setSearchOpen(false);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    runSearch(searchValue);
+  };
+
+  const handleSuggestionClick = (product) => runSearch(product.name);
+
+  const handleSearchClear = () => {
+    dispatch(clearSearchQuery());
+    searchInputRef.current?.focus();
+  };
+
+
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
     <header
-      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${
-        theme === "light" ? "theme-light" : "theme-dark"
-      }`}
+      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${theme === "light" ? "theme-light" : "theme-dark"
+        }`}
     >
       {menuOpen && (
         <div
@@ -201,9 +267,8 @@ export default function Header({
 
           {/* Wishlist */}
           <button
-            className={`nav-action icon-action ${
-              animateWishlist ? "animate-wishlist" : ""
-            }`}
+            className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""
+              }`}
             onClick={handleWishlistClick}
             aria-label={`View wishlist (${wishlistCount} items)`}
           >
@@ -223,9 +288,8 @@ export default function Header({
 
           {/* Cart */}
           <button
-            className={`nav-action icon-action ${
-              animateCart ? "animate-cart" : ""
-            }`}
+            className={`nav-action icon-action ${animateCart ? "animate-cart" : ""
+              }`}
             onClick={() => handleNavigate("cart")}
             aria-label={`View cart (${cartCount} items)`}
           >
@@ -526,16 +590,49 @@ export default function Header({
         ))}
       </nav>
 
-      <div className={searchOpen ? "search-drop open" : "search-drop"}>
-        <div className="search-bar">
+      <div className={searchOpen ? "search-drop open" : "search-drop"} ref={searchRef}>
+        <form className="search-bar" onSubmit={handleSearchSubmit} role="search">
           <input
+            ref={searchInputRef}
             type="search"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
             placeholder="Search OG products..."
+            aria-label="Search OG products"
+            autoComplete="off"
           />
-          <button onClick={() => setSearchValue("")}>Clear</button>
-        </div>
+          {searchValue && (
+            <button type="button" className="search-clear-btn" onClick={handleSearchClear}>
+              Clear
+            </button>
+          )}
+          <button type="submit" className="search-submit-btn" aria-label="Submit search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <line x1="15.5" y1="15.5" x2="21" y2="21" />
+            </svg>
+          </button>
+        </form>
+
+        {searchValue && suggestions.length > 0 && (
+          <ul className="search-suggestions">
+            {suggestions.map((product) => (
+              <li key={product.id}>
+                <button type="button" onClick={() => handleSuggestionClick(product)}>
+                  <img src={product.image} alt="" aria-hidden="true" />
+                  <span>
+                    <strong>{product.name}</strong>
+                    <small>₹{product.price.toLocaleString("en-IN")}</small>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {searchValue && suggestions.length === 0 && (
+          <p className="search-no-results">No products match "{searchValue}".</p>
+        )}
       </div>
     </header>
   );

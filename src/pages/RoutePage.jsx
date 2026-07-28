@@ -24,6 +24,7 @@ export default function RoutePage({
   user,
   routeParams = {},
   orders = [],
+  searchQuery = "",
 }) {
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("credit");
@@ -52,6 +53,31 @@ export default function RoutePage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const text = "Original. Authentic. OG.";
   const aboutHeading = "Built for those who lead, not follow.";
+
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const searchResults = normalizedQuery
+    ? products.filter((product) =>
+      [product.name, product.type, product.color, product.gender, product.tag]
+        .filter(Boolean)
+        .some((field) => field.toLowerCase().includes(normalizedQuery))
+    )
+    : [];
+
+  const searchCopy =
+    page === "search"
+      ? {
+        eyebrow: "Search",
+        title: normalizedQuery
+          ? `Results for "${searchQuery.trim()}"`
+          : "Search OG.",
+        copy: normalizedQuery
+          ? `${searchResults.length} product${searchResults.length === 1 ? "" : "s"} found.`
+          : "Type something into the search bar to find products.",
+        image: "/images/banner2archive.png",
+      }
+      : null;
+
 
 
   const copy =
@@ -93,7 +119,9 @@ export default function RoutePage({
               copy: "Track your legacy of premium streetwear selections.",
               image: "/images/story.jpeg",
             }
-            : pageCopy[page] || pageCopy.shop;
+            : page === "search"
+              ? searchCopy
+              : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
     OGSAVE: 200,
@@ -253,6 +281,42 @@ export default function RoutePage({
           </div>
         </section>
       )}
+
+
+
+      {page === "search" && (
+        <section className="route-section">
+          {!normalizedQuery ? (
+            <div className="empty-state">
+              <h3>Start typing to search.</h3>
+              <p>Use the search bar above to find products by name, type, or color.</p>
+              <button onClick={() => onNavigate("shop")}>Browse All Products</button>
+            </div>
+          ) : searchResults.length === 0 ? (
+            <div className="empty-state">
+              <h3>No products found for "{searchQuery.trim()}".</h3>
+              <p>Try a different name, category, or color.</p>
+              <button onClick={() => onNavigate("shop")}>Browse All Products</button>
+            </div>
+          ) : (
+            <div className="product-grid">
+              {searchResults.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  quantity={cart.filter((item) => item.id === product.id).length}
+                  isWishlisted={wishlist.some((item) => item.id === product.id)}
+                  onAddToCart={onAddToCart}
+                  onRemoveFromCart={onRemoveFromCart}
+                  onWishlist={onWishlist}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+
 
       {page === "collections" && (
         <GenderCollections onNavigate={onNavigate} onToast={onToast} />
