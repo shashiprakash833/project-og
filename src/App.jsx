@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "./features/theme/themeSlice";
+import {
+  setUser,logout as logoutAction,openAuthModal,closeAuthModal,setAuthError,clearAuthError,
+} from "./features/auth/authSlice";
 import SplashScreen from "./components/ui/SplashScreen.jsx";
 import IntroVideo from "./components/ui/IntroVideo.jsx";
 import Header from "./components/layout/Header.jsx";
@@ -14,7 +19,13 @@ import { products } from "./data/storeData.js";
 const INTRO_TIME = 3200;
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme.theme);
+  const user = useSelector((state) => state.auth.user);
+
+const authModal = useSelector((state) => state.auth.authModal);
+
+const authError = useSelector((state) => state.auth.authError);
   const [showSplash, setShowSplash] = useState(true);
   const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
@@ -23,9 +34,6 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState("");
-  const [user, setUser] = useState(null);
-  const [authModal, setAuthModal] = useState({ open: false, mode: "login" });
-  const [authError, setAuthError] = useState("");
   const [currentGender, setCurrentGender] = useState("men");
 
   const navigate = (nextPage) => {
@@ -125,20 +133,21 @@ export default function App() {
     const savedUser = localStorage.getItem("og_user");
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        dispatch(setUser(JSON.parse(savedUser)));
       } catch {
         localStorage.removeItem("og_user");
       }
     }
   }, []);
+    
+  const handleOpenAuthModal = (mode = "login") => {
+  dispatch(clearAuthError());
+  dispatch(openAuthModal(mode));
+};
 
-  const openAuthModal = (mode = "login") => {
-    setAuthError("");
-    setAuthModal({ open: true, mode });
-  };
-
-  const closeAuthModal = () => setAuthModal((current) => ({...current, open: false }));
-
+  const handleCloseAuthModal = () => {
+  dispatch(closeAuthModal());
+};
   const parseApiError = async (response, fallback) => {
     try {
       const data = await response.json();
@@ -150,7 +159,7 @@ export default function App() {
 
   const login = async ({ email, password }) => {
     if (!email) {
-      setAuthError("Please enter an email address.");
+      dispatch(setAuthError("Please enter an email address."));
       return;
     }
     const mockUser = {
@@ -158,10 +167,11 @@ export default function App() {
       email: email,
       name: email.split("@")[0] || "User"
     };
-    setUser(mockUser);
+    dispatch(setUser(mockUser));
 localStorage.setItem("og_user", JSON.stringify(mockUser));
 
-closeAuthModal();
+
+handleCloseAuthModal();
 
 setShowIntroVideo(true);
 
@@ -170,7 +180,7 @@ setToast(`Welcome back, ${mockUser.name}`);
 
   const register = async ({ name, email, password }) => {
     if (!email) {
-      setAuthError("Please enter an email address.");
+      dispatch(setAuthError("Please enter an email address."));
       return;
     }
     const mockUser = {
@@ -178,10 +188,10 @@ setToast(`Welcome back, ${mockUser.name}`);
       email: email,
       name: name || email.split("@")[0] || "User"
     };
-    setUser(mockUser);
+    dispatch(setUser(mockUser));
 localStorage.setItem("og_user", JSON.stringify(mockUser));
 
-closeAuthModal();
+handleCloseAuthModal();
 
 setShowIntroVideo(true);
 
@@ -190,7 +200,7 @@ setToast(`Welcome, ${mockUser.name}`);
 
   const logout = () => {
     localStorage.removeItem("og_user");
-    setUser(null);
+    dispatch(logoutAction());
     setToast("Logged out successfully.");
   };
 
@@ -244,7 +254,7 @@ setToast(`Welcome, ${mockUser.name}`);
         onWishlist={protectedToggleWishlist}
         onToast={setToast}
         user={user}
-        onAuthOpen={openAuthModal}
+        onAuthOpen={handleOpenAuthModal}
         onSubmitOrder={submitOrder}
         orders={orders}
         searchQuery={searchQuery}
@@ -271,10 +281,10 @@ setToast(`Welcome, ${mockUser.name}`);
               wishlistCount={wishlist.length}
               theme={theme}
               user={user}
-              onAuthOpen={openAuthModal}
+              onAuthOpen={handleOpenAuthModal}
               onLogout={logout}
               onNavigate={navigate}
-              onThemeToggle={() => setTheme(theme === "light"? "dark" : "light")}
+              onThemeToggle={() => dispatch(toggleTheme())}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
             />
@@ -288,10 +298,10 @@ setToast(`Welcome, ${mockUser.name}`);
         <AuthModal
           open={authModal.open}
           mode={authModal.mode}
-          onClose={closeAuthModal}
+          onClose={handleCloseAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() => openAuthModal(authModal.mode === "login"? "signup" : "login")}
+          onSwitchMode={() =>handleOpenAuthModal(authModal.mode === "login"? "signup": "login" )}
           error={authError}
         />
 
