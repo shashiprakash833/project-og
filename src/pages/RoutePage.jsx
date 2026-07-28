@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import "./RoutePage.css";
 import { archiveCards, collections, pageCopy } from "../data/storeData.js";
 import PageHero from "../components/ui/PageHero.jsx";
@@ -7,34 +6,24 @@ import ProductCard from "../components/ui/ProductCard.jsx";
 import NewsletterSection from "../components/sections/NewsletterSection.jsx";
 import GenderCollections from "../components/sections/GenderCollections.jsx";
 import CollectionCategories from "../components/sections/CollectionCategories.jsx";
-import BrandLogo from "../components/ui/BrandLogo.jsx";
-
-import {
-  addToCart,
-  removeFromCart,
-  incrementQty,
-  decrementQty,
-  clearCart,
-} from "../features/cart/cartSlice.js";
-import { toggleWishlist } from "../features/wishlist/wishlistSlice.js";
 
 export default function RoutePage({
-  theme = "dark",
   page,
   products,
+  cart,
+  wishlist,
   onNavigate,
+  onAddToCart,
+  onRemoveFromCart,
+  onWishlist,
   onToast,
   onAuthOpen,
   onSubmitOrder,
   user,
-  routeParams = {},
   orders = [],
+  searchQuery = "",
+  routeParams = {},
 }) {
-  //  cart & wishlist now come from Redux, not props
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.items);
-  const wishlist = useSelector((state) => state.wishlist.items);
-
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("credit");
   const [couponCode, setCouponCode] = useState("");
@@ -60,8 +49,20 @@ export default function RoutePage({
   const [orderNumber, setOrderNumber] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const text = "Original. Authentic. OG.";
-  const aboutHeading = "Built for those who lead, not follow.";
+
+  const searchCopy = {
+    eyebrow: "Results",
+    title: searchQuery ? `Results for "${searchQuery}"` : "Search Products",
+    copy: "Explore items matching your query across our streetwear collection.",
+    image: "/images/banner2archive.png",
+  };
+
+  const ordersCopy = {
+    eyebrow: "History",
+    title: "Your Orders.",
+    copy: "Track your legacy of premium streetwear selections.",
+    image: "/images/story.jpeg",
+  };
 
   const copy =
     page === "category-products"
@@ -96,21 +97,18 @@ export default function RoutePage({
               copy: "Pick your lane — men's or women's streetwear.",
               image: "/images/collections/gender-section-banner.png",
             }
-          : page === "orders"
-            ? {
-                eyebrow: "History",
-                title: "Your Orders.",
-                copy: "Track your legacy of premium streetwear selections.",
-                image: "/images/story.jpeg",
-              }
-            : pageCopy[page] || pageCopy.shop;
+          : page === "search"
+            ? searchCopy
+            : page === "orders"
+              ? ordersCopy
+              : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
     OGSAVE: 200,
     OG20: 300,
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
   const totalPayable = Math.max(0, subtotal - discountValue);
   const isShippingComplete = Object.values(shipping).every((value) =>
     value.trim(),
@@ -162,18 +160,32 @@ export default function RoutePage({
     }));
   };
 
-  const orderItems = cart.map((item) => ({
-    id: item.id,
-    name: item.name,
-    price: item.price,
-    quantity: item.qty,
-  }));
+  const orderItems = cart.reduce((acc, item) => {
+    const existing = acc.find((entry) => entry.id === item.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      acc.push({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: 1,
+      });
+    }
+    return acc;
+  }, []);
 
   const handleConfirmOrder = async () => {
     if (!confirmEnabled) {
       setCheckoutError(
         "Complete shipping and payment details before confirming.",
       );
+      return;
+    }
+
+    if (!user) {
+      onAuthOpen("login");
+      setCheckoutError("Please sign in to finish your order.");
       return;
     }
 
@@ -240,7 +252,17 @@ export default function RoutePage({
                 return true;
               })
               .map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  quantity={
+                    cart.filter((item) => item.id === product.id).length
+                  }
+                  isWishlisted={wishlist.some((item) => item.id === product.id)}
+                  onAddToCart={onAddToCart}
+                  onRemoveFromCart={onRemoveFromCart}
+                  onWishlist={onWishlist}
+                />
               ))}
           </div>
         </section>
@@ -251,11 +273,27 @@ export default function RoutePage({
       )}
 
       {page === "collections-men" && (
-        <CollectionCategories gender="men" onNavigate={onNavigate} />
+        <CollectionCategories
+          gender="men"
+          onNavigate={onNavigate}
+          cart={cart}
+          wishlist={wishlist}
+          onAddToCart={onAddToCart}
+          onRemoveFromCart={onRemoveFromCart}
+          onWishlist={onWishlist}
+        />
       )}
 
       {page === "collections-women" && (
-        <CollectionCategories gender="women" onNavigate={onNavigate} />
+        <CollectionCategories
+          gender="women"
+          onNavigate={onNavigate}
+          cart={cart}
+          wishlist={wishlist}
+          onAddToCart={onAddToCart}
+          onRemoveFromCart={onRemoveFromCart}
+          onWishlist={onWishlist}
+        />
       )}
 
       {page === "category-products" && (
@@ -319,7 +357,19 @@ export default function RoutePage({
               return (
                 <div className="product-grid">
                   {categoryProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      quantity={
+                        cart.filter((item) => item.id === product.id).length
+                      }
+                      isWishlisted={wishlist.some(
+                        (item) => item.id === product.id,
+                      )}
+                      onAddToCart={onAddToCart}
+                      onRemoveFromCart={onRemoveFromCart}
+                      onWishlist={onWishlist}
+                    />
                   ))}
                 </div>
               );
@@ -340,7 +390,15 @@ export default function RoutePage({
           </div>
           <div className="product-grid mini">
             {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                quantity={cart.filter((item) => item.id === product.id).length}
+                isWishlisted={wishlist.some((item) => item.id === product.id)}
+                onAddToCart={onAddToCart}
+                onRemoveFromCart={onRemoveFromCart}
+                onWishlist={onWishlist}
+              />
             ))}
           </div>
         </section>
@@ -357,7 +415,19 @@ export default function RoutePage({
               </div>
               <div className="product-grid">
                 {wishlist.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    quantity={
+                      cart.filter((item) => item.id === product.id).length
+                    }
+                    isWishlisted={wishlist.some(
+                      (item) => item.id === product.id,
+                    )}
+                    onAddToCart={onAddToCart}
+                    onRemoveFromCart={onRemoveFromCart}
+                    onWishlist={onWishlist}
+                  />
                 ))}
               </div>
             </>
@@ -435,23 +505,14 @@ export default function RoutePage({
                   Review the products ready to ship from your current order.
                 </span>
               </div>
-
-              {/* CLEAR CART BUTTON */}
-              <div className="cart-clear-row">
-                <button
-                  className="btn outline clear-cart-btn"
-                  onClick={() => dispatch(clearCart())}
-                >
-                  Clear Cart
-                </button>
-              </div>
-
               <div className="cart-layout">
                 <div className="cart-items-panel">
-                  {cart.map((product) => (
-                    <div className="cart-item-card" key={product.id}>
+                  {cart.map((product, index) => (
+                    <div
+                      className="cart-item-card"
+                      key={`${product.id}-${index}`}
+                    >
                       <img src={product.image} alt={product.name} />
-
                       <div className="cart-item-details">
                         <div>
                           <span className="item-tag">
@@ -464,41 +525,14 @@ export default function RoutePage({
                           </p>
                         </div>
                         <div className="item-price">
-                          ₹
-                          {(product.price * product.qty).toLocaleString(
-                            "en-IN",
-                          )}
+                          ₹{product.price.toLocaleString("en-IN")}
                         </div>
                       </div>
-
-                      {/* QTY STEPPER */}
-                      <div className="qty-stepper">
-                        <button
-                          className="qty-btn"
-                          onClick={() => dispatch(decrementQty(product.id))}
-                          aria-label="Decrease quantity"
-                        >
-                          −
-                        </button>
-                        <span className="qty-value">{product.qty}</span>
-                        <button
-                          className="qty-btn"
-                          onClick={() => dispatch(incrementQty(product.id))}
-                          aria-label="Increase quantity"
-                        >
-                          +
-                        </button>
-                      </div>
-
                       <div className="cart-item-actions">
-                        <button
-                          onClick={() => dispatch(removeFromCart(product.id))}
-                        >
-                          Remove
+                        <button onClick={() => onAddToCart(product)}>
+                          Add again
                         </button>
-                        <button
-                          onClick={() => dispatch(toggleWishlist(product))}
-                        >
+                        <button onClick={() => onWishlist(product)}>
                           {wishlist.some((item) => item.id === product.id)
                             ? "Wishlisted"
                             : "Save"}
@@ -512,9 +546,7 @@ export default function RoutePage({
                   <div className="checkout-box">
                     <h3>Order Summary</h3>
                     <div className="summary-row">
-                      <span>
-                        Items ({cart.reduce((sum, item) => sum + item.qty, 0)})
-                      </span>
+                      <span>Items ({cart.length})</span>
                       <span>₹{subtotal.toLocaleString("en-IN")}</span>
                     </div>
                     <div className="summary-row highlight">
@@ -862,39 +894,16 @@ export default function RoutePage({
           <div className="about-hero">
             <div className="about-logo-wrap">
               <div className="about-logo-glow" aria-hidden="true" />
-              <BrandLogo theme={theme} className="about-logo" />
+              <img
+                className="about-logo"
+                src="/images/brand/og-logo.png"
+                alt="The OG"
+              />
             </div>
 
             <div className="about-copy">
-              <p className="about-eyebrow">
-                {text.split("").map((char, index) => (
-                  <span
-                    key={index}
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </span>
-                ))}
-              </p>
-
-              <h2 className="about-heading">
-                {aboutHeading.split(" ").map((word, wordIndex) => (
-                  <span className="word" key={wordIndex}>
-                    {word.split("").map((char, charIndex) => (
-                      <span
-                        key={charIndex}
-                        className="letter"
-                        style={{
-                          animationDelay: `${(wordIndex * 10 + charIndex) * 0.05}s`,
-                        }}
-                      >
-                        {char}
-                      </span>
-                    ))}
-                    <span>&nbsp;</span>
-                  </span>
-                ))}
-              </h2>
+              <p className="about-eyebrow">Original. Authentic. OG.</p>
+              <h2>Built for those who lead, not follow.</h2>
               <p>
                 OG Street Wear brings premium street style to your rotation with
                 bold graphics, signature fits, and limited-run drops. Discover
@@ -944,14 +953,61 @@ export default function RoutePage({
         </section>
       )}
 
+      {page === "search" && (
+        <section className="route-section">
+          {(() => {
+            const filteredProducts = products.filter((product) => {
+              if (!searchQuery.trim()) return true;
+              const q = searchQuery.toLowerCase();
+              return (
+                product.name?.toLowerCase().includes(q) ||
+                product.type?.toLowerCase().includes(q) ||
+                product.tag?.toLowerCase().includes(q) ||
+                product.gender?.toLowerCase().includes(q)
+              );
+            });
+
+            if (filteredProducts.length === 0) {
+              return (
+                <div className="empty-state">
+                  <h3>No products found matching "{searchQuery}".</h3>
+                  <p>Try searching for a different term or explore all products.</p>
+                  <button onClick={() => onNavigate("shop")}>
+                    Browse All Products
+                  </button>
+                </div>
+              );
+            }
+
+            return (
+              <div className="product-grid">
+                {filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    quantity={
+                      cart.filter((item) => item.id === product.id).length
+                    }
+                    isWishlisted={wishlist.some(
+                      (item) => item.id === product.id,
+                    )}
+                    onAddToCart={onAddToCart}
+                    onRemoveFromCart={onRemoveFromCart}
+                    onWishlist={onWishlist}
+                  />
+                ))}
+              </div>
+            );
+          })()}
+        </section>
+      )}
+
       {page === "orders" && (
         <section className="route-section orders-page">
           <div className="route-header" style={{ marginBottom: "2rem" }}>
             <p className="route-eyebrow">Tracking</p>
             <h2>My Orders</h2>
-            <span>
-              Here are the purchases you have made with OG Streetwear.
-            </span>
+            <span>Here are the purchases you have made with OG Streetwear.</span>
           </div>
 
           {orders.length === 0 ? (
@@ -988,7 +1044,7 @@ export default function RoutePage({
                       {order.items?.map((item, idx) => (
                         <p key={idx}>
                           <strong>{item.name}</strong> x{item.quantity} — ₹
-                          {item.price.toLocaleString("en-IN")}
+                          {item.price?.toLocaleString("en-IN") || item.price}
                         </p>
                       ))}
                     </div>
@@ -1023,7 +1079,7 @@ export default function RoutePage({
                             : "COD"}
                       </p>
                       <span className="order-total-price">
-                        ₹{order.totalAmount.toLocaleString("en-IN")}
+                        ₹{order.totalAmount?.toLocaleString("en-IN") || order.totalAmount}
                       </span>
                     </div>
                   </div>

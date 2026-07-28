@@ -10,7 +10,8 @@ import {
   setAuthError,
   clearAuthError,
 } from "./features/auth/authSlice";
-import { clearCart } from "./features/cart/cartSlice.js";
+import { addToCart, removeFromCart, clearCart } from "./features/cart/cartSlice.js";
+import { toggleWishlist } from "./features/wishlist/wishlistSlice.js";
 
 import SplashScreen from "./components/ui/SplashScreen.jsx";
 import IntroVideo from "./components/ui/IntroVideo.jsx";
@@ -180,7 +181,10 @@ export default function App() {
         <HomePage
           theme={theme}
           products={products}
+          wishlist={wishlist}
           onNavigate={navigate}
+          onAddToCart={(product) => dispatch(addToCart(product))}
+          onWishlist={(product) => dispatch(toggleWishlist(product))}
           onToast={setToast}
         />
       );
@@ -190,7 +194,12 @@ export default function App() {
       return (
         <CategoryPage
           products={products}
+          cart={cart}
+          wishlist={wishlist}
           onNavigate={navigate}
+          onAddToCart={(product) => dispatch(addToCart(product))}
+          onRemoveFromCart={(product) => dispatch(removeFromCart(product))}
+          onWishlist={(product) => dispatch(toggleWishlist(product))}
           category={page}
           gender={currentGender}
         />
@@ -203,7 +212,12 @@ export default function App() {
         page={page}
         routeParams={routeParams}
         products={products}
+        cart={cart}
+        wishlist={wishlist}
         onNavigate={navigate}
+        onAddToCart={(product) => dispatch(addToCart(product))}
+        onRemoveFromCart={(product) => dispatch(removeFromCart(product))}
+        onWishlist={(product) => dispatch(toggleWishlist(product))}
         onToast={setToast}
         user={user}
         onAuthOpen={handleOpenAuthModal}
