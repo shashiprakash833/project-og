@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./RoutePage.css";
 import { archiveCards, collections, pageCopy } from "../data/storeData.js";
 import PageHero from "../components/ui/PageHero.jsx";
@@ -8,16 +9,20 @@ import GenderCollections from "../components/sections/GenderCollections.jsx";
 import CollectionCategories from "../components/sections/CollectionCategories.jsx";
 import BrandLogo from "../components/ui/BrandLogo.jsx";
 
+import {
+  addToCart,
+  removeFromCart,
+  incrementQty,
+  decrementQty,
+  clearCart,
+} from "../features/cart/cartSlice.js";
+import { toggleWishlist } from "../features/wishlist/wishlistSlice.js";
+
 export default function RoutePage({
   theme = "dark",
   page,
   products,
-  cart,
-  wishlist,
   onNavigate,
-  onAddToCart,
-  onRemoveFromCart,
-  onWishlist,
   onToast,
   onAuthOpen,
   onSubmitOrder,
@@ -25,6 +30,11 @@ export default function RoutePage({
   routeParams = {},
   orders = [],
 }) {
+  //  cart & wishlist now come from Redux, not props
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.items);
+  const wishlist = useSelector((state) => state.wishlist.items);
+
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("credit");
   const [couponCode, setCouponCode] = useState("");
@@ -53,46 +63,46 @@ export default function RoutePage({
   const text = "Original. Authentic. OG.";
   const aboutHeading = "Built for those who lead, not follow.";
 
-
   const copy =
     page === "category-products"
       ? {
-        eyebrow: routeParams.gender === "women" ? "Women's" : "Men's",
-        title: `${routeParams.title || "Category"}.`,
-        copy: `Handpicked ${routeParams.title?.toLowerCase() || "pieces"} for the ${routeParams.gender === "women" ? "women's" : "men's"
+          eyebrow: routeParams.gender === "women" ? "Women's" : "Men's",
+          title: `${routeParams.title || "Category"}.`,
+          copy: `Handpicked ${routeParams.title?.toLowerCase() || "pieces"} for the ${
+            routeParams.gender === "women" ? "women's" : "men's"
           } collection.`,
-        image:
-          routeParams.gender === "women"
-            ? "/images/collections/womens/women-section-banner.png"
-            : "/images/collections/mens/men-section-banner.png",
-      }
-      : page === "collections-men" || page === "collections-women"
-        ? {
-          eyebrow: page === "collections-women" ? "Women's" : "Men's",
-          title:
-            page === "collections-women"
-              ? "Women's Collection."
-              : "Men's Collection.",
-          copy: "Explore premium fits designed for everyday confidence and street culture.",
           image:
-            page === "collections-women"
+            routeParams.gender === "women"
               ? "/images/collections/womens/women-section-banner.png"
               : "/images/collections/mens/men-section-banner.png",
         }
+      : page === "collections-men" || page === "collections-women"
+        ? {
+            eyebrow: page === "collections-women" ? "Women's" : "Men's",
+            title:
+              page === "collections-women"
+                ? "Women's Collection."
+                : "Men's Collection.",
+            copy: "Explore premium fits designed for everyday confidence and street culture.",
+            image:
+              page === "collections-women"
+                ? "/images/collections/womens/women-section-banner.png"
+                : "/images/collections/mens/men-section-banner.png",
+          }
         : page === "collections"
           ? {
-            eyebrow: "Collections",
-            title: "Shop by Gender.",
-            copy: "Pick your lane — men's or women's streetwear.",
-            image: "/images/collections/gender-section-banner.png",
-          }
+              eyebrow: "Collections",
+              title: "Shop by Gender.",
+              copy: "Pick your lane — men's or women's streetwear.",
+              image: "/images/collections/gender-section-banner.png",
+            }
           : page === "orders"
             ? {
-              eyebrow: "History",
-              title: "Your Orders.",
-              copy: "Track your legacy of premium streetwear selections.",
-              image: "/images/story.jpeg",
-            }
+                eyebrow: "History",
+                title: "Your Orders.",
+                copy: "Track your legacy of premium streetwear selections.",
+                image: "/images/story.jpeg",
+              }
             : pageCopy[page] || pageCopy.shop;
 
   const couponMap = {
@@ -100,7 +110,7 @@ export default function RoutePage({
     OG20: 300,
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const totalPayable = Math.max(0, subtotal - discountValue);
   const isShippingComplete = Object.values(shipping).every((value) =>
     value.trim(),
@@ -108,9 +118,9 @@ export default function RoutePage({
   const isPaymentComplete =
     paymentMethod === "credit"
       ? paymentDetails.cardNumber.trim() &&
-      paymentDetails.expiry.trim() &&
-      paymentDetails.cvc.trim() &&
-      paymentDetails.nameOnCard.trim()
+        paymentDetails.expiry.trim() &&
+        paymentDetails.cvc.trim() &&
+        paymentDetails.nameOnCard.trim()
       : paymentMethod === "upi"
         ? paymentDetails.upiId.trim()
         : true;
@@ -152,20 +162,12 @@ export default function RoutePage({
     }));
   };
 
-  const orderItems = cart.reduce((acc, item) => {
-    const existing = acc.find((entry) => entry.id === item.id);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      acc.push({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: 1,
-      });
-    }
-    return acc;
-  }, []);
+  const orderItems = cart.map((item) => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    quantity: item.qty,
+  }));
 
   const handleConfirmOrder = async () => {
     if (!confirmEnabled) {
@@ -238,17 +240,7 @@ export default function RoutePage({
                 return true;
               })
               .map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  quantity={
-                    cart.filter((item) => item.id === product.id).length
-                  }
-                  isWishlisted={wishlist.some((item) => item.id === product.id)}
-                  onAddToCart={onAddToCart}
-                  onRemoveFromCart={onRemoveFromCart}
-                  onWishlist={onWishlist}
-                />
+                <ProductCard key={product.id} product={product} />
               ))}
           </div>
         </section>
@@ -259,27 +251,11 @@ export default function RoutePage({
       )}
 
       {page === "collections-men" && (
-        <CollectionCategories
-          gender="men"
-          onNavigate={onNavigate}
-          cart={cart}
-          wishlist={wishlist}
-          onAddToCart={onAddToCart}
-          onRemoveFromCart={onRemoveFromCart}
-          onWishlist={onWishlist}
-        />
+        <CollectionCategories gender="men" onNavigate={onNavigate} />
       )}
 
       {page === "collections-women" && (
-        <CollectionCategories
-          gender="women"
-          onNavigate={onNavigate}
-          cart={cart}
-          wishlist={wishlist}
-          onAddToCart={onAddToCart}
-          onRemoveFromCart={onRemoveFromCart}
-          onWishlist={onWishlist}
-        />
+        <CollectionCategories gender="women" onNavigate={onNavigate} />
       )}
 
       {page === "category-products" && (
@@ -314,7 +290,7 @@ export default function RoutePage({
               const categoryProducts = products.filter((product) => {
                 return (
                   product.gender.toLowerCase() ===
-                  routeParams.gender.toLowerCase() &&
+                    routeParams.gender.toLowerCase() &&
                   product.type.toLowerCase() === routeParams.key.toLowerCase()
                 );
               });
@@ -343,19 +319,7 @@ export default function RoutePage({
               return (
                 <div className="product-grid">
                   {categoryProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      quantity={
-                        cart.filter((item) => item.id === product.id).length
-                      }
-                      isWishlisted={wishlist.some(
-                        (item) => item.id === product.id,
-                      )}
-                      onAddToCart={onAddToCart}
-                      onRemoveFromCart={onRemoveFromCart}
-                      onWishlist={onWishlist}
-                    />
+                    <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
               );
@@ -376,15 +340,7 @@ export default function RoutePage({
           </div>
           <div className="product-grid mini">
             {products.slice(0, 3).map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                quantity={cart.filter((item) => item.id === product.id).length}
-                isWishlisted={wishlist.some((item) => item.id === product.id)}
-                onAddToCart={onAddToCart}
-                onRemoveFromCart={onRemoveFromCart}
-                onWishlist={onWishlist}
-              />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </section>
@@ -401,19 +357,7 @@ export default function RoutePage({
               </div>
               <div className="product-grid">
                 {wishlist.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    quantity={
-                      cart.filter((item) => item.id === product.id).length
-                    }
-                    isWishlisted={wishlist.some(
-                      (item) => item.id === product.id,
-                    )}
-                    onAddToCart={onAddToCart}
-                    onRemoveFromCart={onRemoveFromCart}
-                    onWishlist={onWishlist}
-                  />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             </>
@@ -491,14 +435,23 @@ export default function RoutePage({
                   Review the products ready to ship from your current order.
                 </span>
               </div>
+
+              {/* CLEAR CART BUTTON */}
+              <div className="cart-clear-row">
+                <button
+                  className="btn outline clear-cart-btn"
+                  onClick={() => dispatch(clearCart())}
+                >
+                  Clear Cart
+                </button>
+              </div>
+
               <div className="cart-layout">
                 <div className="cart-items-panel">
-                  {cart.map((product, index) => (
-                    <div
-                      className="cart-item-card"
-                      key={`${product.id}-${index}`}
-                    >
+                  {cart.map((product) => (
+                    <div className="cart-item-card" key={product.id}>
                       <img src={product.image} alt={product.name} />
+
                       <div className="cart-item-details">
                         <div>
                           <span className="item-tag">
@@ -511,14 +464,41 @@ export default function RoutePage({
                           </p>
                         </div>
                         <div className="item-price">
-                          ₹{product.price.toLocaleString("en-IN")}
+                          ₹
+                          {(product.price * product.qty).toLocaleString(
+                            "en-IN",
+                          )}
                         </div>
                       </div>
-                      <div className="cart-item-actions">
-                        <button onClick={() => onAddToCart(product)}>
-                          Add again
+
+                      {/* QTY STEPPER */}
+                      <div className="qty-stepper">
+                        <button
+                          className="qty-btn"
+                          onClick={() => dispatch(decrementQty(product.id))}
+                          aria-label="Decrease quantity"
+                        >
+                          −
                         </button>
-                        <button onClick={() => onWishlist(product)}>
+                        <span className="qty-value">{product.qty}</span>
+                        <button
+                          className="qty-btn"
+                          onClick={() => dispatch(incrementQty(product.id))}
+                          aria-label="Increase quantity"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="cart-item-actions">
+                        <button
+                          onClick={() => dispatch(removeFromCart(product.id))}
+                        >
+                          Remove
+                        </button>
+                        <button
+                          onClick={() => dispatch(toggleWishlist(product))}
+                        >
                           {wishlist.some((item) => item.id === product.id)
                             ? "Wishlisted"
                             : "Save"}
@@ -532,7 +512,9 @@ export default function RoutePage({
                   <div className="checkout-box">
                     <h3>Order Summary</h3>
                     <div className="summary-row">
-                      <span>Items ({cart.length})</span>
+                      <span>
+                        Items ({cart.reduce((sum, item) => sum + item.qty, 0)})
+                      </span>
                       <span>₹{subtotal.toLocaleString("en-IN")}</span>
                     </div>
                     <div className="summary-row highlight">
@@ -853,7 +835,7 @@ export default function RoutePage({
               onMouseEnter={(event) => {
                 const video = event.currentTarget.querySelector("video");
                 if (video) {
-                  video.play().catch(() => { });
+                  video.play().catch(() => {});
                 }
               }}
               onMouseLeave={(event) => {
@@ -967,14 +949,20 @@ export default function RoutePage({
           <div className="route-header" style={{ marginBottom: "2rem" }}>
             <p className="route-eyebrow">Tracking</p>
             <h2>My Orders</h2>
-            <span>Here are the purchases you have made with OG Streetwear.</span>
+            <span>
+              Here are the purchases you have made with OG Streetwear.
+            </span>
           </div>
 
           {orders.length === 0 ? (
             <div className="empty-state">
               <h3>You haven't placed any orders yet.</h3>
               <p>Style waits for no one. Start building your wardrobe now.</p>
-              <button className="btn primary animate-cart" onClick={() => onNavigate("shop")} style={{ marginTop: "1rem" }}>
+              <button
+                className="btn primary animate-cart"
+                onClick={() => onNavigate("shop")}
+                style={{ marginTop: "1rem" }}
+              >
                 Explore Products
               </button>
             </div>
@@ -984,10 +972,14 @@ export default function RoutePage({
                 <div key={order.orderId} className="order-history-card">
                   <div className="order-card-header">
                     <div>
-                      <span className="order-ref">Order #OG{String(order.orderId).padStart(6, "0")}</span>
+                      <span className="order-ref">
+                        Order #OG{String(order.orderId).padStart(6, "0")}
+                      </span>
                       <span className="order-date">{order.date}</span>
                     </div>
-                    <span className="order-status-badge pending">{order.status || "Processing"}</span>
+                    <span className="order-status-badge pending">
+                      {order.status || "Processing"}
+                    </span>
                   </div>
 
                   <div className="order-card-body">
@@ -995,25 +987,44 @@ export default function RoutePage({
                       <h4>Items ({order.items?.length || 0})</h4>
                       {order.items?.map((item, idx) => (
                         <p key={idx}>
-                          <strong>{item.name}</strong> x{item.quantity} — ₹{item.price.toLocaleString("en-IN")}
+                          <strong>{item.name}</strong> x{item.quantity} — ₹
+                          {item.price.toLocaleString("en-IN")}
                         </p>
                       ))}
                     </div>
 
                     <div className="order-info-col">
                       <h4>Delivery Address</h4>
-                      <p className="address-name">{order.shippingAddress?.fullName}</p>
+                      <p className="address-name">
+                        {order.shippingAddress?.fullName}
+                      </p>
                       <p>{order.shippingAddress?.street}</p>
-                      <p>{order.shippingAddress?.city}, {order.shippingAddress?.state} - {order.shippingAddress?.zip}</p>
+                      <p>
+                        {order.shippingAddress?.city},{" "}
+                        {order.shippingAddress?.state} -{" "}
+                        {order.shippingAddress?.zip}
+                      </p>
                       <p className="phone-info">Phone: {order.shippingPhone}</p>
                     </div>
 
                     <div className="order-info-col price-col">
                       <h4>Payment Method / Total</h4>
-                      <p style={{ textTransform: "uppercase", fontSize: "0.8rem", color: "var(--muted)" }}>
-                        {order.paymentMethod === "credit" ? "Credit Card" : order.paymentMethod === "upi" ? "UPI" : "COD"}
+                      <p
+                        style={{
+                          textTransform: "uppercase",
+                          fontSize: "0.8rem",
+                          color: "var(--muted)",
+                        }}
+                      >
+                        {order.paymentMethod === "credit"
+                          ? "Credit Card"
+                          : order.paymentMethod === "upi"
+                            ? "UPI"
+                            : "COD"}
                       </p>
-                      <span className="order-total-price">₹{order.totalAmount.toLocaleString("en-IN")}</span>
+                      <span className="order-total-price">
+                        ₹{order.totalAmount.toLocaleString("en-IN")}
+                      </span>
                     </div>
                   </div>
                 </div>
