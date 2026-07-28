@@ -21,13 +21,13 @@ export default function Header({
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const dispatch = useDispatch();
-const searchValue = useSelector(selectSearchQuery);
+  const searchValue = useSelector(selectSearchQuery);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
 
   const searchRef = useRef(null);
-const searchInputRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   const [animateWishlist, setAnimateWishlist] = useState(false);
   const [animateCart, setAnimateCart] = useState(false);
@@ -67,39 +67,39 @@ const searchInputRef = useRef(null);
   }, [menuOpen]);
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (searchRef.current && !searchRef.current.contains(event.target)) {
-      setSearchOpen(false);
-    }
-  };
-  if (searchOpen) document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, [searchOpen]);
-
-useEffect(() => {
-  if (searchOpen) {
-    searchInputRef.current?.focus();
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") setSearchOpen(false);
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchOpen(false);
+      }
     };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }
-}, [searchOpen]);
+    if (searchOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (searchOpen) {
+      searchInputRef.current?.focus();
+      const handleKeyDown = (event) => {
+        if (event.key === "Escape") setSearchOpen(false);
+      };
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [searchOpen]);
 
 
 
   const suggestions = useMemo(() => {
-  const q = searchValue.trim().toLowerCase();
-  if (!q) return [];
-  return products
-    .filter((p) =>
-      [p.name, p.type, p.color, p.gender, p.tag]
-        .filter(Boolean)
-        .some((field) => field.toLowerCase().includes(q))
-    )
-    .slice(0, 5);
-}, [searchValue]);
+    const q = searchValue.trim().toLowerCase();
+    if (!q) return [];
+    return products
+      .filter((p) =>
+        [p.name, p.type, p.color, p.gender, p.tag]
+          .filter(Boolean)
+          .some((field) => field.toLowerCase().includes(q))
+      )
+      .slice(0, 5);
+  }, [searchValue]);
 
   const handleNavigate = (targetPage) => {
     onNavigate(targetPage);
@@ -134,33 +134,32 @@ useEffect(() => {
 
 
   const runSearch = (query) => {
-  const trimmed = query.trim();
-  if (!trimmed) return;
-  dispatch(setSearchQuery(trimmed));
-  onNavigate("search");
-  setSearchOpen(false);
-};
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    dispatch(setSearchQuery(trimmed));
+    onNavigate("search");
+    setSearchOpen(false);
+  };
 
-const handleSearchSubmit = (e) => {
-  e.preventDefault();
-  runSearch(searchValue);
-};
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    runSearch(searchValue);
+  };
 
-const handleSuggestionClick = (product) => runSearch(product.name);
+  const handleSuggestionClick = (product) => runSearch(product.name);
 
-const handleSearchClear = () => {
-  dispatch(clearSearchQuery());
-  searchInputRef.current?.focus();
-};
+  const handleSearchClear = () => {
+    dispatch(clearSearchQuery());
+    searchInputRef.current?.focus();
+  };
 
 
   const displayName = user?.name || user?.email?.split("@")[0] || "Profile";
 
   return (
     <header
-      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${
-        theme === "light" ? "theme-light" : "theme-dark"
-      }`}
+      className={`header ${scrolled ? "scrolled" : ""} page-${page} ${theme === "light" ? "theme-light" : "theme-dark"
+        }`}
     >
       {menuOpen && (
         <div
@@ -268,9 +267,8 @@ const handleSearchClear = () => {
 
           {/* Wishlist */}
           <button
-            className={`nav-action icon-action ${
-              animateWishlist ? "animate-wishlist" : ""
-            }`}
+            className={`nav-action icon-action ${animateWishlist ? "animate-wishlist" : ""
+              }`}
             onClick={handleWishlistClick}
             aria-label={`View wishlist (${wishlistCount} items)`}
           >
@@ -290,9 +288,8 @@ const handleSearchClear = () => {
 
           {/* Cart */}
           <button
-            className={`nav-action icon-action ${
-              animateCart ? "animate-cart" : ""
-            }`}
+            className={`nav-action icon-action ${animateCart ? "animate-cart" : ""
+              }`}
             onClick={() => handleNavigate("cart")}
             aria-label={`View cart (${cartCount} items)`}
           >
@@ -594,49 +591,49 @@ const handleSearchClear = () => {
       </nav>
 
       <div className={searchOpen ? "search-drop open" : "search-drop"} ref={searchRef}>
-  <form className="search-bar" onSubmit={handleSearchSubmit} role="search">
-    <input
-      ref={searchInputRef}
-      type="search"
-      value={searchValue}
-      onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-      placeholder="Search OG products..."
-      aria-label="Search OG products"
-      autoComplete="off"
-    />
-    {searchValue && (
-      <button type="button" className="search-clear-btn" onClick={handleSearchClear}>
-        Clear
-      </button>
-    )}
-    <button type="submit" className="search-submit-btn" aria-label="Submit search">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="10.5" cy="10.5" r="6.5" />
-        <line x1="15.5" y1="15.5" x2="21" y2="21" />
-      </svg>
-    </button>
-  </form>
-
-  {searchValue && suggestions.length > 0 && (
-    <ul className="search-suggestions">
-      {suggestions.map((product) => (
-        <li key={product.id}>
-          <button type="button" onClick={() => handleSuggestionClick(product)}>
-            <img src={product.image} alt="" aria-hidden="true" />
-            <span>
-              <strong>{product.name}</strong>
-              <small>₹{product.price.toLocaleString("en-IN")}</small>
-            </span>
+        <form className="search-bar" onSubmit={handleSearchSubmit} role="search">
+          <input
+            ref={searchInputRef}
+            type="search"
+            value={searchValue}
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+            placeholder="Search OG products..."
+            aria-label="Search OG products"
+            autoComplete="off"
+          />
+          {searchValue && (
+            <button type="button" className="search-clear-btn" onClick={handleSearchClear}>
+              Clear
+            </button>
+          )}
+          <button type="submit" className="search-submit-btn" aria-label="Submit search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <line x1="15.5" y1="15.5" x2="21" y2="21" />
+            </svg>
           </button>
-        </li>
-      ))}
-    </ul>
-  )}
+        </form>
 
-  {searchValue && suggestions.length === 0 && (
-    <p className="search-no-results">No products match "{searchValue}".</p>
-  )}
-</div>
+        {searchValue && suggestions.length > 0 && (
+          <ul className="search-suggestions">
+            {suggestions.map((product) => (
+              <li key={product.id}>
+                <button type="button" onClick={() => handleSuggestionClick(product)}>
+                  <img src={product.image} alt="" aria-hidden="true" />
+                  <span>
+                    <strong>{product.name}</strong>
+                    <small>₹{product.price.toLocaleString("en-IN")}</small>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {searchValue && suggestions.length === 0 && (
+          <p className="search-no-results">No products match "{searchValue}".</p>
+        )}
+      </div>
     </header>
   );
 }
