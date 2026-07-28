@@ -1,7 +1,8 @@
 .featured-carousel {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 24px;
+  /* padding: 48px 24px; */
+  width: 100%;
+  max-width: 1500px;
+  margin: 30px auto;
 }
 
 .featured-carousel-header {
@@ -41,9 +42,10 @@
 .featured-carousel-stage {
   position: relative;
   width: 100%;
-  border-radius: 12px;
   overflow: hidden;
   background: #111;
+  height: 550px;
+  border-radius: 20px;
 }
 
 .featured-carousel-image {
@@ -52,6 +54,7 @@
   height: 420px;
   object-fit: cover;
   animation: fadeSlide 0.4s ease;
+  height: 100%;
 }
 
 .featured-carousel-caption {
