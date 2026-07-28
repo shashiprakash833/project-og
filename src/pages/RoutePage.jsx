@@ -447,51 +447,62 @@ export default function RoutePage({
           {orderConfirmed ? (
             <div className="confirmation-panel">
               <div className="confirmation-card">
-                <span className="confirmation-badge">Order Confirmed</span>
+                <div className="confirmation-icon-wrap">
+                  <div className="confirmation-icon">✓</div>
+                </div>
+                <span className="confirmation-badge">Order Placed Successfully</span>
                 <h2>Thank you for shopping with OG.</h2>
-                <p>
-                  Your order <strong>{orderNumber}</strong> has been placed.
-                  We’ll send delivery updates to{" "}
-                  {shipping.phone || "your phone"}.
+                <p className="confirmation-subtext">
+                  Your order <strong>{orderNumber}</strong> has been confirmed. We’ll send delivery updates to{" "}
+                  <strong>{shipping.phone || "your phone"}</strong>.
                 </p>
+
                 <div className="confirmation-summary">
                   <div className="summary-row">
-                    <span>Order #</span>
-                    <strong>{orderNumber}</strong>
+                    <span>Order Number</span>
+                    <strong className="order-ref-code">{orderNumber}</strong>
                   </div>
                   <div className="summary-row">
-                    <span>Shipping</span>
+                    <span>Delivery Address</span>
                     <span>
-                      {shipping.city}, {shipping.state}
+                      {shipping.city ? `${shipping.city}, ${shipping.state}` : "Standard Shipping"}
                     </span>
                   </div>
                   <div className="summary-row">
-                    <span>Payment</span>
+                    <span>Payment Method</span>
                     <span>
                       {paymentMethod === "credit"
-                        ? "Card"
+                        ? "Credit / Debit Card"
                         : paymentMethod === "upi"
                           ? "UPI"
                           : "Cash on Delivery"}
                     </span>
                   </div>
-                  <div className="summary-row highlight total-row">
-                    <span>Total Paid</span>
-                    <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
+                  <div className="summary-divider" />
+                  <div className="summary-row total-row">
+                    <strong>Total Amount Paid</strong>
+                    <strong className="total-amount">₹{totalPayable.toLocaleString("en-IN")}</strong>
                   </div>
                 </div>
+
                 <div className="confirmation-actions">
                   <button
-                    className="btn primary"
-                    onClick={() => onNavigate("shop")}
+                    className="btn-primary"
+                    onClick={() => {
+                      setOrderConfirmed(false);
+                      onNavigate("shop");
+                    }}
                   >
                     Continue Shopping
                   </button>
                   <button
-                    className="btn outline"
-                    onClick={() => setOrderConfirmed(false)}
+                    className="btn-secondary"
+                    onClick={() => {
+                      setOrderConfirmed(false);
+                      onNavigate("orders");
+                    }}
                   >
-                    View Cart
+                    View My Orders
                   </button>
                 </div>
               </div>
@@ -544,28 +555,36 @@ export default function RoutePage({
 
                 <aside className="cart-checkout-panel">
                   <div className="checkout-box">
-                    <h3>Order Summary</h3>
-                    <div className="summary-row">
-                      <span>Items ({cart.length})</span>
-                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
+                    <div className="checkout-header">
+                      <h3>Order Summary</h3>
+                      <span className="checkout-badge">{cart.length} {cart.length === 1 ? "item" : "items"}</span>
                     </div>
-                    <div className="summary-row highlight">
-                      <span>Discount</span>
-                      <span>-₹{discountValue.toLocaleString("en-IN")}</span>
-                    </div>
-                    <div className="summary-row">
-                      <span>Delivery</span>
-                      <span>Free</span>
-                    </div>
-                    <div className="summary-row total-row">
-                      <strong>Total</strong>
-                      <strong>₹{totalPayable.toLocaleString("en-IN")}</strong>
+
+                    <div className="summary-breakdown">
+                      <div className="summary-row">
+                        <span>Items ({cart.length})</span>
+                        <span>₹{subtotal.toLocaleString("en-IN")}</span>
+                      </div>
+                      <div className="summary-row highlight">
+                        <span>Discount</span>
+                        <span>-₹{discountValue.toLocaleString("en-IN")}</span>
+                      </div>
+                      <div className="summary-row">
+                        <span>Delivery</span>
+                        <span className="free-badge">FREE</span>
+                      </div>
+                      <div className="summary-divider" />
+                      <div className="summary-row total-row">
+                        <strong>Total</strong>
+                        <strong className="total-amount">₹{totalPayable.toLocaleString("en-IN")}</strong>
+                      </div>
                     </div>
 
                     <div className="coupon-panel">
-                      <label>Coupon Code</label>
+                      <label htmlFor="coupon-code-input">Promo Code</label>
                       <div className="coupon-row">
                         <input
+                          id="coupon-code-input"
                           className="coupon-input"
                           type="text"
                           placeholder="OGSAVE or OG20"
@@ -581,7 +600,7 @@ export default function RoutePage({
                           onClick={applyCoupon}
                           disabled={couponApplied}
                         >
-                          {couponApplied ? "Applied" : "Apply"}
+                          {couponApplied ? "Applied ✓" : "Apply"}
                         </button>
                       </div>
                       {couponMessage && (
@@ -593,11 +612,13 @@ export default function RoutePage({
                       )}
                     </div>
 
+                    <div className="checkout-divider" />
+
                     <div className="checkout-section">
-                      <h3>Shipping Address</h3>
+                      <h4>Shipping Address</h4>
                       <div className="form-grid">
-                        <label className="input-group">
-                          Full Name
+                        <label className="input-group full-width">
+                          <span>Full Name</span>
                           <input
                             type="text"
                             value={shipping.fullName}
@@ -610,8 +631,8 @@ export default function RoutePage({
                             placeholder="Aria Thomas"
                           />
                         </label>
-                        <label className="input-group">
-                          Street Address
+                        <label className="input-group full-width">
+                          <span>Street Address</span>
                           <input
                             type="text"
                             value={shipping.street}
@@ -621,8 +642,8 @@ export default function RoutePage({
                             placeholder="123 OG Lane"
                           />
                         </label>
-                        <label className="input-group">
-                          City
+                        <label className="input-group col-4">
+                          <span>City</span>
                           <input
                             type="text"
                             value={shipping.city}
@@ -632,8 +653,8 @@ export default function RoutePage({
                             placeholder="Mumbai"
                           />
                         </label>
-                        <label className="input-group">
-                          State
+                        <label className="input-group col-4">
+                          <span>State</span>
                           <input
                             type="text"
                             value={shipping.state}
@@ -643,8 +664,8 @@ export default function RoutePage({
                             placeholder="Maharashtra"
                           />
                         </label>
-                        <label className="input-group">
-                          PIN / ZIP
+                        <label className="input-group col-4">
+                          <span>PIN / ZIP</span>
                           <input
                             type="text"
                             value={shipping.zip}
@@ -654,8 +675,8 @@ export default function RoutePage({
                             placeholder="400001"
                           />
                         </label>
-                        <label className="input-group">
-                          Phone
+                        <label className="input-group full-width">
+                          <span>Phone</span>
                           <input
                             type="text"
                             value={shipping.phone}
@@ -668,44 +689,51 @@ export default function RoutePage({
                       </div>
                     </div>
 
-                    <div className="payment-options">
-                      <p>Payment Options</p>
-                      <label>
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="credit"
-                          checked={paymentMethod === "credit"}
-                          onChange={() => setPaymentMethod("credit")}
-                        />
-                        Credit / Debit Card
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="upi"
-                          checked={paymentMethod === "upi"}
-                          onChange={() => setPaymentMethod("upi")}
-                        />
-                        UPI
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="cod"
-                          checked={paymentMethod === "cod"}
-                          onChange={() => setPaymentMethod("cod")}
-                        />
-                        Cash on Delivery
-                      </label>
+                    <div className="checkout-divider" />
+
+                    <div className="checkout-section">
+                      <h4>Payment Method</h4>
+                      <div className="payment-options-grid">
+                        <label className={`payment-option-card ${paymentMethod === "credit" ? "selected" : ""}`}>
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="credit"
+                            checked={paymentMethod === "credit"}
+                            onChange={() => setPaymentMethod("credit")}
+                          />
+                          <span className="payment-icon">💳</span>
+                          <span className="payment-label">Card</span>
+                        </label>
+                        <label className={`payment-option-card ${paymentMethod === "upi" ? "selected" : ""}`}>
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="upi"
+                            checked={paymentMethod === "upi"}
+                            onChange={() => setPaymentMethod("upi")}
+                          />
+                          <span className="payment-icon">📱</span>
+                          <span className="payment-label">UPI</span>
+                        </label>
+                        <label className={`payment-option-card ${paymentMethod === "cod" ? "selected" : ""}`}>
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="cod"
+                            checked={paymentMethod === "cod"}
+                            onChange={() => setPaymentMethod("cod")}
+                          />
+                          <span className="payment-icon">💵</span>
+                          <span className="payment-label">COD</span>
+                        </label>
+                      </div>
                     </div>
 
                     {paymentMethod === "credit" && (
                       <div className="payment-form">
-                        <label className="input-group">
-                          Name on Card
+                        <label className="input-group full-width">
+                          <span>Name on Card</span>
                           <input
                             type="text"
                             value={paymentDetails.nameOnCard}
@@ -718,8 +746,8 @@ export default function RoutePage({
                             placeholder="Aria Thomas"
                           />
                         </label>
-                        <label className="input-group">
-                          Card Number
+                        <label className="input-group full-width">
+                          <span>Card Number</span>
                           <input
                             type="text"
                             inputMode="numeric"
@@ -735,8 +763,8 @@ export default function RoutePage({
                           />
                         </label>
                         <div className="form-row">
-                          <label className="input-group">
-                            Expiry
+                          <label className="input-group col-6">
+                            <span>Expiry</span>
                             <input
                               type="text"
                               maxLength={5}
@@ -750,8 +778,8 @@ export default function RoutePage({
                               placeholder="MM/YY"
                             />
                           </label>
-                          <label className="input-group">
-                            CVC
+                          <label className="input-group col-6">
+                            <span>CVC</span>
                             <input
                               type="text"
                               inputMode="numeric"
@@ -769,8 +797,8 @@ export default function RoutePage({
 
                     {paymentMethod === "upi" && (
                       <div className="payment-form">
-                        <label className="input-group">
-                          UPI ID
+                        <label className="input-group full-width">
+                          <span>UPI ID</span>
                           <input
                             type="text"
                             value={paymentDetails.upiId}
@@ -785,30 +813,29 @@ export default function RoutePage({
 
                     {paymentMethod === "cod" && (
                       <p className="cod-note">
-                        Pay in cash when your package is delivered. Keep your
-                        PIN ready.
+                        Pay in cash upon delivery. Please keep exact change ready.
                       </p>
                     )}
 
                     {checkoutError && (
-                      <p className="checkout-error">{checkoutError}</p>
+                      <p className="checkout-error">⚠️ {checkoutError}</p>
                     )}
 
                     <div className="checkout-actions">
                       <button
-                        className="btn primary checkout-btn"
+                        className="btn-secondary"
                         type="button"
                         onClick={() => setInvoiceGenerated(true)}
                       >
-                        Generate Invoice
+                        Invoice
                       </button>
                       <button
-                        className="btn outline confirm-btn"
+                        className="btn-primary"
                         type="button"
                         onClick={handleConfirmOrder}
                         disabled={!confirmEnabled || isSubmitting}
                       >
-                        {isSubmitting ? "Placing Order..." : "Confirm Order"}
+                        {isSubmitting ? "Placing..." : "Confirm Order"}
                       </button>
                     </div>
                   </div>

@@ -3,7 +3,15 @@ import ProductCard from "../ui/ProductCard";
 import { products } from "../../data/storeData";
 import "./CollectionCategories.css";
 
-export default function CollectionCategories({ gender, onNavigate }) {
+export default function CollectionCategories({
+  gender,
+  onNavigate,
+  cart,
+  wishlist,
+  onAddToCart,
+  onRemoveFromCart,
+  onWishlist,
+}) {
   const categories = gender === "women" ? womenCategories : menCategories;
   const genderLabel = gender === "women" ? "Women's" : "Men's";
   const randomProducts = products
@@ -54,12 +62,27 @@ export default function CollectionCategories({ gender, onNavigate }) {
 
           <div className="product-grid">
             {randomProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                quantity={cart.filter((item) => item.id === product.id).length}
+                isWishlisted={wishlist.some((item) => item.id === product.id)}
+                onAddToCart={onAddToCart}
+                onRemoveFromCart={onRemoveFromCart}
+                onWishlist={onWishlist}
+              />
             ))}
           </div>
         </section>
       </section>
 
+      {/* <section className="products-heading">
+        <p className="products-tag">OG STREETWEAR</p>
+        <h2>{genderLabel} Collection</h2>
+        <p className="products-subtitle">
+          Shop by category and find your next favorite piece.
+        </p>
+      </section> */}
     </>
   );
 }

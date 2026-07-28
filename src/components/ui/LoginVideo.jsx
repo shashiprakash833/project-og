@@ -21,7 +21,7 @@ export default function LoginVideo({ onFinish }) {
   return (
     <div className="login-video-overlay" onClick={handleFinish}>
       <video ref={videoRef} onEnded={handleFinish} muted playsInline preload="auto">
-        <source src="/og2.mp4" type="video/mp4" />
+        <source src="/og22.MP4" type="video/mp4" />
       </video>
     </div>
   );

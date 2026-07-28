@@ -51,11 +51,12 @@
   opacity: 0;
   animation: showLogo 0.8s ease 0.8s forwards;
 }
+
 .splash-logo {
-  width: clamp(22rem, 42vw, 36rem);
-  max-width: 422rem;
+  width: clamp(16rem, 32vw, 28rem);
+  max-width: 34rem;
   filter: drop-shadow(0 1rem 2rem rgba(0, 0, 0, 0.35));
-  transform: scale(1);
+  transform: scale(0.9);
 }
 
 @keyframes tearTop {

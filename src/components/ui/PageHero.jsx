@@ -10,24 +10,7 @@ export default function PageHero({ eyebrow, title, copy, image, actionLabel, onA
         </>
       )}
       <div className="page-hero-content">
-       <p className="eyebrow-hero">
-                {eyebrow.split(" ").map((word, wordIndex) => (
-                  <span className="word" key={wordIndex}>
-                    {word.split("").map((char, charIndex) => (
-                      <span
-                        key={charIndex}
-                        className="letter"
-                        style={{
-                          animationDelay: `${(wordIndex * 1 + charIndex) * 0.2}s`,
-                        }}
-                      >
-                        {char}
-                      </span>
-                    ))}
-                    <span>&nbsp;</span>
-                  </span>
-                ))}
-              </p>
+        <p>{eyebrow}</p>
         <h1>{title}</h1>
         <span>{copy}</span>
         {actionLabel && <button onClick={onAction}>{actionLabel}</button>}

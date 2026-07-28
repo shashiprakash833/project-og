@@ -7,7 +7,7 @@ export default function FloatingButton({ open, onClick }) {
       aria-label={open ? "Open style chat" : "Chat with stylist"}
     >
       <span>
-        <img src="/images/brand/og-logo-original.jpg" alt="" aria-hidden="true" />
+        <img src="/images/brand/og-logo.png" alt="" aria-hidden="true" />
       </span>
     </button>
   );

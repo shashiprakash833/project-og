@@ -101,8 +101,8 @@
 /* CARD */
 .og-card {
   position: relative;
-  min-width: 220px;
-  height: 420px;
+  min-width: 180px;
+  height: 240px;
   border-radius: 18px;      /* 🔥 ROUNDED */
   overflow: hidden;
   cursor: pointer;
@@ -114,7 +114,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 1s ease;
+  transition: transform 0.5s ease;
 }
 
 /* HOVER EFFECT */
@@ -123,36 +123,32 @@
 }
 
 /* CARD HOVER LIFT */
-.og-card:hover{
-    transform:translateY(-12px);
-    box-shadow:0 25px 60px rgba(0,0,0,.35);
+.og-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
 /* OVERLAY */
-.og-overlay{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:flex-end;
-    padding:25px;
-    background:linear-gradient(
-        transparent 45%,
-        rgba(0,0,0,.75)
-    );
-
-    opacity:1;
+.og-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  opacity: 0;
+  transition: 0.3s;
 }
 
 .og-card:hover .og-overlay {
   opacity: 1;
 }
 
-.og-overlay small{
-    font-size:1.2rem;
-    font-weight:800;
-    letter-spacing:2px;
-    color:#fff;
+.og-overlay small {
+  color: #fff;
+  font-weight: 500;
 }
+
 /* SCROLLBAR (OPTIONAL PREMIUM) */
 .og-community::-webkit-scrollbar {
   height: 6px;
@@ -184,36 +180,5 @@
     overflow-x: auto;
     padding-bottom: 10px;
     -webkit-overflow-scrolling: touch;
-  }
-}
-
-
-@media(max-width:768px){
-
-.og-card{
-    min-width:170px;
-    height:300px;
-}
-
-}
-
-
-
-html {
-  scroll-behavior: smooth;
-}
-
-.og-card--clickable {
-  cursor: pointer;
-}
-
-.og-card--clickable:focus-visible {
-  outline: 2px solid #e11d2e;
-  outline-offset: 3px;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .og-card--clickable:hover {
-    transform: none;
   }
 }

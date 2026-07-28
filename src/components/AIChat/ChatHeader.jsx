@@ -4,7 +4,7 @@ export default function ChatHeader({ onClear, onMinimize, onClose }) {
       <div>
         <div className="kai-title">
           <span aria-hidden="true">
-            <img src="/images/brand/og-logo-original.jpg" alt="" />
+            <img src="/images/brand/og-logo.png" alt="" />
           </span>
           <div>
             <strong>OG</strong>

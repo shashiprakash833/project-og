@@ -1,10 +1,10 @@
 import ProductCard from "../components/ui/ProductCard.jsx";
 
 export default function CategoryPage({
-  products,
+  products = [],
   onAddToCart,
   onWishlist,
-  wishlist,
+  wishlist = [],
   onNavigate,
   category,
   gender,

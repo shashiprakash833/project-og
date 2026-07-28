@@ -75,7 +75,7 @@ export default function LookbookSection({ onNavigate }) {
         {/* VIDEO */}
         <div className="lookbook-video">
           <video ref={videoRef} muted loop playsInline preload="auto">
-            <source src="/videos/splashvid.mp4" type="video/mp4" />
+            <source src="/videos/lookbook-duo.mp4" type="video/mp4" />
           </video>
           <div className="video-label">Bold Walk</div>
         </div>
@@ -131,4 +131,3 @@ export default function LookbookSection({ onNavigate }) {
     </>
   );
 }
-

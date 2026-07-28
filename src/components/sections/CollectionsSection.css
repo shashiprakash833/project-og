@@ -165,6 +165,10 @@
   cursor: pointer;
 }
 
+.hover-wishlist {
+  background: #fff;
+  color: #111;
+}
 
 .product-actions button:last-child {
   background: #d62828;
