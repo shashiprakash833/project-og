@@ -1,0 +1,127 @@
+.image-banner-container {
+  position: relative;
+  width: 96%;
+  max-width: 1400px;
+  margin: 1px auto;
+  overflow: hidden;
+  background: var(--charcoal);
+  border-radius: 24px;
+}
+
+.image-banner-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  opacity: 0.7;
+  border-radius: inherit;
+}
+
+.image-banner-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.image-banner-overlay .explore-collection-btn {
+  position: relative;
+  z-index: 10;
+
+  transform: translate(30px, 55px);
+
+  padding: 18px 48px;
+
+  background: #5b564b;
+  color: #131212;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px rgba(48, 43, 43, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.image-banner-overlay .explore-collection-btn:hover {
+  transform: translate(30px, 55px) scale(1.03);
+
+  background: linear-gradient(
+    135deg,
+    #0f0f0f 0%,
+    #1b1b1b 60%,
+    #6b0d12 100%
+  );
+
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(165, 31, 28, 0.25);
+}
+
+
+
+@media (max-width: 640px) {
+
+  .image-banner-overlay .explore-collection-btn {
+    transform: translateY(20px);
+    padding: 12px 24px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    transition: all .35s ease;
+  }
+
+  /* Tap effect for mobile */
+  .image-banner-overlay .explore-collection-btn:active{
+    transform: translateY(20px) scale(.96);
+    background: linear-gradient(
+      135deg,
+      #0f0f0f 0%,
+      #1b1b1b 60%,
+      #6b0d12 100%
+    );
+    color:#fff;
+    border-color:rgba(255,255,255,.8);
+    box-shadow:
+      0 18px 45px rgba(0,0,0,.55),
+      0 0 18px rgba(165,31,28,.25);
+  }
+
+  /* Keep hover for devices that actually support hover */
+  @media (hover:hover){
+    .image-banner-overlay .explore-collection-btn:hover{
+      transform: translateY(20px) scale(1.02);
+      background: linear-gradient(
+        135deg,
+        #0f0f0f 0%,
+        #1b1b1b 60%,
+        #6b0d12 100%
+      );
+      color:#fff;
+    }
+  }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+.brand-logo-container {
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  user-select: none;
+  background: transparent;
+}
+
+.brand-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.brand-text-the {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  fill: #888888;
+  transition: fill 0.3s ease;
+}
+
+.brand-text-og {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 58px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  transition: fill 0.3s ease;
+}
+
+/* Dark theme colors */
+.brand-logo-container.dark .brand-text-the {
+  fill: #aaaaaa;
+}
+.brand-logo-container.dark .brand-text-og {
+  fill: #d81b2a; /* RED in dark theme */
+}
+
+/* Light theme colors */
+.brand-logo-container.light .brand-text-the {
+  fill: #666666;
+}
+.brand-logo-container.light .brand-text-og {
+  fill: #101010; /* BLACK in light theme */
+}
+
+
+/* Bigger logo only in Splash Screen */
+.brand-logo-container.splash-logo {
+  width: 420px !important;
+  height: 420px !important;
+}
+
+.brand-logo-container.splash-logo .brand-logo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo-container.splash-logo .brand-text-the {
+  font-size: 120px;
+}
+
+.brand-logo-container.splash-logo .brand-text-og {
+  font-size: 190px;
+}
+
+.brand-logo-container.splash-logo {
+    background: red !important;
+}
+
+.brand-logo.splash-logo {
+    width: 320px !important;
+    height: auto !important;
+    max-width: none !important;
+}

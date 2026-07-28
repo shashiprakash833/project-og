@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bone);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.brand,
+.nav button,
+.header-actions button,
+.footer button,
+.btn,
+.text-link,
+.section-title button,
+.drop-timer button,
+.filters button,
+.lookbook-copy button,
+.community-section button,
+.newsletter-section button,
+.page-hero button,
+.route-section button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}

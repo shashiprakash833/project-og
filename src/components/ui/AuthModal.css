@@ -1,0 +1,120 @@
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.auth-modal {
+  width: min(34rem, 100%);
+  background: var(--paper);
+  border-radius: 1.4rem;
+  box-shadow: 0 2rem 4rem var(--shadow);
+  padding: 2rem;
+  position: relative;
+  border: 1px solid var(--line);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.6rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.modal-close:hover {
+  opacity: 0.7;
+}
+
+.auth-header h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.8rem, 2.7vw, 2.6rem);
+  color: var(--ink);
+}
+
+.auth-header p {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  padding: 0.85rem 1rem;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.auth-form input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.auth-error {
+  color: #ff6b6b;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.auth-submit {
+  justify-self: stretch;
+  background: var(--red);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  font-weight: 900;
+  border: 1px solid var(--red);
+  cursor: pointer;
+}
+
+.auth-submit:hover {
+  background: #e11e1e;
+}
+
+.auth-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.auth-switch-btn {
+  justify-self: stretch;
+  background: transparent;
+  color: var(--ink) !important;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  font-weight: 900;
+  border: 1px solid var(--line) !important;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-switch-btn:hover {
+  background: var(--bone) !important;
+  border-color: var(--muted) !important;
+}
