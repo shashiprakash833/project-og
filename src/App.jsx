@@ -58,6 +58,7 @@ export default function App() {
       pageName = "categories";
     }
     
+
     if (pageName!== "search") dispatch(clearSearchQuery());
     setPage(pageName);
     setRouteParams(params);

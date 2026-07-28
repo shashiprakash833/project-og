@@ -2165,5 +2165,11 @@ export const pageCopy = {
     title: "About OG.",
     copy: "OG Street Wear is made for people who do not follow trends. They set them.",
     image: "/images/shop.png"
+  },
+  search: {
+    eyebrow: "Search",
+    title: "Search Results.",
+    copy: "Find your next OG piece by name, type, or color.",
+    image: "/images/banner2archive.png"
   }
 };
