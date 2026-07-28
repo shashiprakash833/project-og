@@ -1,14 +1,16 @@
 import { useMemo, useRef, useState } from "react";
-import ProductCard from "../ui/ProductCard.jsx";
+import { useDispatch } from "react-redux";
 import FeaturedDropsCarousel from "./FeaturedDropsCarousel.jsx";
 import "./ProductsSection.css";
+
+import { addToCart } from "../../features/cart/cartSlice";
 
 const filters = ["all", "oversized", "tees", "bottoms", "accessories"];
 
 const carouselImages = [
-  { src: "/images/Carousel/trendy_accessories_banner.webp", alt: "Drop 1", caption: "New Arrivals" },
-  { src: "/images/Carousel/mega_sale_banner.webp", alt: "Drop 2", caption: "Limited Run" },
-  { src: "/images/Carousel/mens_streetwear_banner.webp", alt: "Drop 3", caption: "Street Essentials" },
+  { src: "/images/Carousel/carousel1.png", alt: "Drop 1", caption: "New Arrivals" },
+  { src: "/images/Carousel/carousel2.png", alt: "Drop 2", caption: "Limited Run" },
+  { src: "/images/Carousel/carousel3.png", alt: "Drop 3", caption: "Street Essentials" },
 ];
 
 // Top row - IMAGE ONLY
@@ -21,7 +23,9 @@ function ImageOnlyCard({ product }) {
 }
 
 // RELATED PRODUCT CARD
-function RelatedProductCard({ product, onAddToCart }) {
+function RelatedProductCard({ product }) {
+  const dispatch = useDispatch(); //
+
   return (
     <div className="related-product-card">
       <div className="related-img-wrap">
@@ -43,7 +47,7 @@ function RelatedProductCard({ product, onAddToCart }) {
             className="related-add-cart"
             onClick={(e) => {
               e.stopPropagation();
-              onAddToCart(product);
+              dispatch(addToCart(product)); // 
             }}
           >
             ADD TO CART
@@ -58,7 +62,6 @@ export default function ProductsSection({
   theme,
   products = [],
   wishlist = [],
-  onAddToCart,
   onWishlist,
   onNavigate,
 }) {
@@ -213,10 +216,7 @@ export default function ProductsSection({
                   key={product.id}
                   onClick={() => handleRelatedProductClick(product)}
                 >
-                  <RelatedProductCard
-                    product={product}
-                    onAddToCart={onAddToCart}
-                  />
+                  <RelatedProductCard product={product} />
                 </div>
               ))
             ) : (

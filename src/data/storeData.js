@@ -19,26 +19,7 @@ const rawProducts = [
     tag: "LIMITED",
     image: "/images/collections/mens/og over1.png",
   },
-  {
-    id: "men-over-005",
-    name: "OG Urban Oversized Tee",
-    price: 1899,
-    type: "oversized",
-    color: "Olive",
-    gender: "men",
-    tag: "LIMITED",
-    image: "/images/collections/mens/og over1.png",
-  },
-  {
-    id: "men-over-005",
-    name: "OG Urban Oversized Tee",
-    price: 1899,
-    type: "oversized",
-    color: "Olive",
-    gender: "men",
-    tag: "LIMITED",
-    image: "/images/collections/mens/og over1.png",
-  },
+
   {
     id: "men-over-005",
     name: "OG Urban Oversized Tee",

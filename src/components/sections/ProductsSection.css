@@ -1604,22 +1604,6 @@ button {
 }
 
 
-
-
-.wishlist-btn {
-  border-radius: 50%;
-  position: absolute;
-  top: 0.7rem;
-  left: 0.7rem;
-  z-index: 3;
-  width: 2rem;
-  height: 2rem;
-  border: 0;
-  border-radius: 60%;
-  background: var(--paper);
-  color: var(--red);
-}
-
 .product-art {
   border-radius: 30px;
   
@@ -3384,34 +3368,6 @@ button {
 }
 
 /* =========================
-   WISHLIST BUTTON (TOP)
-========================= */
-.wishlist-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 2;
-}
-
-.wishlist-btn button {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  color: #000;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: 0.3s;
-}
-
-.wishlist-btn button:hover {
-  background: #ff2e2e;
-  color: #fff;
-}
-
-/* =========================
    IMAGE
 ========================= */
 .product-card img {
@@ -3593,29 +3549,40 @@ button {
 /* =========================
    WISHLIST
 ========================= */
+
+/* ===============================
+   WISHLIST BUTTON (used across product cards)
+================================= */
+
 .wishlist-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 2;
-}
-
-.wishlist-btn button {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  background: var(--card);
-  color: var(--text);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.wishlist-btn button:hover {
-  background: #ff2e2e;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
   color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
+.wishlist-btn:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.wishlist-btn.active {
+  color: var(--red);
+  background: rgba(0, 0, 0, 0.5);
+}
 /* =========================
    IMAGE
 ========================= */

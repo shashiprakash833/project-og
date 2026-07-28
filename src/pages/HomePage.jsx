@@ -6,7 +6,7 @@ import CommunitySection from "../components/sections/CommunitySection.jsx";
 import NewsletterSection from "../components/sections/NewsletterSection.jsx";
 import ImageBanner from "../components/layout/ImageBanner.jsx";
 
-export default function HomePage({theme, products, wishlist, onNavigate, onAddToCart, onWishlist, onToast }) {
+export default function HomePage({ theme, products, onNavigate, onToast }) {
   return (
     <>
       <HeroSection onNavigate={onNavigate} />
@@ -15,9 +15,6 @@ export default function HomePage({theme, products, wishlist, onNavigate, onAddTo
       <ProductsSection
         theme={theme}
         products={products}
-        wishlist={wishlist}
-        onAddToCart={onAddToCart}
-        onWishlist={onWishlist}
         onNavigate={onNavigate}
       />
       <LookbookSection products={products} onNavigate={onNavigate} />
