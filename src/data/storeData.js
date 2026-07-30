@@ -3322,7 +3322,7 @@ export const pageCopy = {
     eyebrow: "Saved",
     title: "Your Wishlist.",
     copy: "These are the OG pieces you want to keep an eye on.",
-    image: "",
+    image: "/images/wishlist-banner.png",
   },
   cart: {
     eyebrow: "Bag",
