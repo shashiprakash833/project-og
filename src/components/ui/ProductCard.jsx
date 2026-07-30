@@ -1,20 +1,34 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ProductModal from "./ProductModal";
 import "./ProductCard.css";
 
-export default function ProductCard({
-  product,
-  isWishlisted,
-  onAddToCart,
-  onWishlist,
-}) {
+import { addToCart } from "../../features/cart/cartSlice";
+import { toggleWishlist } from "../../features/wishlist/wishlistSlice";
+
+export default function ProductCard({ product }) {
   const [showModal, setShowModal] = useState(false);
-  const [wishlist, setWishlist] = useState(!!isWishlisted);
+
+  const dispatch = useDispatch();
+
+  // read wishlist items from the Redux store
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  // check if THIS product is already in the wishlist
+  const isWishlisted = wishlistItems.some((item) => item.id === product.id);
 
   const handleWishlist = (e) => {
     e.stopPropagation();
-    setWishlist((prev) => !prev);
-    onWishlist && onWishlist(product);
+    dispatch(toggleWishlist(product));
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    dispatch(
+      addToCart({
+        ...product,
+        size: product?.sizes?.[0] || "M",
+      })
+    );
   };
 
   return (
@@ -36,35 +50,23 @@ export default function ProductCard({
 
         {/* WISHLIST */}
         <button
-          className={`pcard-heart ${wishlist ? "active" : ""}`}
+          className={`pcard-heart ${isWishlisted ? "active" : ""}`}
           onClick={handleWishlist}
-          aria-label={wishlist ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
-          {wishlist ? "♥" : "♡"}
+          {isWishlisted ? "♥" : "♡"}
         </button>
 
         {/* BODY */}
         <div className="pcard-body">
           <h3 className="pcard-name">{product?.name}</h3>
 
-          {product?.color && (
-            <p className="pcard-color">{product.color}</p>
-          )}
+          {product?.color && <p className="pcard-color">{product.color}</p>}
 
           <div className="pcard-bottom-row">
             <p className="pcard-price">₹{product?.price}</p>
 
-            <button
-              className="pcard-cart-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart &&
-                  onAddToCart({
-                    ...product,
-                    size: product?.sizes?.[0] || "M",
-                  });
-              }}
-            >
+            <button className="pcard-cart-btn" onClick={handleAddToCart}>
               ADD TO CART
             </button>
           </div>
@@ -73,11 +75,7 @@ export default function ProductCard({
 
       {/* MODAL */}
       {showModal && (
-        <ProductModal
-          product={product}
-          onClose={() => setShowModal(false)}
-          onAddToCart={onAddToCart}
-        />
+        <ProductModal product={product} onClose={() => setShowModal(false)} />
       )}
     </>
   );

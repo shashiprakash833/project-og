@@ -1,5 +1,9 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./ProductModal.css";
+
+import { addToCart } from "../../features/cart/cartSlice";
+import { toggleWishlist } from "../../features/wishlist/wishlistSlice";
 
 const CATEGORY_COPY = {
   tee: "Crafted from soft, breathable cotton with a relaxed drop-shoulder fit. An everyday staple that pairs with anything in your rotation.",
@@ -16,14 +20,15 @@ function getDescription(product) {
   return CATEGORY_COPY[key] || CATEGORY_COPY.oversized;
 }
 
-export default function ProductModal({
-  product,
-  onClose,
-  onAddToCart,
-}) {
+export default function ProductModal({ product, onClose }) {
   const [size, setSize] = useState("");
-  const [wishlist, setWishlist] = useState(false);
   const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
+
+  // read wishlist state from Redux instead of local useState
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const isWishlisted = wishlistItems.some((item) => item.id === product?.id);
 
   const handleAddToCart = () => {
     if (!size) {
@@ -33,50 +38,40 @@ export default function ProductModal({
 
     setError("");
 
-    onAddToCart &&
-      onAddToCart({
+    dispatch(
+      addToCart({
         ...product,
         size,
-      });
+      })
+    );
 
     onClose && onClose();
   };
 
+  const handleWishlist = () => {
+    dispatch(toggleWishlist(product));
+  };
+
   return (
-    <div
-      className="og-modal-overlay"
-      onClick={onClose}
-    >
-      <div
-        className="og-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="og-modal-overlay" onClick={onClose}>
+      <div className="og-modal" onClick={(e) => e.stopPropagation()}>
         {/* CLOSE */}
-        <button
-          className="og-modal-close"
-          onClick={onClose}
-        >
+        <button className="og-modal-close" onClick={onClose}>
           ✕
         </button>
 
         {/* LEFT IMAGE */}
         <div className="modal-left">
-          <img
-            src={product?.image}
-            alt={product?.name}
-          />
+          <img src={product?.image} alt={product?.name} />
         </div>
 
         {/* RIGHT */}
         <div className="modal-right">
-
           <small className="brand">THE OG</small>
 
           <h2>{product?.name}</h2>
 
-          <h3 className="price">
-            ₹{product?.price}
-          </h3>
+          <h3 className="price">₹{product?.price}</h3>
 
           <p className="color-text">
             <strong>Color:</strong> {product?.color || "Black"}
@@ -101,42 +96,26 @@ export default function ProductModal({
           </div>
 
           {/* ERROR */}
-          {error && (
-            <p className="size-error">{error}</p>
-          )}
+          {error && <p className="size-error">{error}</p>}
 
           {/* BUTTONS */}
           <div className="modal-buttons">
-
             {/* WISHLIST */}
             <button
-              className={`wishlist-btn-modal ${
-                wishlist ? "active" : ""
-              }`}
-              onClick={() =>
-                setWishlist((prev) => !prev)
-              }
+              className={`wishlist-btn-modal ${isWishlisted ? "active" : ""}`}
+              onClick={handleWishlist}
             >
-              {wishlist
-                ? "❤️ Wishlisted"
-                : "🤍 Wishlist"}
+              {isWishlisted ? "❤️ Wishlisted" : "🤍 Wishlist"}
             </button>
 
             {/* ADD TO CART */}
-            <button
-              className="cart-btn"
-              onClick={handleAddToCart}
-            >
+            <button className="cart-btn" onClick={handleAddToCart}>
               🛒 Add To Cart
             </button>
-
           </div>
 
           {/* DESCRIPTION */}
-          <p className="description">
-            {getDescription(product)}
-          </p>
-
+          <p className="description">{getDescription(product)}</p>
         </div>
       </div>
     </div>

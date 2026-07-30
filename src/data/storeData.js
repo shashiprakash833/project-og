@@ -6,8 +6,8 @@ export const navItems = [
   { label: "ABOUT OG", page: "about" },
 ];
 
-
 const rawProducts = [
+
   // ================= MEN OVERSIZED =================
   {
     id: "men-over-005",
@@ -48,7 +48,167 @@ const rawProducts = [
     gender: "men",
     tag: "LIMITED",
     image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
+  {
+    id: "men-over-005",
+    name: "OG Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Olive",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/og over1.png",
+  },
 
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
   },
   {
     id: "men-over-005",
@@ -335,6 +495,36 @@ const rawProducts = [
     tag: "OG",
     image: "/images/collections/mens/bottom1.png",
   },
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
 
   {
     id: "men-tee-001",
@@ -497,7 +687,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -508,7 +697,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -519,7 +707,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -530,7 +717,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-tee-001",
@@ -551,7 +737,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -562,7 +747,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -573,7 +757,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -584,7 +767,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-tee-001",
@@ -605,7 +787,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -616,7 +797,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -627,7 +807,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -638,7 +817,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-tee-001",
@@ -659,7 +837,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -670,7 +847,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -681,7 +857,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -692,7 +867,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -703,7 +877,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -714,7 +887,6 @@ const rawProducts = [
     gender: "men",
     tag: "NEW",
     image: "/images/collections/mens/chains6.png",
-
   },
   {
     id: "men-accessory-002",
@@ -789,7 +961,6 @@ const rawProducts = [
     tag: "OG",
     image: "/images/collections/mens/bottom1.png",
   },
-
 
   {
     id: "men-bottom-001",
@@ -975,14 +1146,6 @@ const rawProducts = [
     tag: "OG",
     image: "/images/collections/womens/women-1.png",
   },
-
-
-
-
-
-
-
-
 
   {
     id: "women-bottom-001",
@@ -1005,9 +1168,6 @@ const rawProducts = [
     image: "/images/collections/womens/Bottom.png",
   },
 
-
-
-
   {
     id: "women-bottom-001",
     name: "OG Women's Cargo Pant",
@@ -1029,9 +1189,6 @@ const rawProducts = [
     image: "/images/collections/womens/Bottom.png",
   },
 
-
-
-
   {
     id: "women-bottom-001",
     name: "OG Women's Cargo Pant",
@@ -1052,9 +1209,6 @@ const rawProducts = [
     tag: "OG",
     image: "/images/collections/womens/Bottom.png",
   },
-
-
-
 
   {
     id: "women-bottom-001",
@@ -1307,7 +1461,6 @@ const rawProducts = [
     image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
   },
 
-
   // ================= WOMEN OVERSIZED =================
   {
     id: "men-over-001",
@@ -1419,7 +1572,109 @@ const rawProducts = [
     tag: "LIMITED",
     image: "/images/collections/mens/og over1.png",
   },
+
   {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-002",
+    name: "OG Women's Necklace",
+    price: 799,
+    type: "accessories",
+    color: "Gold",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/OG_womens_necklace_26967d7c.png",
+  },
+  {
+    id: "women-accessory-003",
+    name: "OG Women's Spects",
+    price: 899,
+    type: "accessories",
+    color: "brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/spects-women.png",
+  },
+  {
+    id: "women-accessory-004",
+    name: "OG Women's Scarf",
+    price: 1499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_scarf_086e9699.png",
+  },
+  {
+    id: "women-accessory-005",
+    name: "OG Women's Clutch",
+    price: 499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_clutch_11b5df15.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-002",
+    name: "OG Women's Necklace",
+    price: 799,
+    type: "accessories",
+    color: "Gold",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/OG_womens_necklace_26967d7c.png",
+  },
+  {
+    id: "women-accessory-003",
+    name: "OG Women's Spects",
+    price: 899,
+    type: "accessories",
+    color: "brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/spects-women.png",
+  },
+  {
+    id: "women-accessory-004",
+    name: "OG Women's Scarf",
+    price: 1499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_scarf_086e9699.png",
+  },
+  {
+    id: "women-accessory-005",
+    name: "OG Women's Clutch",
+    price: 499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_clutch_11b5df15.png",
+  },
+
+    {
     id: "men-tank-001",
     name: "OG Tank Black",
     price: 999,
@@ -1750,38 +2005,281 @@ const rawProducts = [
   { id: "women-accessory-004", name: "OG Women's Scarf", price: 1499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_scarf_086e9699.png" },
   { id: "women-accessory-005", name: "OG Women's Clutch", price: 499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_clutch_11b5df15.png" },
 
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
   // ================= WOMEN ACCESSORIES =================
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-002", name: "OG Women's Necklace", price: 799, type: "accessories", color: "Gold", gender: "women", tag: "NEW", image: "/images/collections/womens/OG_womens_necklace_26967d7c.png" },
-  { id: "women-accessory-003", name: "OG Women's Spects", price: 899, type: "accessories", color: "brown", gender: "women", tag: "HOT", image: "/images/collections/womens/spects-women.png" },
-  { id: "women-accessory-004", name: "OG Women's Scarf", price: 1499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_scarf_086e9699.png" },
-  { id: "women-accessory-005", name: "OG Women's Clutch", price: 499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_clutch_11b5df15.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-002",
+    name: "OG Women's Necklace",
+    price: 799,
+    type: "accessories",
+    color: "Gold",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/OG_womens_necklace_26967d7c.png",
+  },
+  {
+    id: "women-accessory-003",
+    name: "OG Women's Spects",
+    price: 899,
+    type: "accessories",
+    color: "brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/spects-women.png",
+  },
+  {
+    id: "women-accessory-004",
+    name: "OG Women's Scarf",
+    price: 1499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_scarf_086e9699.png",
+  },
+  {
+    id: "women-accessory-005",
+    name: "OG Women's Clutch",
+    price: 499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_clutch_11b5df15.png",
+  },
 
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
   // ================= WOMEN ACCESSORIES =================
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-002", name: "OG Women's Necklace", price: 799, type: "accessories", color: "Gold", gender: "women", tag: "NEW", image: "/images/collections/womens/OG_womens_necklace_26967d7c.png" },
-  { id: "women-accessory-003", name: "OG Women's Spects", price: 899, type: "accessories", color: "brown", gender: "women", tag: "HOT", image: "/images/collections/womens/spects-women.png" },
-  { id: "women-accessory-004", name: "OG Women's Scarf", price: 1499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_scarf_086e9699.png" },
-  { id: "women-accessory-005", name: "OG Women's Clutch", price: 499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_clutch_11b5df15.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-002",
+    name: "OG Women's Necklace",
+    price: 799,
+    type: "accessories",
+    color: "Gold",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/OG_womens_necklace_26967d7c.png",
+  },
+  {
+    id: "women-accessory-003",
+    name: "OG Women's Spects",
+    price: 899,
+    type: "accessories",
+    color: "brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/spects-women.png",
+  },
+  {
+    id: "women-accessory-004",
+    name: "OG Women's Scarf",
+    price: 1499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_scarf_086e9699.png",
+  },
+  {
+    id: "women-accessory-005",
+    name: "OG Women's Clutch",
+    price: 499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_clutch_11b5df15.png",
+  },
 
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
   // ================= WOMEN ACCESSORIES =================
-  { id: "women-accessory-001", name: "OG Women's Handbag", price: 699, type: "accessories", color: "cream", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_handbag_70823bfb.png" },
-  { id: "women-accessory-002", name: "OG Women's Necklace", price: 799, type: "accessories", color: "Gold", gender: "women", tag: "NEW", image: "/images/collections/womens/OG_womens_necklace_26967d7c.png" },
-  { id: "women-accessory-003", name: "OG Women's Spects", price: 899, type: "accessories", color: "brown", gender: "women", tag: "HOT", image: "/images/collections/womens/spects-women.png" },
-  { id: "women-accessory-004", name: "OG Women's Scarf", price: 1499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_scarf_086e9699.png" },
-  { id: "women-accessory-005", name: "OG Women's Clutch", price: 499, type: "accessories", color: "Black", gender: "women", tag: "OG", image: "/images/collections/womens/OG_womens_clutch_11b5df15.png" },
+  {
+    id: "women-accessory-001",
+    name: "OG Women's Handbag",
+    price: 699,
+    type: "accessories",
+    color: "cream",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_handbag_70823bfb.png",
+  },
+  {
+    id: "women-accessory-002",
+    name: "OG Women's Necklace",
+    price: 799,
+    type: "accessories",
+    color: "Gold",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/OG_womens_necklace_26967d7c.png",
+  },
+  {
+    id: "women-accessory-003",
+    name: "OG Women's Spects",
+    price: 899,
+    type: "accessories",
+    color: "brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/spects-women.png",
+  },
+  {
+    id: "women-accessory-004",
+    name: "OG Women's Scarf",
+    price: 1499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_scarf_086e9699.png",
+  },
+  {
+    id: "women-accessory-005",
+    name: "OG Women's Clutch",
+    price: 499,
+    type: "accessories",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/OG_womens_clutch_11b5df15.png",
+  },
 
 
   // ================= MEN ACCESSORIES =================
@@ -1830,6 +2328,57 @@ const rawProducts = [
   { id: "women-bottom-004", name: "OG Women's Street Cargo", price: 2199, type: "bottoms", color: "Brown", gender: "women", tag: "HOT", image: "/images/collections/womens/women-10.png" },
   { id: "women-bottom-005", name: "OG Women's Utility Pant", price: 2299, type: "bottoms", color: "Khaki", gender: "women", tag: "LIMITED", image: "/images/collections/womens/bottom-1.png" },
 
+  // ================= WOMEN BOTTOMS =================
+  {
+    id: "women-bottom-001",
+    name: "OG Women's Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Bottom.png",
+  },
+  {
+    id: "women-bottom-002",
+    name: "OG Women's Jogger",
+    price: 1899,
+    type: "bottoms",
+    color: "Grey",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/women-8.png",
+  },
+  {
+    id: "women-bottom-003",
+    name: "OG Women's Relaxed Pants",
+    price: 2099,
+    type: "bottoms",
+    color: "Olive",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/women-9.png",
+  },
+  {
+    id: "women-bottom-004",
+    name: "OG Women's Street Cargo",
+    price: 2199,
+    type: "bottoms",
+    color: "Brown",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/women-10.png",
+  },
+  {
+    id: "women-bottom-005",
+    name: "OG Women's Utility Pant",
+    price: 2299,
+    type: "bottoms",
+    color: "Khaki",
+    gender: "women",
+    tag: "LIMITED",
+    image: "/images/collections/womens/bottom-1.png",
+  },
 
   // ================= MEN BOTTOMS =================
   { id: "men-bottom-001", name: "OG Cargo Pant", price: 1999, type: "bottoms", color: "Black", gender: "men", tag: "OG", image: "/images/collections/mens/bottom1.png" },
@@ -1843,24 +2392,158 @@ const rawProducts = [
   { id: "men-bottom-004", name: "OG Street Cargo", price: 2299, type: "bottoms", color: "Brown", gender: "men", tag: "HOT", image: "/images/collections/mens/bottoms.jpeg" },
   { id: "men-bottom-005", name: "OG Utility Pant", price: 2399, type: "bottoms", color: "Khaki", gender: "men", tag: "LIMITED", image: "/images/collections/mens/bottom2.png" },
 
-  { id: "men-bottom-001", name: "OG Cargo Pant", price: 1999, type: "bottoms", color: "Black", gender: "men", tag: "OG", image: "/images/collections/mens/bottom1.png" },
-  { id: "men-bottom-002", name: "OG Jogger", price: 1899, type: "bottoms", color: "Grey", gender: "men", tag: "NEW", image: "/images/collections/mens/bottom2.png" },
-  { id: "men-bottom-003", name: "OG Relaxed Pants", price: 2199, type: "bottoms", color: "Olive", gender: "men", tag: "OG", image: "/images/collections/mens/bottom 3.png" },
-  { id: "men-bottom-004", name: "OG Street Cargo", price: 2299, type: "bottoms", color: "Brown", gender: "men", tag: "HOT", image: "/images/collections/mens/bottoms.jpeg" },
-  { id: "men-bottom-005", name: "OG Utility Pant", price: 2399, type: "bottoms", color: "Khaki", gender: "men", tag: "LIMITED", image: "/images/collections/mens/bottom2.png" },
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
+  {
+    id: "men-bottom-002",
+    name: "OG Jogger",
+    price: 1899,
+    type: "bottoms",
+    color: "Grey",
+    gender: "men",
+    tag: "NEW",
+    image: "/images/collections/mens/bottom2.png",
+  },
+  {
+    id: "men-bottom-003",
+    name: "OG Relaxed Pants",
+    price: 2199,
+    type: "bottoms",
+    color: "Olive",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom 3.png",
+  },
+  {
+    id: "men-bottom-004",
+    name: "OG Street Cargo",
+    price: 2299,
+    type: "bottoms",
+    color: "Brown",
+    gender: "men",
+    tag: "HOT",
+    image: "/images/collections/mens/bottoms.jpeg",
+  },
+  {
+    id: "men-bottom-005",
+    name: "OG Utility Pant",
+    price: 2399,
+    type: "bottoms",
+    color: "Khaki",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/bottom2.png",
+  },
 
-  { id: "men-bottom-001", name: "OG Cargo Pant", price: 1999, type: "bottoms", color: "Black", gender: "men", tag: "OG", image: "/images/collections/mens/bottom1.png" },
-  { id: "men-bottom-002", name: "OG Jogger", price: 1899, type: "bottoms", color: "Grey", gender: "men", tag: "NEW", image: "/images/collections/mens/bottom2.png" },
-  { id: "men-bottom-003", name: "OG Relaxed Pants", price: 2199, type: "bottoms", color: "Olive", gender: "men", tag: "OG", image: "/images/collections/mens/bottom 3.png" },
-  { id: "men-bottom-004", name: "OG Street Cargo", price: 2299, type: "bottoms", color: "Brown", gender: "men", tag: "HOT", image: "/images/collections/mens/bottoms.jpeg" },
-  { id: "men-bottom-005", name: "OG Utility Pant", price: 2399, type: "bottoms", color: "Khaki", gender: "men", tag: "LIMITED", image: "/images/collections/mens/bottom2.png" },
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
+  {
+    id: "men-bottom-002",
+    name: "OG Jogger",
+    price: 1899,
+    type: "bottoms",
+    color: "Grey",
+    gender: "men",
+    tag: "NEW",
+    image: "/images/collections/mens/bottom2.png",
+  },
+  {
+    id: "men-bottom-003",
+    name: "OG Relaxed Pants",
+    price: 2199,
+    type: "bottoms",
+    color: "Olive",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom 3.png",
+  },
+  {
+    id: "men-bottom-004",
+    name: "OG Street Cargo",
+    price: 2299,
+    type: "bottoms",
+    color: "Brown",
+    gender: "men",
+    tag: "HOT",
+    image: "/images/collections/mens/bottoms.jpeg",
+  },
+  {
+    id: "men-bottom-005",
+    name: "OG Utility Pant",
+    price: 2399,
+    type: "bottoms",
+    color: "Khaki",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/bottom2.png",
+  },
 
-  { id: "men-bottom-001", name: "OG Cargo Pant", price: 1999, type: "bottoms", color: "Black", gender: "men", tag: "OG", image: "/images/collections/mens/bottom1.png" },
-  { id: "men-bottom-002", name: "OG Jogger", price: 1899, type: "bottoms", color: "Grey", gender: "men", tag: "NEW", image: "/images/collections/mens/bottom2.png" },
-  { id: "men-bottom-003", name: "OG Relaxed Pants", price: 2199, type: "bottoms", color: "Olive", gender: "men", tag: "OG", image: "/images/collections/mens/bottom 3.png" },
-  { id: "men-bottom-004", name: "OG Street Cargo", price: 2299, type: "bottoms", color: "Brown", gender: "men", tag: "HOT", image: "/images/collections/mens/bottoms.jpeg" },
-  { id: "men-bottom-005", name: "OG Utility Pant", price: 2399, type: "bottoms", color: "Khaki", gender: "men", tag: "LIMITED", image: "/images/collections/mens/bottom2.png" },
-
+  {
+    id: "men-bottom-001",
+    name: "OG Cargo Pant",
+    price: 1999,
+    type: "bottoms",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom1.png",
+  },
+  {
+    id: "men-bottom-002",
+    name: "OG Jogger",
+    price: 1899,
+    type: "bottoms",
+    color: "Grey",
+    gender: "men",
+    tag: "NEW",
+    image: "/images/collections/mens/bottom2.png",
+  },
+  {
+    id: "men-bottom-003",
+    name: "OG Relaxed Pants",
+    price: 2199,
+    type: "bottoms",
+    color: "Olive",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/bottom 3.png",
+  },
+  {
+    id: "men-bottom-004",
+    name: "OG Street Cargo",
+    price: 2299,
+    type: "bottoms",
+    color: "Brown",
+    gender: "men",
+    tag: "HOT",
+    image: "/images/collections/mens/bottoms.jpeg",
+  },
+  {
+    id: "men-bottom-005",
+    name: "OG Utility Pant",
+    price: 2399,
+    type: "bottoms",
+    color: "Khaki",
+    gender: "men",
+    tag: "LIMITED",
+    image: "/images/collections/mens/bottom2.png",
+  },
 
   // ================= WOMEN TEES =================
   { id: "women-tee-001", name: "OG Women's Classic Tee", price: 1299, type: "tees", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
@@ -1874,55 +2557,365 @@ const rawProducts = [
   { id: "women-tee-004", name: "OG Women's Printed Tee", price: 1599, type: "tees", color: "Pink", gender: "women", tag: "HOT", image: "/images/collections/womens/Tees.png" },
   { id: "women-tee-005", name: "OG Women's Everyday Tee", price: 1299, type: "tees", color: "Blue", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
 
-  { id: "women-tee-001", name: "OG Women's Classic Tee", price: 1299, type: "tees", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-002", name: "OG Women's Logo Tee", price: 1399, type: "tees", color: "Black", gender: "women", tag: "NEW", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-003", name: "OG Women's Street Tee", price: 1499, type: "tees", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-004", name: "OG Women's Printed Tee", price: 1599, type: "tees", color: "Pink", gender: "women", tag: "HOT", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-005", name: "OG Women's Everyday Tee", price: 1299, type: "tees", color: "Blue", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
+  {
+    id: "women-tee-001",
+    name: "OG Women's Classic Tee",
+    price: 1299,
+    type: "tees",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-002",
+    name: "OG Women's Logo Tee",
+    price: 1399,
+    type: "tees",
+    color: "Black",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-003",
+    name: "OG Women's Street Tee",
+    price: 1499,
+    type: "tees",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-004",
+    name: "OG Women's Printed Tee",
+    price: 1599,
+    type: "tees",
+    color: "Pink",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-005",
+    name: "OG Women's Everyday Tee",
+    price: 1299,
+    type: "tees",
+    color: "Blue",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
 
-  { id: "women-tee-001", name: "OG Women's Classic Tee", price: 1299, type: "tees", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-002", name: "OG Women's Logo Tee", price: 1399, type: "tees", color: "Black", gender: "women", tag: "NEW", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-003", name: "OG Women's Street Tee", price: 1499, type: "tees", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-004", name: "OG Women's Printed Tee", price: 1599, type: "tees", color: "Pink", gender: "women", tag: "HOT", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-005", name: "OG Women's Everyday Tee", price: 1299, type: "tees", color: "Blue", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
+  {
+    id: "women-tee-001",
+    name: "OG Women's Classic Tee",
+    price: 1299,
+    type: "tees",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-002",
+    name: "OG Women's Logo Tee",
+    price: 1399,
+    type: "tees",
+    color: "Black",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-003",
+    name: "OG Women's Street Tee",
+    price: 1499,
+    type: "tees",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-004",
+    name: "OG Women's Printed Tee",
+    price: 1599,
+    type: "tees",
+    color: "Pink",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-005",
+    name: "OG Women's Everyday Tee",
+    price: 1299,
+    type: "tees",
+    color: "Blue",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
 
-  { id: "women-tee-001", name: "OG Women's Classic Tee", price: 1299, type: "tees", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-002", name: "OG Women's Logo Tee", price: 1399, type: "tees", color: "Black", gender: "women", tag: "NEW", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-003", name: "OG Women's Street Tee", price: 1499, type: "tees", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-004", name: "OG Women's Printed Tee", price: 1599, type: "tees", color: "Pink", gender: "women", tag: "HOT", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-005", name: "OG Women's Everyday Tee", price: 1299, type: "tees", color: "Blue", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-
+  {
+    id: "women-tee-001",
+    name: "OG Women's Classic Tee",
+    price: 1299,
+    type: "tees",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-002",
+    name: "OG Women's Logo Tee",
+    price: 1399,
+    type: "tees",
+    color: "Black",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-003",
+    name: "OG Women's Street Tee",
+    price: 1499,
+    type: "tees",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-004",
+    name: "OG Women's Printed Tee",
+    price: 1599,
+    type: "tees",
+    color: "Pink",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-005",
+    name: "OG Women's Everyday Tee",
+    price: 1299,
+    type: "tees",
+    color: "Blue",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
 
   // ================= WOMEN TEES =================
-  { id: "women-tee-001", name: "OG Women's Classic Tee", price: 1299, type: "tees", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-002", name: "OG Women's Logo Tee", price: 1399, type: "tees", color: "Black", gender: "women", tag: "NEW", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-003", name: "OG Women's Street Tee", price: 1499, type: "tees", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-004", name: "OG Women's Printed Tee", price: 1599, type: "tees", color: "Pink", gender: "women", tag: "HOT", image: "/images/collections/womens/Tees.png" },
-  { id: "women-tee-005", name: "OG Women's Everyday Tee", price: 1299, type: "tees", color: "Blue", gender: "women", tag: "OG", image: "/images/collections/womens/Tees.png" },
-
+  {
+    id: "women-tee-001",
+    name: "OG Women's Classic Tee",
+    price: 1299,
+    type: "tees",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-002",
+    name: "OG Women's Logo Tee",
+    price: 1399,
+    type: "tees",
+    color: "Black",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-003",
+    name: "OG Women's Street Tee",
+    price: 1499,
+    type: "tees",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-004",
+    name: "OG Women's Printed Tee",
+    price: 1599,
+    type: "tees",
+    color: "Pink",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/Tees.png",
+  },
+  {
+    id: "women-tee-005",
+    name: "OG Women's Everyday Tee",
+    price: 1299,
+    type: "tees",
+    color: "Blue",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/Tees.png",
+  },
 
   // ================= MEN TEES =================
-  { id: "men-tee-001", name: "OG Classic Tee", price: 1299, type: "tees", color: "Black", gender: "men", tag: "OG", image: "/images/collections/mens/tees.jpeg" },
-  { id: "men-tee-002", name: "OG Logo Tee", price: 1399, type: "tees", color: "White", gender: "men", tag: "NEW", image: "/images/collections/mens/tees.jpeg" },
-  { id: "men-tee-003", name: "OG Street Tee", price: 1499, type: "tees", color: "Grey", gender: "men", tag: "OG", image: "/images/collections/mens/tees.jpeg" },
-  { id: "men-tee-004", name: "OG Printed Tee", price: 1599, type: "tees", color: "Navy", gender: "men", tag: "HOT", image: "/images/collections/mens/tees.jpeg" },
-  { id: "men-tee-005", name: "OG Everyday Tee", price: 1299, type: "tees", color: "Brown", gender: "men", tag: "OG", image: "/images/collections/mens/tees.jpeg" },
+  {
+    id: "men-tee-001",
+    name: "OG Classic Tee",
+    price: 1299,
+    type: "tees",
+    color: "Black",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/tees.jpeg",
+  },
+  {
+    id: "men-tee-002",
+    name: "OG Logo Tee",
+    price: 1399,
+    type: "tees",
+    color: "White",
+    gender: "men",
+    tag: "NEW",
+    image: "/images/collections/mens/tees.jpeg",
+  },
+  {
+    id: "men-tee-003",
+    name: "OG Street Tee",
+    price: 1499,
+    type: "tees",
+    color: "Grey",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/tees.jpeg",
+  },
+  {
+    id: "men-tee-004",
+    name: "OG Printed Tee",
+    price: 1599,
+    type: "tees",
+    color: "Navy",
+    gender: "men",
+    tag: "HOT",
+    image: "/images/collections/mens/tees.jpeg",
+  },
+  {
+    id: "men-tee-005",
+    name: "OG Everyday Tee",
+    price: 1299,
+    type: "tees",
+    color: "Brown",
+    gender: "men",
+    tag: "OG",
+    image: "/images/collections/mens/tees.jpeg",
+  },
 
-
-  { id: "women-over-001", name: "OG Women's Shadow Oversized Tee", price: 1499, type: "oversized", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/women-1.png" },
-  { id: "women-over-002", name: "OG Women's Vintage Oversized Tee", price: 1599, type: "oversized", color: "Pink", gender: "women", tag: "NEW", image: "/images/collections/womens/women-2.png" },
-  { id: "women-over-003", name: "OG Women's Heavyweight Oversized Tee", price: 1699, type: "oversized", color: "Black", gender: "women", tag: "HOT", image: "/images/collections/womens/women-3.png" },
-  { id: "women-over-004", name: "OG Women's Graphic Oversized Tee", price: 1799, type: "oversized", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/women-4.png" },
-  { id: "women-over-005", name: "OG Women's Urban Oversized Tee", price: 1899, type: "oversized", color: "Lavender", gender: "women", tag: "LIMITED", image: "/images/collections/womens/women-5.png" },
+  {
+    id: "women-over-001",
+    name: "OG Women's Shadow Oversized Tee",
+    price: 1499,
+    type: "oversized",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/women-1.png",
+  },
+  {
+    id: "women-over-002",
+    name: "OG Women's Vintage Oversized Tee",
+    price: 1599,
+    type: "oversized",
+    color: "Pink",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/women-2.png",
+  },
+  {
+    id: "women-over-003",
+    name: "OG Women's Heavyweight Oversized Tee",
+    price: 1699,
+    type: "oversized",
+    color: "Black",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/women-3.png",
+  },
+  {
+    id: "women-over-004",
+    name: "OG Women's Graphic Oversized Tee",
+    price: 1799,
+    type: "oversized",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/women-4.png",
+  },
+  {
+    id: "women-over-005",
+    name: "OG Women's Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Lavender",
+    gender: "women",
+    tag: "LIMITED",
+    image: "/images/collections/womens/women-5.png",
+  },
   // ================= WOMEN OVERSIZED =================
-  { id: "women-over-001", name: "OG Women's Shadow Oversized Tee", price: 1499, type: "oversized", color: "White", gender: "women", tag: "OG", image: "/images/collections/womens/women-1.png" },
-  { id: "women-over-002", name: "OG Women's Vintage Oversized Tee", price: 1599, type: "oversized", color: "Pink", gender: "women", tag: "NEW", image: "/images/collections/womens/women-2.png" },
-  { id: "women-over-003", name: "OG Women's Heavyweight Oversized Tee", price: 1699, type: "oversized", color: "Black", gender: "women", tag: "HOT", image: "/images/collections/womens/women-3.png" },
-  { id: "women-over-004", name: "OG Women's Graphic Oversized Tee", price: 1799, type: "oversized", color: "Grey", gender: "women", tag: "OG", image: "/images/collections/womens/women-4.png" },
-  { id: "women-over-005", name: "OG Women's Urban Oversized Tee", price: 1899, type: "oversized", color: "Lavender", gender: "women", tag: "LIMITED", image: "/images/collections/womens/women-5.png" },
-
+  {
+    id: "women-over-001",
+    name: "OG Women's Shadow Oversized Tee",
+    price: 1499,
+    type: "oversized",
+    color: "White",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/women-1.png",
+  },
+  {
+    id: "women-over-002",
+    name: "OG Women's Vintage Oversized Tee",
+    price: 1599,
+    type: "oversized",
+    color: "Pink",
+    gender: "women",
+    tag: "NEW",
+    image: "/images/collections/womens/women-2.png",
+  },
+  {
+    id: "women-over-003",
+    name: "OG Women's Heavyweight Oversized Tee",
+    price: 1699,
+    type: "oversized",
+    color: "Black",
+    gender: "women",
+    tag: "HOT",
+    image: "/images/collections/womens/women-3.png",
+  },
+  {
+    id: "women-over-004",
+    name: "OG Women's Graphic Oversized Tee",
+    price: 1799,
+    type: "oversized",
+    color: "Grey",
+    gender: "women",
+    tag: "OG",
+    image: "/images/collections/womens/women-4.png",
+  },
+  {
+    id: "women-over-005",
+    name: "OG Women's Urban Oversized Tee",
+    price: 1899,
+    type: "oversized",
+    color: "Lavender",
+    gender: "women",
+    tag: "LIMITED",
+    image: "/images/collections/womens/women-5.png",
+  },
 ];
-
 export const products = Array.from(
   new Map(
     rawProducts
@@ -1938,7 +2931,7 @@ export const collections = [
     title: "Oversized",
     type: "tees",
     copy: "Heavy silhouettes with louder backprints.",
-    image: "/images/collections/mens/over1.jpeg"
+    image: "/images/collections/mens/over1.jpeg",
   },
 
   {
@@ -1946,18 +2939,16 @@ export const collections = [
     title: "Tees",
     type: "tees",
     copy: "Daily rotation pieces with attitude.",
-    image: "/images/collections/mens/tees.jpeg"
+    image: "/images/collections/mens/tees.jpeg",
   },
   {
     id: 4,
     title: "Bottoms",
     type: "bottoms",
     copy: "Cargo pockets and rugged movement.",
-    image: "/images/collections/mens/bottoms.jpeg"
+    image: "/images/collections/mens/bottoms.jpeg",
   },
 ];
-
-
 
 const menCollectionImages = [
   "/images/collections/mens/men-1.jpeg",
@@ -1978,7 +2969,7 @@ const womenCollectionImages = [
   "/images/collections/womens/women-6.png",
   "/images/collections/womens/women-7.png",
   "/images/collections/womens/women-8.png",
-  "/images/collections/womens/women-9.png"
+  "/images/collections/womens/women-9.png",
 ];
 
 export const menCollections = menCollectionImages.map((image, i) => ({
@@ -2057,58 +3048,58 @@ export const archiveItems = [
   "Concrete Fits",
   "Backprint Series",
   "No Rules Drop",
-  "Shadow Capsule"
+  "Shadow Capsule",
 ];
 
 export const archiveCards = [
   {
     title: "Concrete Fits",
     image: "/images/archive/concrete-fits.jpeg",
-    video: "/videos/archive/concrete-fits.mp4"
+    video: "/videos/archive/concrete-fits.mp4",
   },
   {
     title: "Backprint Series",
     image: "/images/archive/backprint-series.jpeg",
-    video: "/videos/archive/backprint-series.mp4"
+    video: "/videos/archive/backprint-series.mp4",
   },
   {
     title: "No Rules Drop",
     image: "/images/archive/no-rules-drop.jpeg",
-    video: "/videos/archive/no-rules-drop.mp4"
+    video: "/videos/archive/no-rules-drop.mp4",
   },
   {
     title: "Shadow Capsule",
     image: "/images/archive/shadow-capsule.jpeg",
-    video: "/videos/archive/shadow-capsule.mp4"
-  }
+    video: "/videos/archive/shadow-capsule.mp4",
+  },
 ];
 
 export const communityCards = [
   {
     title: "Backprint",
-    image: ""
+    image: "",
   },
   {
     title: "Concrete",
-    image: ""
+    image: "",
   },
   {
     title: "Cap Drop",
-    image: ""
+    image: "",
   },
   {
     title: "Alley Fit",
-    image: ""
+    image: "",
   },
   {
     title: "Poster Wall",
-    image: ""
-  }
+    image: "",
+  },
 ];
 
 export const lookbookPoster = {
   title: "Be OG",
-  image: ""
+  image: "",
 };
 
 export const pageCopy = {
@@ -2116,13 +3107,13 @@ export const pageCopy = {
     eyebrow: "All Products",
     title: "Shop The Street.",
     copy: "Filter drops, add pieces to cart, and build your OG rotation.",
-    image: "/images/banner2archive.png"
+    image: "/images/banner2archive.png",
   },
   collections: {
     eyebrow: "Explore",
     title: "Collections.",
     copy: "Each collection has its own attitude, fit, and street language.",
-    image: "/images/coll.png"
+    image: "/images/coll.png",
   },
   "collections-men": {
     eyebrow: "Explore",
@@ -2134,31 +3125,31 @@ export const pageCopy = {
     eyebrow: "Explore",
     title: "Women's Collections.",
     copy: "signature fits, bold outwear, and street-ready pieces for women.",
-    image: "/images/collections/womens/women-hero@2x.png"
+    image: "/images/collections/womens/women-hero@2x.png",
   },
   drops: {
     eyebrow: "Limited",
     title: "Current Drop.",
     copy: "The newest OG pieces are available in low quantity.",
-    image: "/images/currentdropbanner.png"
+    image: "/images/currentdropbanner.png",
   },
   archive: {
     eyebrow: "Past Heat",
     title: "Archive.",
     copy: "A record of the graphic stories and fits that shaped the brand.",
-    image: "/images/obutogbanner.png"
+    image: "/images/obutogbanner.png",
   },
   wishlist: {
     eyebrow: "Saved",
     title: "Your Wishlist.",
     copy: "These are the OG pieces you want to keep an eye on.",
-    image: ""
+    image: "/images/wishlist-banner.png",
   },
   cart: {
     eyebrow: "Bag",
     title: "Your Cart.",
     copy: "Review your selected products and get ready to checkout.",
-    image: "/images/carttttt.png"
+    image: "/images/carttttt.png",
   },
   about: {
     eyebrow: "Original Gangster",

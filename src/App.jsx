@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-  setUser, logout as logoutAction, openAuthModal, closeAuthModal, setAuthError, clearAuthError,
+  setUser,
+  logout as logoutAction,
+  openAuthModal,
+  closeAuthModal,
+  setAuthError,
+  clearAuthError,
 } from "./features/auth/authSlice";
 import SplashScreen from "./components/ui/SplashScreen.jsx";
 import IntroVideo from "./components/ui/IntroVideo.jsx";
@@ -18,12 +23,18 @@ import { toggleTheme } from "./features/theme/themeSlice.js";
 import { selectSearchQuery, clearSearchQuery, setSearchQuery } from "./features/search/searchSlice"
 
 
+import { clearCart } from "./features/cart/cartSlice.js";
+
 const INTRO_TIME = 3200;
 
 export default function App() {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
   const user = useSelector((state) => state.auth.user);
+
+ 
+  const cart = useSelector((state) => state.cart.items);
+  const wishlist = useSelector((state) => state.wishlist.items);
 
   const authModal = useSelector((state) => state.auth.authModal);
 
@@ -32,10 +43,10 @@ export default function App() {
   const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [page, setPage] = useState("home");
   const [routeParams, setRouteParams] = useState({});
-  const [cart, setCart] = useState([]);
+  
   const searchQuery = useSelector(selectSearchQuery);
   const setSearchQueryValue = useSelector(setSearchQuery);
-  const [wishlist, setWishlist] = useState([]);
+ 
   const [toast, setToast] = useState("");
   const [currentGender, setCurrentGender] = useState("men");
 
@@ -107,10 +118,15 @@ export default function App() {
     localStorage.setItem("og_orders", JSON.stringify(orders));
   }, [orders]);
 
-  const clearCart = () => setCart([]);
   const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-  const submitOrder = async ({ items, totalAmount, shippingAddress, paymentMethod, shippingPhone }) => {
+  const submitOrder = async ({
+    items,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+    shippingPhone,
+  }) => {
     const orderId = Math.floor(100000 + Math.random() * 900000);
     const newOrder = {
       orderId,
@@ -123,13 +139,13 @@ export default function App() {
       date: new Date().toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
-        day: "numeric"
+        day: "numeric",
       }),
-      userEmail: user ? user.email : "guest"
+      userEmail: user ? user.email : "guest",
     };
 
     setOrders((current) => [newOrder, ...current]);
-    clearCart();
+    dispatch(clearCart());
     return { success: true, orderId };
   };
 
@@ -148,6 +164,14 @@ export default function App() {
     dispatch(clearAuthError());
     dispatch(openAuthModal(mode));
   };
+
+  const openAuthModal = (mode = "login") => {
+    setAuthError("");
+    setAuthModal({ open: true, mode });
+  };
+
+  const closeAuthModal = () =>
+    setAuthModal((current) => ({ ...current, open: false }));
 
   const handleCloseAuthModal = () => {
     dispatch(closeAuthModal());
@@ -169,11 +193,18 @@ export default function App() {
     const mockUser = {
       id: Date.now(),
       email: email,
-      name: email.split("@")[0] || "User"
+      name: email.split("@")[0] || "User",
     };
+    setUser(mockUser);
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+    closeAuthModal();
+    setShowIntroVideo(true);
+    setToast(`Welcome back, ${mockUser.name}`);
     dispatch(setUser(mockUser));
     localStorage.setItem("og_user", JSON.stringify(mockUser));
 
+    handleCloseAuthModal();
 
     handleCloseAuthModal();
 
@@ -190,8 +221,14 @@ export default function App() {
     const mockUser = {
       id: Date.now(),
       email: email,
-      name: name || email.split("@")[0] || "User"
+      name: name || email.split("@")[0] || "User",
     };
+    setUser(mockUser);
+    localStorage.setItem("og_user", JSON.stringify(mockUser));
+
+    closeAuthModal();
+    setShowIntroVideo(true);
+    setToast(`Welcome, ${mockUser.name}`);
     dispatch(setUser(mockUser));
     localStorage.setItem("og_user", JSON.stringify(mockUser));
 
@@ -208,38 +245,30 @@ export default function App() {
     setToast("Logged out successfully.");
   };
 
-  const protectedAddToCart = addToCart;
-  const protectedRemoveFromCart = removeFromCart;
-  const protectedToggleWishlist = toggleWishlist;
-
   const renderPage = () => {
     if (page === "home") {
       return (
         <HomePage
           theme={theme}
           products={products}
-          wishlist={wishlist}
           onNavigate={navigate}
-          onAddToCart={protectedAddToCart}
-          onWishlist={protectedToggleWishlist}
           onToast={setToast}
         />
       );
     }
 
     // Handle all category types: oversized, bottoms, tees, tank tops, accessories
-    if (["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(page)) {
+    if (
+      ["oversized", "bottoms", "tees", "tank tops", "accessories"].includes(
+        page,
+      )
+    ) {
       return (
         <CategoryPage
           products={products}
-          onAddToCart={protectedAddToCart}
-          onRemoveFromCart={protectedRemoveFromCart}
-          onWishlist={protectedToggleWishlist}
-          wishlist={wishlist}
           onNavigate={navigate}
           category={page}
           gender={currentGender}
-          cart={cart}
         />
       );
     }
@@ -250,12 +279,7 @@ export default function App() {
         page={page}
         routeParams={routeParams}
         products={products}
-        cart={cart}
-        wishlist={wishlist}
         onNavigate={navigate}
-        onAddToCart={protectedAddToCart}
-        onRemoveFromCart={protectedRemoveFromCart}
-        onWishlist={protectedToggleWishlist}
         onToast={setToast}
         user={user}
         onAuthOpen={handleOpenAuthModal}
@@ -269,7 +293,12 @@ export default function App() {
   return (
     <ChatProvider>
       <main className={`app ${theme}`}>
-        {showSplash && <SplashScreen duration={INTRO_TIME} onFinish={() => setShowSplash(false)} />}
+        {showSplash && (
+          <SplashScreen
+            duration={INTRO_TIME}
+            onFinish={() => setShowSplash(false)}
+          />
+        )}
         {showIntroVideo && (
           <IntroVideo
             onFinish={() => setShowIntroVideo(false)}
@@ -287,6 +316,9 @@ export default function App() {
               onAuthOpen={handleOpenAuthModal}
               onLogout={logout}
               onNavigate={navigate}
+              onThemeToggle={() =>
+                setTheme(theme === "light" ? "dark" : "light")
+              }
               onThemeToggle={() => dispatch(toggleTheme())}
               searchQuery={searchQuery}
               onSearchChange={(query) => dispatch(setSearchQuery(query))}
@@ -304,7 +336,12 @@ export default function App() {
           onClose={handleCloseAuthModal}
           onLogin={login}
           onRegister={register}
-          onSwitchMode={() => handleOpenAuthModal(authModal.mode === "login" ? "signup" : "login")}
+          onSwitchMode={() =>
+            openAuthModal(authModal.mode === "login" ? "signup" : "login")
+          }
+          onSwitchMode={() =>
+            handleOpenAuthModal(authModal.mode === "login" ? "signup" : "login")
+          }
           error={authError}
         />
 
