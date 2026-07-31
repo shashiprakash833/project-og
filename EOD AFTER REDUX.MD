@@ -65,7 +65,29 @@
 
 ---
 
-### 6. App.jsx Integration
-- **File**: [App.jsx](file:///c:/Users/praka/OneDrive/Documents/project-og2/src/App.jsx)
+---
+
+### 6. orderSlice.js
+- **File**: [orderSlice.js](file:///c:/project-og2/src/features/order/orderSlice.js)
+- **Role**: Customer Order History & Checkout Order Management.
+- **State Schema**: `{ orders: Order[], activeOrder: Order | null, status: string, error: string | null }`
+- **Actions Exported**: `addOrder`, `setOrders`, `setActiveOrder`, `updateOrderStatus`, `clearOrders`
+- **Selectors Exported**: `selectOrders`, `selectActiveOrder`, `selectOrderStatus`, `selectOrderError`
+- **EOD Note**: *"Implemented orderSlice with localStorage persistence ('og_orders') to manage completed purchases, order confirmation numbers, and user order history."*
+
+---
+
+### 7. uiSlice.js
+- **File**: [uiSlice.js](file:///c:/project-og2/src/features/ui/uiSlice.js)
+- **Role**: Global UI Navigation, Toast Notifications, and Component Modal States.
+- **State Schema**: `{ page: string, routeParams: object, currentGender: string, toast: string, showSplash: boolean, showIntroVideo: boolean, menuOpen: boolean, searchOpen: boolean }`
+- **Actions Exported**: `setPage`, `setRouteParams`, `setCurrentGender`, `navigate`, `setToast`, `clearToast`, `setShowSplash`, `setShowIntroVideo`, `setMenuOpen`, `toggleMenu`, `setSearchOpen`, `toggleSearch`
+- **Selectors Exported**: `selectPage`, `selectRouteParams`, `selectCurrentGender`, `selectToast`, `selectShowSplash`, `selectShowIntroVideo`, `selectMenuOpen`, `selectSearchOpen`
+- **EOD Note**: *"Implemented uiSlice for global UI state including page navigation routing, toast alerts, splash screen display, and responsive navigation overlays."*
+
+---
+
+### 8. App.jsx Integration
+- **File**: [App.jsx](file:///c:/project-og2/src/App.jsx)
 - **Role**: Main Application Container.
-- **Integration**: Connected components (`<Header />`, `<AuthModal />`, `<RoutePage />`) directly to Redux selectors and actions while maintaining lightweight UI state (`searchQuery`, `toast`, `showSplash`) locally.
+- **Integration**: Fully integrated Redux state across theme, auth, cart, wishlist, search, order, and ui slices.
